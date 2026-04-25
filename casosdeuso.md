@@ -1,11 +1,11 @@
-#Casos de Uso:
+# Casos de Uso:
 
-##Caso de uso 1: Cadastro do cliente.
+## Caso de uso 1: Cadastro do cliente.
 
 ## Ator: 
 - cliente
 
-###Fluxo principal:
+### Fluxo principal:
 - O usuário seleciona a opção “Criar conta”.
 
 - O sistema leva o usuário até a tela de registro contendo um formulário.
@@ -23,12 +23,12 @@
 
 
 
-##Caso de Uso 2: Login do cliente.
+## Caso de Uso 2: Login do cliente.
 
-##Atores:
+## Atores:
 - cliente
 
-###Fluxo principal:
+### Fluxo principal:
 -O usuário seleciona a opção "Login".
 
 -O sistema leva o usuário até a tela de preenchimento de senha e email.
@@ -44,12 +44,12 @@
 
 
 
-##Caso de Uso 3: Excluir conta.
+## Caso de Uso 3: Excluir conta.
 
-##Atores:
+## Atores:
 -cliente 
 
-###Fluxo principal:
+### Fluxo principal:
 -O usuário acessa o menu do seu perfil com as configurações da sua conta.
 
 -O usuário aperta o botão excluir conta.
@@ -75,12 +75,12 @@
 
 
 
-##Caso de Uso 4: Editar dados de cadastro.
+## Caso de Uso 4: Editar dados de cadastro.
 
-##Atores:
+## Atores:
 -cliente
 
-###Fluxo principal:
+### Fluxo principal:
 -O usuário acessa o menu do seu perfil com as configurações da sua conta.
 
 -O usuário aperta o botão "editar dados de cadastro da conta".
@@ -96,12 +96,12 @@
 
 
 
-##Caso de Uso 5: Busca de produtos.
+## Caso de Uso 5: Busca de produtos.
 
-##Atores:
+## Atores:
 -cliente
 
-###Fluxo principal:
+### Fluxo principal:
 -O sistema apresenta a página inicial do site.
 
 -O cliente aperta na barra de pesquisa.
@@ -119,12 +119,12 @@
 
 
 
-##Caso de Uso 6: Reserva de mesa.
+## Caso de Uso 6: Reserva de mesa.
 
-##Atores:
+## Atores:
 -cliente
 
-###Fluxo principal:
+### Fluxo principal:
 -O cliente clica na opção "reserva mesa".
 
 -O cliente seleciona a mesa desejada.
@@ -138,11 +138,11 @@
 
 
 
-##Caso de Uso 7: ver cardápio.
-##Atores:
+## Caso de Uso 7: ver cardápio.
+## Atores:
 -Cliente
 
-###Fluxo principal:
+### Fluxo principal:
 -O cliente clica no botão "cardápio".
 
 -O sistema vai colocar o cardápio na tela.
