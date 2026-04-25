@@ -6,57 +6,57 @@
 - cliente
 
 ### Fluxo principal:
-- O usuário seleciona a opção “Criar conta”.
+- O cliente seleciona a opção “Criar conta”.
 
-- O sistema leva o usuário até a tela de registro contendo um formulário.
+- O sistema leva o cliente até a tela de registro contendo um formulário.
 
-- O usuário preenche os campos do formulário (informando e-mail e criando uma senha).
+- O cliente preenche os campos do formulário (informando e-mail e criando uma senha).
 
 - O sistema consulta o banco de dados para verificar a disponibilidade das informações fornecidas.
 
 - O banco de dados retorna uma confirmação positiva.
 
-- O sistema realiza o cadastro, salvando os dados do novo usuário.
+- O sistema realiza o cadastro, salvando os dados do novo cliente.
 
-- O sistema encaminha o usuário para a página principal do site.
+- O sistema encaminha o cliente para a página principal do site.
 
 
 
 
 ## Caso de Uso 2: Login do cliente.
 
-## Atores:
+## Ator:
 - cliente
 
 ### Fluxo principal:
--O usuário seleciona a opção "Login".
+-O cliente seleciona a opção "Login".
 
--O sistema leva o usuário até a tela de preenchimento de senha e email.
+-O sistema leva o cliente até a tela de preenchimento de senha e email.
 
--Usuário preenche os campos da tela.
+-cliente preenche os campos da tela.
 
 -O sistema consulta o banco de dados para a confirmação dos dados inseridos.
 
 -O banco de dados retorna uma confirmação positiva.
 
--O sistema encaminha o usuário para a página principal do site.
+-O sistema encaminha o cliente para a página principal do site.
 
 
 
 
 ## Caso de Uso 3: Excluir conta.
 
-## Atores:
+## Ator:
 -cliente 
 
 ### Fluxo principal:
--O usuário acessa o menu do seu perfil com as configurações da sua conta.
+-O cliente acessa o menu do seu perfil com as configurações da sua conta.
 
--O usuário aperta o botão excluir conta.
+-O cliente aperta o botão excluir conta.
 
--O sistema solicita a senha do usuário para proseguir com a exclusão.
+-O sistema solicita a senha do cliente para proseguir com a exclusão.
 
--O usário digita a senha.
+-O cliente digita a senha.
 
 -O sistema analisa a veracidade da senha no banco de dados.
 
@@ -64,34 +64,34 @@
 
 -O sistema pergunta se quer confirmar a exclusão.
 
--O usuário aperta o botão confirmar.
+-O cliente aperta o botão confirmar.
 
--O sistema apaga os dados do usuário no banco de dados.
+-O sistema apaga os dados do cliente no banco de dados.
 
 -O sistema apresenta mensagem de sucesso.
 
--O sistema realoca o usuário para a página de login e cadastro.
+-O sistema realoca o cliente para a página de login e cadastro.
 
 
 
 
 ## Caso de Uso 4: Editar dados de cadastro.
 
-## Atores:
+## Ator:
 -cliente
 
 ### Fluxo principal:
--O usuário acessa o menu do seu perfil com as configurações da sua conta.
+-O cliente acessa o menu do seu perfil com as configurações da sua conta.
 
--O usuário aperta o botão "editar dados de cadastro da conta".
+-O cliente aperta o botão "editar dados de cadastro da conta".
 
--O sistema exibe os dados de cadastro do usuário.
+-O sistema exibe os dados de cadastro do cliente.
 
--O usuário edita dados do seu cadastro e aperta o botão confirmar.
+-O cliente edita dados do seu cadastro e aperta o botão confirmar.
 
--O sistema edita os dados do usuário no banco de dados.
+-O sistema edita os dados do cliente no banco de dados.
 
--Osistema mando o usuário pra tela principal.
+-O sistema mando o cliente pra tela principal.
 
 
 
