@@ -195,12 +195,12 @@
 ## Caso de Uso 10: Gerenciar pedido
 
 ## Atores:
-- funcioario
+- funcionario
 
 ### Fluxo principal:
-- O funcionario recebe uma mensagem do pedido feito pelo cliente.
+- O funcionario recebe uma mensagem do cliente dizendo quq o pedido foi feito.
 
-- Funcionario começa a preparar o peido.
+- Funcionario começa a preparar o pedido.
 
 
 
