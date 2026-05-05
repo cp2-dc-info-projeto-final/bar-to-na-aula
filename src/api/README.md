@@ -68,10 +68,10 @@ Para conectar ao seu banco de dados basta digitar o comando abaixo (trocando o n
 Agora crie um usuário apra sua aplicação, é comum em ambientes de desenvolvimento utilizar o mesmo nome do banco de dados tanto no login quanto na senha. Após a criação do usuário precisamos dar permissão total de acesso ao banco de dados, certifique-se de que está no banco de dados correto.
 
 ```sql
-CREATE USER elefantinho WITH ENCRYPTED PASSWORD 'elefantinho';
-GRANT ALL ON SCHEMA public TO elefantinho;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO elefantinho;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO elefantinho;
+CREATE USER bartonaaula WITH ENCRYPTED PASSWORD 'bartonaaula';
+GRANT ALL ON SCHEMA public TO bartonaaula;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO bartonaaula;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO bartonaaula;
 ```
 
 Para desconectar do terminal do PostgreSQL basta digitar o comando `exit` ou o atalho `CTRL`+`D`. Com seu banco criado para acessar ele diretamente basta utilizar o comando abaixo. Agora é possível logar diretamente no seu banco de dados `elefantinho` no servidor `localhost` utilizando o usuário `elefantinho` diretamente da linha de comando fornecendo a senha.

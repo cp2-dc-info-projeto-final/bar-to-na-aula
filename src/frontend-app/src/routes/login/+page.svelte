@@ -10,7 +10,7 @@
 
   async function handleLogin() {
     if (!login || !password) {
-      error = 'Por favor, preencha todos os campos';
+      error = 'Por favor, preencha todos os campos!';
       return;
     }
 
@@ -23,7 +23,7 @@
       if (result.success) {
         await goto('/');
       } else {
-        error = result.message || 'Credenciais inválidas';
+        error = result.message || 'Credenciais inválidas!';
       }
     } catch (err) {
       error = 'Erro interno do servidor';
@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-  <title>Login - Projeto Modelo 2025</title>
+  <title>Login - BAR TÔ NA AULA</title>
 </svelte:head>
 
 <div class="h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
@@ -83,6 +83,7 @@
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
+          <a href="/users/new" style="color: blueviolet;">Cadastro</a>
       </form>
     </Card>
   </div>
