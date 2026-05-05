@@ -1,21 +1,19 @@
-# Documento de Requisitos
+# REQUISITOS FUNCIONAIS:
 
-## Requisitos Funcionais
+-RF1: Possibilidade de criar, excluir e editar a conta do usuário;
+<br>-RF2: Venda de bebidas e outros alimentos;
+<br>-RF3: Forma de ver o historico e lista de produtos;
+<br>-RF4: Opção de reserva de mesas com shows ou sem;
+<br>-RF5:Realizar o reconhecimento e supervisão dos usuários via admin;
+<br>-RF6: Consultar valor geral do pedido feito.
 
-### RF 01
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit nulla vel diam vehicula, eu porttitor nulla aliquam.
+# REQUISITOS NÃO FUNCIONAIS:
 
-### RF 02
+-RNF1: Garantir que o site seja acessível para todos os aparelhos;
+<br>-RNF2: Garantir a confiabilidade dos produtos apresentados;
+<br>-RNF3: Confirmar a veracidade das informações dadas pelo usuário;
+<br>-RNF4: Permitir a visualização clara do site;
+<br>-RNF5: Objetividade nas apresentações do site;
+<br>-RNF6: Fácilidade ao navegar no site.
 
-Nullam laoreet, mauris ac tempor vulputate, orci metus aliquet augue, at accumsan odio mi eu sapien. Aliquam tincidunt metus ut aliquet vehicula. Aliquam vitae arcu sed lacus fermentum sagittis.
-
-## Requisitos Não-Funcionais
-
-### RNF 01
-
-Nulla facilisi. Etiam tempus dolor et odio tincidunt fermentum. Donec pharetra nulla eu euismod maximus. Maecenas eu mauris tincidunt, pulvinar tellus sed, blandit eros.
-
-### RNF 02
-
-Nam id enim ut quam faucibus scelerisque at non diam. Morbi eget eleifend lectus, quis fringilla elit. Morbi iaculis, elit vel accumsan hendrerit, ipsum purus varius lacus, eget facilisis massa mauris ac ipsum.
