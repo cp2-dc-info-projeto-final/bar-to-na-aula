@@ -6,7 +6,7 @@ CREATE TABLE cliente (
     login text NOT NULL,
     email text NOT NULL,
     senha text NOT NULL,
-    role text NOT NULL DEFAULT 'client'
+    role text NOT NULL DEFAULT 'user'
     );
 
 CREATE TABLE funcionario (
@@ -14,7 +14,7 @@ CREATE TABLE funcionario (
     login text NOT NULL,
     email text NOT NULL,
     senha text NOT NULL,
-    role text NOT NULL DEFAULT 'funci',
+    role text NOT NULL DEFAULT 'user',
     
     -- Constraints
     CONSTRAINT pk_usuario PRIMARY KEY (id),
@@ -23,10 +23,10 @@ CREATE TABLE funcionario (
     CONSTRAINT ck_usuario_login_length CHECK (length(login) >= 3 AND length(login) <= 50), -- comprimento
     CONSTRAINT ck_usuario_email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'), -- formato de email com expressão regular
     CONSTRAINT ck_usuario_senha_length CHECK (length(senha) >= 6), -- comprimento mínimo
-    CONSTRAINT ck_usuario_role_valid CHECK (role IN ('admin', 'client', 'funci')) -- tipos de usuário 
+    CONSTRAINT ck_usuario_role_valid CHECK (role IN ('admin', 'user')) -- tipos de usuário 
 );
 
---INSERT INTO cliente (login, email, senha, role) VALUES
+INSERT INTO cliente (login, email, senha, role) VALUES
 
 INSERT INTO funcionario (login, email, senha, role) VALUES
 -- senha efelantinho

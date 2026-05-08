@@ -68,10 +68,9 @@ router.get('/:id', verifyToken, isAdmin, async function(req, res) {
 });
 
 /* POST - Criar novo usuário */
-router.post('/', verifyToken, isAdmin, async function(req, res) {
+router.post('/', async function(req, res) {
   try {
     const { login, email, senha, role = 'user' } = req.body;
-    
     // Validação básica
     if (!login || !email || !senha ) {
       const errors = [];
@@ -81,7 +80,7 @@ router.post('/', verifyToken, isAdmin, async function(req, res) {
 
       return sendError(res, 400, 'Login, email e senha são obrigatórios', errors);
     }
-    
+   
     // Verificar se o login já existe
     const existingUser = await pool.query('SELECT id FROM usuario WHERE login = $1', [login]);
     if (existingUser.rows.length > 0) {
@@ -102,10 +101,10 @@ router.post('/', verifyToken, isAdmin, async function(req, res) {
     const hashedPassword = await bcrypt.hash(senha, 12);
 
     const result = await pool.query(
-      'INSERT INTO usuario (login, email, senha, role) VALUES ($1, $2, $3, $4) RETURNING id, login, email, role',
+      'INSERT INTO cliente (login, email, senha, role) VALUES ($1, $2, $3, $4) RETURNING id, login, email, role',
       [login, email, hashedPassword, role]
     );
-
+    console.log('\n\n' + role +'\n\n');
     return sendSuccess(res, 201, 'Usuário criado com sucesso', result.rows[0]);
   } catch (error) {
     console.error('Erro ao criar usuário:', error);

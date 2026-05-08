@@ -15,7 +15,7 @@
   // Opções de roles
   const roleOptions = [
     { value: 'user', name: 'Cliente' },
-    { value: 'admin', name: 'Funcionario' }
+    { value: 'admin', name: 'Admin' }
   ];
   let loading = false;
   let error = '';
@@ -118,7 +118,7 @@
     {/if}
     <!-- Campo login -->
     <div>
-      <Label for="login">Login</Label>
+      <Label for="login">Nome</Label>
       <Input id="login" bind:value={user.login} placeholder="Digite o login" required class="mt-1" />
       {#if errorOf('login')}
         <div class="mt-1 text-sm text-red-500">{errorOf('login')}</div>
