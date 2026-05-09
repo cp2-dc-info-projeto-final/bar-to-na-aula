@@ -3,9 +3,9 @@
 Projeto Final 2025 do Curso Técnico Integrado de Desenvolvimento de Sistemas - Colégio Pedro II - Campus Duque de Caxias
 
 **Integrantes:**
- - Fulana
- - Beltrano
- - Ciclano
+ - Cassio Augusto Lima Da Silva
+ - Dylan De Léo Dos Santos
+ - Gustavo Tomas Chaves Da Silva
 
  ## Tecnologias
 
