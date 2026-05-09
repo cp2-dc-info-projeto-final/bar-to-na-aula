@@ -21,7 +21,9 @@
 - O sistema encaminha o cliente para a página principal do site.
 
 
-
+### Fluxo alternativo:
+-  O cliente seleciona a opção “Criar conta”.
+-  
 
 ## Caso de Uso 2: Login do cliente.
 
