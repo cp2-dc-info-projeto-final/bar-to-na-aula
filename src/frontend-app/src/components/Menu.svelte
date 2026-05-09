@@ -73,9 +73,9 @@
 </script>
 
 <div class="relative px-8">
-  <Navbar class="fixed start-0 top-0 z-20 w-full bg-gray-800 px-2 py-2.5 sm:px-4">
+  <Navbar class="fixed start-0 top-0 z-20 w-full bg-[#A0522D] px-2 py-2.5 sm:px-4">
     <NavBrand href="/">
-      <img src="/images/icon.svg" class="me-3 h-6 sm:h-9" alt="Logo aleatória" />
+      <img src="/images/icon.svg" class="me-5 h-2 sm:h-9" alt="Logo aleatória" />
       <Heading class="self-center text-xl font-bold whitespace-nowrap text-primary-500 dark:text-primary-400">BAR TÔ NA AULA</Heading>
     </NavBrand>
     <NavHamburger />
@@ -111,4 +111,5 @@
       {/if}
     </NavUl>
   </Navbar>
+  
 </div>

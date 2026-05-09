@@ -40,7 +40,7 @@
   <title>Login - BAR TÔ NA AULA</title>
 </svelte:head>
 
-<div class="h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+<div class="h-screen flex flex-col items-center justify-center bg-[#f2d6b6] p-4">
   <div class="w-full max-w-sm">
     <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">
       Login
@@ -83,7 +83,12 @@
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
-          <a href="/users/new" style="color: blueviolet;">Cadastro</a>
+          <button
+            type="submit"
+            class="w-full" 
+            disabled={loading}>
+            <a href="/users/new" style="color: blueviolet;">Cadastro</a>
+          </button>
       </form>
     </Card>
   </div>

@@ -105,7 +105,7 @@
 </script>
 
 <!-- Card do formulário -->
-<Card class="max-w-md mx-auto mt-10 p-0 overflow-hidden shadow-lg border border-gray-200 rounded-lg">
+<Card class="max-w-md mx-auto mt-10 p-0 overflow-hidden shadow-lg border border-gray-200 rounded-lg ">
   <!-- Formulário principal -->
   <form class="flex flex-col gap-6 p-6" on:submit|preventDefault={handleSubmit}>
     <!-- Título -->
