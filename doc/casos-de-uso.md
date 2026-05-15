@@ -284,10 +284,20 @@
 
 - O sistema verifica se a mesa ja foi reservada.
 
-- O sistema retorna com uma confirmaçãopositiva.
+- O sistema retorna com uma confirmação positiva.
 
 - Reserva concluida.
 
+### Fluxo Alternativo A: Mesa indisponível
+- O cliente clica na opção "reserva mesa".
+
+- O cliente seleciona a mesa desejada.
+
+- O sistema verifica se a mesa ja foi reservada.
+
+- O sistema retorna com uma confirmação negativa.
+
+- O sistema apresenta uma mensagem dizendo que a mesa selecionada já está resrvada.
 
 
 
@@ -315,6 +325,8 @@
 
 - O cliente seleciona os produtos desejados.
 
+- o cliente aperta no botão "confirmar pedido".
+
 - O sistema anota os produtos selecionados.
 
 - O sitema manda pros funcionarios.
@@ -323,7 +335,23 @@
 
 - O pedido foi concluido.
 
+### Fluxo Alternativo: A: Nenhum produto selecionado
+- O cliente clica no ícone do "fazer pedido".
 
+- O cliente não seleciona os produtos.
+
+- o cliente aperta no botão "confirmar pedido".
+
+- O sistema informa que o cliente deve selecionar algum produto.
+
+### Fluxo Alternativo: B: Cancelar pedido
+- O cliente clica no ícone do "fazer pedido".
+
+- O cliente não seleciona os produtos.
+
+- o cliente aperta no botão "Cancelar".
+
+- O sistema cancela o pedido redireciona o cliente para a página principal.
 
 
 ## Caso de Uso 9: Logout
@@ -342,7 +370,12 @@
 
 - O sistema realoca o usuário para o menu do seu perfil com as configurações da sua conta.
 
+### Fluxo Alternativo A: Cancelar Logout
+- O usuário acessa o menu do seu perfil com as configurações da sua conta e aperta o botão de "Logout".
 
+- O sistema apresenta uma mensagem perguntando "Quer confirmar o Logout?".
+
+- O usuário aperta cancelar.
 
 
 ## Caso de Uso 10: Gerenciar pedido
@@ -378,7 +411,51 @@
 
 - O sistema adiciona o novo funcionario ao sistema.
 
+### Fluxo Alternativo A: Funcionário já existente
+- - O administrador acessa o sistema.
 
+- Seleciona a opção "funcionarios".
+
+- Visualiza a lista de funcionarios.
+
+- Clica em "Adicionar funcionario".
+
+- Preenche as informações do funcionario(nome, foto, serviço, gmail e senha).
+
+- Clica em "Salvar funcinario".
+
+- O sistema verifica e informa que o funcionário cadastrado já existe.
+
+### Fluxo Alternativo B: Campo vazio
+- O administrador acessa o sistema.
+
+- Seleciona a opção "funcionarios".
+
+- Visualiza a lista de funcionarios.
+
+- Clica em "Adicionar funcionario".
+
+- O cliente não preenche as informações do funcionario(nome, foto, serviço, gmail e senha).
+
+- Clica em "Salvar funcinario".
+
+- O  sistema verifica e diz que as informações devem ser preenchidas
+
+
+### Fluxo Alternativo C: Cancelar
+- O administrador acessa o sistema.
+
+- Seleciona a opção "funcionarios".
+
+- Visualiza a lista de funcionarios.
+
+- Clica em "Adicionar funcionario".
+
+- Preenche as informações do funcionario(nome, foto, serviço, gmail e senha).
+
+- Clica em "Cancelar".
+
+- O sistema redireciona o administrador para o sistema.
 
 
 ## Caso de Uso 12: Gerenciar clientes.
@@ -396,3 +473,8 @@
 - O administrador clica sobre um cliente para ver detalhes.
 
 - O administrador pode optar por editar ou excluir o cadastro do cliente.
+
+### Fluxo Alternativo A: Nenhum cliente cadastrado
+- O administrador acessa a seção “Clientes”.
+- O sistema verifica que não existem clientes cadastrados.
+- O sistema exibe uma mensagem informando que não há clientes registrados.
