@@ -40,7 +40,7 @@
   <title>Login - Projeto Modelo 2025</title>
 </svelte:head>
 
-<div class="h-screen flex flex-col items-center justify-center p-4 bg-[#ddd0c8]">
+<div class="h-screen flex flex-col items-center justify-center p-4 bg-[#cfdbdd]">
   <div class="w-full max-w-sm ">
     <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6 ">
       Login
@@ -78,7 +78,7 @@
 
           <Button 
             type="submit"
-            class="w-full" 
+            class="w-full bg-primary-200  hover: bg-primary-300" 
             disabled={loading}
           >
             {loading ? 'Entrando...' : 'Entrar'}

@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<main class="flex flex-col items- justify-center min-h-screen w-full bg-[#f2d6b6] dark:bg-gray-900">
+<main class="flex flex-col items- justify-center min-h-screen w-full bg-[#cfdbdd] dark:bg-gray-900">
   <Menu />
   <div class="w-full max-w-3xl px-4 md:px-8">
     {@render children()}
