@@ -37,53 +37,54 @@
 </script>
 
 <svelte:head>
-  <title>Login - Projeto Modelo 2025</title>
+  <title>Login</title>
 </svelte:head>
+<div class="">
+  <div class="h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-sm ">
+      <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6 ">
+        Login
+      </h2>
+      
+      <Card class="p-6 w-full">
+        <form on:submit|preventDefault={handleLogin} class="space-y-6">
+            <div>
+              <Label for="login" class="mb-2">Login</Label>
+              <Input
+                id="login"
+                type="text"
+                bind:value={login}
+                placeholder="Digite seu login"
+                required
+              />
+            </div>
 
-<div class="h-screen flex flex-col items-center justify-center p-4 bg-[#cfdbdd]">
-  <div class="w-full max-w-sm ">
-    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6 ">
-      Login
-    </h2>
-    
-    <Card class="p-6 w-full">
-      <form on:submit|preventDefault={handleLogin} class="space-y-6">
-          <div>
-            <Label for="login" class="mb-2">Login</Label>
-            <Input
-              id="login"
-              type="text"
-              bind:value={login}
-              placeholder="Digite seu login"
-              required
-            />
-          </div>
+            <div>
+              <Label for="password" class="mb-2">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                bind:value={password}
+                placeholder="Digite sua senha"
+                required
+              />
+            </div>
 
-          <div>
-            <Label for="password" class="mb-2">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              bind:value={password}
-              placeholder="Digite sua senha"
-              required
-            />
-          </div>
+            {#if error}
+              <Alert color="red" class="mb-4">
+                {error}
+              </Alert>
+            {/if}
 
-          {#if error}
-            <Alert color="red" class="mb-4">
-              {error}
-            </Alert>
-          {/if}
-
-          <Button 
-            type="submit"
-            class="w-full bg-primary-200  hover: bg-primary-300" 
-            disabled={loading}
-          >
-            {loading ? 'Entrando...' : 'Entrar'}
-          </Button>
-      </form>
-    </Card>
+            <Button 
+              type="submit"
+              class="w-full bg-primary-200  hover: bg-primary-300" 
+              disabled={loading}
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
+            </Button>
+        </form>
+      </Card>
+    </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Finlandica+Headline:ital,wght@0,100..900;1,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 
 @plugin 'flowbite/plugin';
@@ -26,6 +27,8 @@
   --color-secondary-700: #0369a1;
   --color-secondary-800: #075985;
   --color-secondary-900: #0c4a6e;
+
+  --font-text1: "Poppins", sans-serif;
 }
 
 @source "../node_modules/flowbite-svelte/dist";
