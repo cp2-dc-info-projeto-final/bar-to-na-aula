@@ -169,5 +169,4 @@
         {id === null ? 'Cadastrar' : 'Salvar'}
       </Button>
     </div>
-  </form>
 </Card>
