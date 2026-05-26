@@ -76,11 +76,11 @@
   <Navbar class="fixed start-0 top-0 z-20 w-full  px-2 py-2.5 sm:px-4">
     <NavBrand href="/">
       <img src="/images/icon.svg" class="me-5 h-2 sm:h-9" alt="Logo aleatória" />
-      <Heading class="self-center text-xl font-text1 whitespace-nowrap text-[#000308]">BAR TÔ NA AULA</Heading>
+      <Heading class="self-center text-xl font-text2 whitespace-nowrap text-[#000308]">BAR TÔ NA AULA</Heading>
     </NavBrand>
     <NavHamburger />
     <NavUl>
-      <NavLi href="/" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Home</NavLi>
+      <NavLi href="/" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Home</NavLi>
       <NavLi href="/about" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Sobre</NavLi>
       
       {#if hasToken}
