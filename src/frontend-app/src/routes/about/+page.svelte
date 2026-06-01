@@ -5,6 +5,7 @@
 
 <Menu />
 
+
 <div class="text-center p-8 pt-32">
   <Heading tag="h1" class="text-4xl font-extrabold tracking-tight text-[#A0522D] dark:text-white mb-6">Sobre</Heading>
   <P class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4 text-justify">

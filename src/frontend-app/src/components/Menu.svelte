@@ -81,12 +81,12 @@
     <NavHamburger />
     <NavUl>
       <NavLi href="/" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Home</NavLi>
-      <NavLi href="/about" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Sobre</NavLi>
+      <NavLi href="/about" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Sobre</NavLi>
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
-            <NavLi href="/users" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Usuários</NavLi>
+            <NavLi href="/users" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Usuários</NavLi>
           {/if}
           <NavLi>
             <div class="flex items-center">
@@ -103,13 +103,16 @@
         {:else if loadingUser}
           <NavLi class="text-lg font-bold px-4 py-2 text-primary-500 dark:text-primary-400">Carregando...</NavLi>
         {:else}
-          <NavLi href="/login" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Login</NavLi>
+          <NavLi href="/login" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Login</NavLi>
         {/if}
       {:else}
         <!-- se não tem token, exibe botão de login-->
-        <NavLi href="/login" class="text-gray-700 underline-offset-4 hover:underline hover:decoration-2 hover:decoration-orange-500 transition">Login</NavLi>
+        <NavLi href="/login" class="text-gray-700 underline-offset-4 hover:underline font-text2 hover:decoration-2 hover:decoration-orange-500 transition">Login</NavLi>
       {/if}
     </NavUl>
   </Navbar>
-  
 </div>
+
+<div class="bg-[#fffffff] w-screen ">  
+</div>
+

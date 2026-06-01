@@ -5,7 +5,7 @@
 </script>
 
 <Menu />
-<div class="bg-[#786452] rounded-lg w-full">
+<div class="bg-[#786452]  flex flex-col items-center justify-center rounded-lg  w-full">
 	<div class="text-center p-8 pt-32">
 		<Heading tag="h2" class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 font-text2">Home</Heading>
 		<P class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4 text-justify  font-text1">
