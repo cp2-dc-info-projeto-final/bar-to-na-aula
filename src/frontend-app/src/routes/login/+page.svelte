@@ -42,11 +42,9 @@
 <div class="">
   <div class="h-screen flex flex-col items-center justify-center p-4">
     <div class="w-full max-w-sm ">
-      <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6 ">
-        Login
-      </h2>
+
       
-      <Card class="p-6 w-full">
+      <Card class="p-6 w-full ">
         <form on:submit|preventDefault={handleLogin} class="space-y-6">
             <div>
               <Label for="login" class="mb-2">Login</Label>
@@ -71,14 +69,14 @@
             </div>
 
             {#if error}
-              <Alert color="red" class="mb-4">
+              <Alert class="mb-4">
                 {error}
               </Alert>
             {/if}
 
             <Button 
               type="submit"
-              class="w-full bg-primary-200  hover: bg-primary-300" 
+              class="w-full bg-[#000000]" 
               disabled={loading}
             >
               {loading ? 'Entrando...' : 'Entrar'}
