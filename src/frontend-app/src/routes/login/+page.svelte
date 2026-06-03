@@ -44,10 +44,10 @@
     <div class="w-full max-w-sm ">
 
       
-      <Card class="p-6 w-full ">
+      <Card class="p-6 w-full bg-[#603f0e]">
         <form on:submit|preventDefault={handleLogin} class="space-y-6">
             <div>
-              <Label for="login" class="mb-2">Login</Label>
+              <Label for="login" class="mb-2 text-[#000000] text-center">Login</Label>
               <Input
                 id="login"
                 type="text"
@@ -58,7 +58,7 @@
             </div>
 
             <div>
-              <Label for="password" class="mb-2">Senha</Label>
+              <Label for="password" class="mb-2 text-[#000000] text-center">Senha</Label>
               <Input
                 id="password"
                 type="password"
@@ -80,7 +80,9 @@
               disabled={loading}
             >
               {loading ? 'Entrando...' : 'Entrar'}
-            </Button>
+            </Button>  
+
+            <Button type="submit" class=" bg-[#000000]">fazer Cadastro</Button>
         </form>
       </Card>
     </div>

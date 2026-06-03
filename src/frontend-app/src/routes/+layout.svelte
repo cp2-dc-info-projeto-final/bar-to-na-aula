@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<main class="flex flex-col items- justify-center min-h-screen w-full bg-[url('./images/fundoLogin.png')] bg-cover  bg-[#000000]">
+<main class="flex flex-col items- justify-center bg-[url('./images/fundoHome.png')] bg-cover">
   <Menu />
   <div class="w-full">
     {@render children()}
