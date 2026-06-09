@@ -21,12 +21,13 @@ function sendError(res, status, message, errors = []) {
 }
 
 
-
 /* GET - Buscar todos os usuários */
 // requer usuário autenticado como admin
 router.get('/', verifyToken, isAdmin, async function(req, res) {
   try {
-    const result = await pool.query('SELECT id, login, email, role FROM usuario ORDER BY id');
+    const filtro = req.query.nome ? `%${req.query.nome}%` : "%";
+    console.log("filtro: ", filtro);
+    const result = await pool.query('SELECT id, login, email, role FROM usuario WHERE login like $1 ORDER BY id', [filtro]);
     return sendSuccess(res, 200, null, result.rows);
   } catch (error) {
     console.error('Erro ao buscar usuários:', error);
