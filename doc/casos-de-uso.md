@@ -384,9 +384,9 @@
 - funcionario
 
 ### Fluxo principal:
-- O funcionario recebe uma mensagem do cliente dizendo quq o pedido foi feito.
+- O funcionario recebe uma mensagem do sistema dizendo que o pedido foi feito.
 
-- Funcionario começa a preparar o pedido.
+- Funcionario retorna pro sistema a mensagem "pedido em andamento".
 
 
 
