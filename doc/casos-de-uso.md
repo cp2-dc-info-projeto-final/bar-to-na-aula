@@ -368,7 +368,7 @@
 
 - O sistema apaga o login do usuário.
 
-- O sistema realoca o usuário para o menu do seu perfil com as configurações da sua conta.
+- O sistema realoca o usuário para a página de login.
 
 ### Fluxo Alternativo A: Cancelar Logout
 - O usuário acessa o menu do seu perfil com as configurações da sua conta e aperta o botão de "Logout".
