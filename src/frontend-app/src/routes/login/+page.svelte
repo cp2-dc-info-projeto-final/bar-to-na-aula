@@ -35,20 +35,36 @@
 
 
 </script>
+<style>
+.input-style {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #555;
+  outline: none;
+}
+
+.input-style:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+</style>
 
 <svelte:head>
   <title>Login</title>
 </svelte:head>
 <div class="">
-  <div class="h-screen flex flex-col items-center justify-center p-4">
+  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundologin.png)] bg-cover">
     <div class="w-full max-w-sm ">
 
       
-      <Card class="p-6 w-full bg-[#603f0e]">
+      <Card class="p-6 w-full bg-[#000000]">
         <form on:submit|preventDefault={handleLogin} class="space-y-6">
             <div>
-              <Label for="login" class="mb-2 text-[#000000] text-center">Login</Label>
+              <Label for="login" class="mb-2 text-[#ffffff] text-center">Login</Label>
               <Input
+                class="input-style"
                 id="login"
                 type="text"
                 bind:value={login}
@@ -58,8 +74,9 @@
             </div>
 
             <div>
-              <Label for="password" class="mb-2 text-[#000000] text-center">Senha</Label>
+              <Label for="password" class="mb-2 text-[#ffffff] text-center">Senha</Label>
               <Input
+                class="input-style"
                 id="password"
                 type="password"
                 bind:value={password}
