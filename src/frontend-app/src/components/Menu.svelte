@@ -75,13 +75,13 @@
 <div class="relative px-8">
   <Navbar class="fixed start-0 top-0 z-20 w-full py-2.5 sm:px-4">
     <NavBrand href="/">
-      <img src="./images/logoCylast.png" class="me-5 h-2 sm:h-9 rounded-full" />
+      
       <Heading class="self-center text-xl font-text2 whitespace-nowrap text-[#000308]">...</Heading>
     </NavBrand>
     <NavHamburger />
     <NavUl>
       <NavLi href="/" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Home</NavLi>
-      <NavLi href="/about" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Sobre</NavLi>
+      <NavLi href="/about" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Reservas</NavLi>
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
@@ -90,9 +90,9 @@
           {/if}
           <NavLi>
             <div class="flex items-center">
-              <span class="text-primary-500 dark:text-primary-400 px-4 py-2">Olá, {user.login}</span>
+              <span class="text-[#ffffff] px-4 py-2">Olá, {user.login}</span>
               <button 
-                class="ml-2 px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded text-sm flex items-center gap-1"
+                class="ml-2 px-3 py-1 bg-[#ffffff] hover:bg-[#ffffff] text-white rounded text-sm flex items-center gap-1"
                 on:click={handleLogout}
               >
                 <ArrowRightToBracketOutline class="w-4 h-4" />
@@ -101,7 +101,7 @@
             </div>
           </NavLi>
         {:else if loadingUser}
-          <NavLi class="text-lg font-bold px-4 py-2 text-primary-500 dark:text-primary-400">Carregando...</NavLi>
+          <NavLi class="text-lg font-bold px-4 py-2 text-[#ffffff] dark:text-primary-400">Carregando...</NavLi>
         {:else}
           <NavLi href="/login" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
         {/if}
