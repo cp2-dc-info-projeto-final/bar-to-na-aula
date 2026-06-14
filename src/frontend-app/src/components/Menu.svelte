@@ -73,7 +73,7 @@
 </script>
 
 <div class="relative px-8">
-  <Navbar class="fixed start-0 top-0 z-20 w-full py-2.5 sm:px-4">
+  <Navbar class=" fixed start-0 top-0 z-20 w-full py-2.5 sm:px-4">
     <NavBrand href="/">
       
       <Heading class="self-center text-xl font-text2 whitespace-nowrap text-[#000308]">...</Heading>
