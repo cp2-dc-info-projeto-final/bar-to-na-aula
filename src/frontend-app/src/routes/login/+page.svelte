@@ -55,7 +55,7 @@
   <title>Login</title>
 </svelte:head>
 <div class="">
-  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundologin.png)] bg-cover">
+  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
     <div class="w-full max-w-sm ">
 
       
@@ -99,7 +99,7 @@
               {loading ? 'Entrando...' : 'Entrar'}
             </Button>  
 
-            <Button type="submit" class=" bg-[#000000]">fazer Cadastro</Button>
+            <Button type="submit" class=" bg-[#000000] w-full ">Cadastro</Button>
         </form>
       </Card>
     </div>
