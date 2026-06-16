@@ -397,6 +397,9 @@
 
 ## Caso de Uso 10: Gerenciar pedido
 
+![caso10](./fotosDiagramas/CasosDeUso10.png)
+
+
 ## Atores:
 - funcionario
 
@@ -409,6 +412,9 @@
 
 
 ## Caso de Uso 11: Gerenciar funcionario.
+
+![caso11](./fotosDiagramas/CasosDeUso11.png)
+
 
 ## Atores:
 - Administrador
@@ -476,6 +482,9 @@
 
 
 ## Caso de Uso 12: Gerenciar clientes.
+
+![caso12](./fotosDiagramas/CasosDeUso12.png)
+
 
 ## Atores:
 - Administrador
