@@ -2,6 +2,7 @@
   import { Card, Button, Input, Label, Alert } from "flowbite-svelte";
   import { goto } from "$app/navigation";
   import { login as authLogin } from "$lib/auth";
+
   
   let login = '';
   let password = '';
@@ -10,7 +11,7 @@
 
   async function handleLogin() {
     if (!login || !password) {
-      error = 'Por favor, preencha todos os campos!';
+      error = 'Por favor, preencha todos os campos';
       return;
     }
 
@@ -23,7 +24,7 @@
       if (result.success) {
         await goto('/');
       } else {
-        error = result.message || 'Credenciais inválidas!';
+        error = result.message || 'Credenciais inválidas';
       }
     } catch (err) {
       error = 'Erro interno do servidor';
@@ -35,56 +36,73 @@
 
 
 </script>
+<style>
+.input-style {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #555;
+  outline: none;
+}
+
+.input-style:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+</style>
 
 <svelte:head>
-  <title>Login - BAR TÔ NA AULA</title>
+  <title>Login</title>
 </svelte:head>
+<div class="">
+  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
+    <div class="w-full max-w-sm ">
 
-<div class="h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
-  <div class="w-full max-w-sm">
-    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">
-      Login
-    </h2>
-    
-    <Card class="p-6 w-full">
-      <form on:submit|preventDefault={handleLogin} class="space-y-6">
-          <div>
-            <Label for="login" class="mb-2">Login</Label>
-            <Input
-              id="login"
-              type="text"
-              bind:value={login}
-              placeholder="Digite seu login"
-              required
-            />
-          </div>
+      
+      <Card class="p-6 w-full bg-[#000000]">
+        <form on:submit|preventDefault={handleLogin} class="space-y-6">
+            <div>
+              <Label for="login" class="mb-2 text-[#ffffff] text-center">Login</Label>
+              <Input
+                class="input-style"
+                id="login"
+                type="text"
+                bind:value={login}
+                placeholder="Digite seu login"
+                required
+              />
+            </div>
 
-          <div>
-            <Label for="password" class="mb-2">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              bind:value={password}
-              placeholder="Digite sua senha"
-              required
-            />
-          </div>
+            <div>
+              <Label for="password" class="mb-2 text-[#ffffff] text-center">Senha</Label>
+              <Input
+                class="input-style"
+                id="password"
+                type="password"
+                bind:value={password}
+                placeholder="Digite sua senha"
+                required
+              />
+            </div>
 
-          {#if error}
-            <Alert color="red" class="mb-4">
-              {error}
-            </Alert>
-          {/if}
+            {#if error}
+              <Alert class="mb-4">
+                {error}
+              </Alert>
+            {/if}
 
-          <Button 
-            type="submit"
-            class="w-full" 
-            disabled={loading}
-          >
-            {loading ? 'Entrando...' : 'Entrar'}
-          </Button>
-          <a href="/users/new" style="color: blueviolet;">Cadastro</a>
-      </form>
-    </Card>
+            <Button 
+              type="submit"
+              class="w-full bg-[#000000]" 
+              disabled={loading}
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
+            </Button>  
+
+            <a href="/cadastro"><Button type="submit" class=" bg-[#000000] w-full ">Cadastro</Button></a>
+        </form>
+      </Card>
+    </div>
   </div>
 </div>

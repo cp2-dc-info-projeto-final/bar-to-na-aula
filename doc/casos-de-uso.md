@@ -2,6 +2,8 @@
 
 ## Caso de uso 1: Cadastro do cliente.
 
+![caso1](/fotoDiagramas/CasosDeUso1.png)
+
 ## Ator: 
 - cliente
 
@@ -57,6 +59,7 @@
 
 
 ## Caso de Uso 2: Login do cliente.
+![caso2](/fotoDiagramas/CasosDeUso2.png)
 
 ## Ator:
 - cliente
