@@ -2,7 +2,7 @@
 
 ## Caso de uso 1: Cadastro do cliente.
 
-![caso1](/fotoDiagramas/CasosDeUso1.png)
+![caso1](./fotosDiagramas/CasosDeUso1.png)
 
 ## Ator: 
 - cliente
