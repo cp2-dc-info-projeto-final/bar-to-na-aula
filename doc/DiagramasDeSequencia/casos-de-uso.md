@@ -59,7 +59,7 @@
 
 
 ## Caso de Uso 2: Login do cliente.
-![caso2](/fotoDiagramas/CasosDeUso2.png)
+![caso2](./fotosDiagramas/CasosDeUso2.png)
 
 ## Ator:
 - cliente
@@ -114,6 +114,8 @@
 
 
 ## Caso de Uso 3: Excluir conta.
+
+![caso3](./fotosDiagramas/CasosDeUso3.png)
 
 ## Ator:
 - cliente 
@@ -188,6 +190,8 @@
 
 ## Caso de Uso 4: Editar dados de cadastro.
 
+![caso4](./fotosDiagramas/CasosDeUso4.png)
+
 ## Ator:
 - cliente
 
@@ -228,6 +232,8 @@
 
 
 ## Caso de Uso 5: Busca de produtos.
+
+![caso5](./fotosDiagramas/CasosDeUso5.png)
 
 ## Atores:
 - cliente
@@ -277,6 +283,8 @@
 
 ## Caso de Uso 6: Reserva de mesa.
 
+![caso6](./fotosDiagramas/CasosDeUso6.png)
+
 ## Atores:
 - cliente
 
@@ -305,6 +313,8 @@
 
 
 ## Caso de Uso 7: ver cardápio.
+![caso7](./fotosDiagramas/CasosDeUso7.png)
+
 ## Atores:
 - Cliente
 
@@ -319,6 +329,8 @@
 
 
 ## Caso de Uso 8: Fazer pedido.
+
+![caso8](./fotosDiagramas/CasosDeUso8.png)
 
 ## Atores:
 - cliente
@@ -358,6 +370,8 @@
 
 
 ## Caso de Uso 9: Logout
+
+![caso9](./fotosDiagramas/CasosDeUso9.png)
 
 ## Atores:
 - cliente
