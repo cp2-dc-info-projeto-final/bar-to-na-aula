@@ -386,7 +386,7 @@
 ### Fluxo principal:
 - O funcionario recebe uma mensagem do sistema dizendo que o pedido foi feito.
 
-- Sistema retorna pro Cliente a mensagem "pedido em andamento".
+- Funcionário retorna pro sistema a mensagem "pedido em andamento".
 
 
 
