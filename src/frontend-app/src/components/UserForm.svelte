@@ -15,7 +15,7 @@
   // Opções de roles
   const roleOptions = [
     { value: 'user', name: 'Cliente' },
-    { value: 'admin', name: 'Funcionario' }
+    { value: 'admin', name: 'Admin' }
   ];
   let loading = false;
   let error = '';
@@ -100,12 +100,12 @@
   }
 
   function handleCancel() {
-    goto('/users');
+    goto('users');
   }
 </script>
 
 <!-- Card do formulário -->
-<Card class="max-w-md mx-auto mt-10 p-0 overflow-hidden shadow-lg border border-gray-200 rounded-lg">
+<Card class="max-w-md mx-auto mt-10 p-0 overflow-hidden shadow-lg border border-gray-200 rounded-lg ">
   <!-- Formulário principal -->
   <form class="flex flex-col gap-6 p-6" on:submit|preventDefault={handleSubmit}>
     <!-- Título -->
@@ -118,7 +118,7 @@
     {/if}
     <!-- Campo login -->
     <div>
-      <Label for="login">Login</Label>
+      <Label for="login">Nome</Label>
       <Input id="login" bind:value={user.login} placeholder="Digite o login" required class="mt-1" />
       {#if errorOf('login')}
         <div class="mt-1 text-sm text-red-500">{errorOf('login')}</div>
@@ -169,5 +169,4 @@
         {id === null ? 'Cadastrar' : 'Salvar'}
       </Button>
     </div>
-  </form>
 </Card>

@@ -1,17 +1,106 @@
 <script lang="ts">
-  import { Heading } from 'flowbite-svelte';
+  import { heading, Heading } from 'flowbite-svelte';
+  import {  P } from "flowbite-svelte";
   import Menu from '../components/Menu.svelte';
-  import {  P, ImagePlaceholder, Skeleton, TextPlaceholder } from "flowbite-svelte";
 </script>
+
+<main>
+  <div>
+    <img src="./images/taven.png" alt="" class="w-screen border-3 border[#000000]">
+  </div>
+</main>
 
 <Menu />
 
-<div class="text-center p-8 pt-32">
-	<Heading tag="h2" class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">Home</Heading>
-	<P class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4 text-justify">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Mauris consequat, sapien et dictum cursus, urna erat laoreet enim, nec gravida urna erat at sapien. Etiam nec dolor vitae odio hendrerit venenatis. Proin nec turpis nec sem tempus dictum. Vivamus tincidunt, nisi nec facilisis cursus, enim erat dictum neque, at dignissim enim urna at velit. Integer non turpis id mi tristique cursus. Nullam in sem vitae massa dictum dictum.
-	</P>
-	<Skeleton class="mt-16 mb-8" />
-	<ImagePlaceholder class="my-8" />
-	<TextPlaceholder class="my-8" />
+
+<div class="bg-[url(./images/papel.png)] bg-cover h-full w-full  border-2 border-[#224b5d]">
+<br><br><br><br><br><br><br><br><br><br><br>
+  <div class="text-center ">
+    <Heading class = "text-[#000000] font-text4 text-5xl w-1/2" > Seja bem-vindo ao <b>Chord Tavel!</b></Heading>
+    <br><br><br>
+    <p>Aqui nós disponibilizamos algumas coisas e mais um pouco.</p>
+    <p>Confira logo abaixo:</p>
+  </div>
+  <br><br>
+  <div class="flex justify-center gap-4">
+    <div class="">
+      <a href="#fd">
+        <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded "> Sobre </button>
+      </a>
+    </div>
+    <div class="">
+      <a href="#sd">
+        <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded "> Reservas </button>
+      </a>
+    </div>
+    
+    <div class="">
+      <a href="#td">
+        <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded "> Mesas </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="fd" class="text-center bg-[url(./images/ondas2.png)] bg-cover w-full border-2 border-[#224b5d]">
+<br><br>
+	<Heading class = "text-[#000000] font-text4 text-5xl text-center"> SOBRE O BAR:</Heading>
+
+<br><br>
+  <div class="text-[#000000] font-text3">
+    <h2>Bem vindo ao bar ...!</h2>
+    <h2>Aposto que você nao irá se arrepender de ter feito essa visita.</h2>
+    <h2>Agora falando um pouco sobre o bar ..., nós fundados o bar no dia 29 de outubro de 2015, </h2>
+    <h2>pelos amigos Dylan d'Leo, Cássio Augusto e Gustavo Tomas(ou tomás, tanto faz).</h2>
+    <h2>Inicialmente era pra ser apenas um trabalho de escola pra um TCC,</h2>
+    <h2>mas acabaram levando a ideia a diante. Hoje em dia eles estão aqui com 11 anos de empresa</h2>
+    <h2>e sem previsão pra fechamento!</h2>
+
+<br><br><br><br><br><br><br><br><br>
+    <div class="group relative w-80 h-100 overflow-hidden border-4 border-[#000000] rounded-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <img src="./images/foto1.jpeg" alt=""
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0">
+          
+        <img src="./images/foto2.jpeg" alt=""
+        class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+    </div>
+
+  </div>
+</div>
+
+
+
+<div id="sd" class="text-center bg-[url(./images/ondas2.png)] bg-cover  w-full border-2 border-[#224b5d]">
+<br><br><br><br><br><br><br>
+	<Heading class = "text-[#000000] font-text4 text-5xl text-center " > COMO FUNCIONA AS RESERVAS?</Heading>
+
+
+  <div class="text-[#000000] font-text3">
+
+    <br><br><br>
+    <h2>A reserva funciona de forma muito simples,</h2>
+    <h2>com, pelo menos, 24 horas de antecedencia, vc ira entrar em 
+    contato com o bar. a parrtir daí você terá q escolher entre</h2>
+    <h2>os 3 tipos de mesa:</h2><br>
+      <h2><b>Mesa A: ela é mais perto do palco;</b>
+      <br><br><b>Mesa B: intermediaria, não é tão longe <br>do palco e é bem perto da cozinha;</b>
+      <br><br><b>Mesa C: mais custo beneficio </b></h2>
+
+  </div>
+</div>
+
+
+<div id="td" class="text-center bg-[url(./images/ondas2.png)] bg-cover w-full border-2 border-[#224b5d]">
+<br><br><br><br>
+	<Heading class = "text-[#000000] font-text4 text-5xl text-center " > OQUE TEM DE DIFERENTE EM CADA TIPO DE MESA?</Heading>
+
+  <br><br><br>
+  <div class="text-[#000000] font-text3">
+    <h2>No nosso bar é possivel encontras 3 tipos de mesas:</h2>
+    <h2>a A, B e C. </h2>
+    <h2>Assim, nosso bar apresenta uma variedade maior de opções de escolha.</h2>
+    <div class="flex items-center justify-center">
+      <img class="w-150 h-100 rounded-3xl border-2 border-[#000000]]" alt="" src="./images/mapeamento.png">
+    </div>
+  </div>
 </div>
