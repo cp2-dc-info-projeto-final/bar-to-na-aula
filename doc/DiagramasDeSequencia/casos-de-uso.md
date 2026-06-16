@@ -115,7 +115,7 @@
 
 ## Caso de Uso 3: Excluir conta.
 
-![caso3](./fotosDiagramas/CasosDeUso3.png)
+![caso3](./fotosDiagramas/CasosDeUsos3.png)
 
 ## Ator:
 - cliente 
