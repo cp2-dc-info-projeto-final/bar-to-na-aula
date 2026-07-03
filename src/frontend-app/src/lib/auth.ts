@@ -112,3 +112,39 @@ export async function getCurrentUser(): Promise<User | null> {
 export function isAuthenticated(): boolean {
   return getToken() !== null;
 }
+export interface CadastroCredentials {
+  nome: string;
+  login: string;
+  password: string;
+}
+
+export type CadastroResponse = ApiResponse<{ token?: string }>;
+
+// Função de cadastro, registrando novo usuário no backend
+export async function cadastro(credentials: CadastroCredentials): Promise<CadastroResponse> {
+  try {
+    const response = await api.post('/users/register', credentials);
+
+    const body = response.data as CadastroResponse;
+
+    // Se o backend já retornar um token no cadastro, salva automaticamente
+    if (body.success && body.data?.token) {
+      setToken(body.data.token);
+    }
+
+    return body;
+  } catch (error) {
+    console.error('Erro no cadastro:', error);
+
+    if (error.code === 'NETWORK_ERROR' || !error.response) {
+      return { success: false, message: 'Erro de conexão com o servidor', errors: [] };
+    }
+
+    const body = (error as any)?.response?.data as CadastroResponse | undefined;
+    if (body) {
+      return body;
+    }
+
+    return { success: false, message: 'Erro ao realizar cadastro', errors: [] };
+  }
+}
