@@ -113,15 +113,28 @@ export function isAuthenticated(): boolean {
   return getToken() !== null;
 }
 export interface CadastroCredentials {
-  nome: string;
+  email: string;
   login: string;
   password: string;
 }
 
 export type CadastroResponse = ApiResponse<{ token?: string }>;
 
+// Valida se o e-mail informado é um endereço @gmail.com
+function isGmailAddress(email: string): boolean {
+  return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email.trim());
+}
+
 // Função de cadastro, registrando novo usuário no backend
 export async function cadastro(credentials: CadastroCredentials): Promise<CadastroResponse> {
+  if (!isGmailAddress(credentials.email)) {
+    return {
+      success: false,
+      message: 'O e-mail deve ser um endereço @gmail.com',
+      errors: ['email']
+    };
+  }
+
   try {
     const response = await api.post('/users/register', credentials);
 

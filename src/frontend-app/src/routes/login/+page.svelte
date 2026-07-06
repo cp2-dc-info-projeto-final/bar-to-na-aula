@@ -60,7 +60,7 @@
     <div class="w-full max-w-sm ">
 
       
-      <Card class="p-6 w-full bg-[#000000]">
+      <Card class="p-6 w-full bg-[]">
         <form on:submit|preventDefault={handleLogin} class="space-y-6">
             <div>
               <Label for="login" class="mb-2 text-[#ffffff] text-center">Login</Label>

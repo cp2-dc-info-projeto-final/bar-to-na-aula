@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
   import { cadastro as authCadastro } from "$lib/auth";
   
-    let nome = '';
+    let email = '';
     let login = '';
     let password = '';
     let confirmPassword = '';
@@ -12,7 +12,7 @@
     let error = '';
   
     async function handleCadastro() {
-      if (!nome || !login || !password || !confirmPassword) {
+      if (!email || !login || !password || !confirmPassword) {
         error = 'Por favor, preencha todos os campos';
         return;
       }
@@ -26,7 +26,7 @@
       error = '';
   
       try {
-        const result = await authCadastro({ nome, login, password });
+        const result = await authCadastro({ email, login, password });
   
         if (result.success) {
           await goto('/login');
@@ -41,6 +41,7 @@
       }
     }
 
+
     
   </script>
   
@@ -54,25 +55,25 @@
           <form on:submit|preventDefault={handleCadastro} class="space-y-6">
   
               <div>
-                <Label for="nome" class="mb-2 text-[#ffffff] text-center">Nome</Label>
+                <Label for="nome" class="mb-2 text-[#ffffff] text-center">Login</Label>
                 <Input
                   class="input-style"
                   id="nome"
                   type="text"
-                  bind:value={nome}
-                  placeholder="Digite seu Nome"
+                  bind:value={login}
+                  placeholder="Digite seu login"
                   required
                 />
               </div>
   
               <div>
-                <Label for="login" class="mb-2 text-[#ffffff] text-center">Login</Label>
+                <Label for="login" class="mb-2 text-[#ffffff] text-center">Email</Label>
                 <Input
                   class="input-style"
                   id="login"
                   type="text"
-                  bind:value={login}
-                  placeholder="Digite seu login"
+                  bind:value={email}
+                  placeholder="Digite seu email"
                   required
                 />
               </div>
