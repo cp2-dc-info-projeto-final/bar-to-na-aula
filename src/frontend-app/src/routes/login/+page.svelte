@@ -39,8 +39,6 @@
 <style>
 .input-style {
   padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
   font-size: 16px;
   color: #555;
   outline: none;

@@ -6,28 +6,27 @@
   
     let email = '';
     let login = '';
-    let password = '';
-    let confirmPassword = '';
+    let senha = '';
+    let confirmsenha = '';
     let loading = false;
     let error = '';
   
     async function handleCadastro() {
-      if (!email || !login || !password || !confirmPassword) {
+      if (!email || !login || !senha || !confirmsenha) {
         error = 'Por favor, preencha todos os campos';
         return;
       }
   
-      if (password !== confirmPassword) {
+      if (senha !== confirmsenha) {
         error = 'As senhas não coincidem';
         return;
       }
   
       loading = true;
       error = '';
-  
+
       try {
-        const result = await authCadastro({ email, login, password });
-  
+        const result = await authCadastro({ email, login, senha });
         if (result.success) {
           await goto('/login');
         } else {
@@ -51,11 +50,11 @@
     <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
       <div class="w-full max-w-sm">
   
-        <Card class="p-6 w-full bg-[#000000]">
+        <Card class="p-6 w-full bg-[]">
           <form on:submit|preventDefault={handleCadastro} class="space-y-6">
   
               <div>
-                <Label for="nome" class="mb-2 text-[#ffffff] text-center">Login</Label>
+                <Label for="nome" class=" text-[#ffffff] text-center">Login</Label>
                 <Input
                   class="input-style"
                   id="nome"
@@ -79,24 +78,24 @@
               </div>
   
               <div>
-                <Label for="password" class="mb-2 text-[#ffffff] text-center">Senha</Label>
+                <Label for="senha" class="mb-2 text-[#ffffff] text-center">Senha</Label>
                 <Input
                   class="input-style"
-                  id="password"
+                  id="senha"
                   type="password"
-                  bind:value={password}
+                  bind:value={senha}
                   placeholder="Digite sua senha"
                   required
                 />
               </div>
-  
+
               <div>
-                <Label for="confirmPassword" class="mb-2 text-[#ffffff] text-center">Confirmar Senha</Label>
+                <Label for="confirmsenha" class="mb-2 text-[#ffffff] text-center">Confirmar Senha</Label>
                 <Input
                   class="input-style"
-                  id="confirmPassword"
+                  id="confirmsenha"
                   type="password"
-                  bind:value={confirmPassword}
+                  bind:value={confirmsenha}
                   placeholder="Confirme sua senha"
                   required
                 />

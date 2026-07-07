@@ -115,7 +115,7 @@ export function isAuthenticated(): boolean {
 export interface CadastroCredentials {
   email: string;
   login: string;
-  password: string;
+  senha: string;
 }
 
 export type CadastroResponse = ApiResponse<{ token?: string }>;
@@ -136,10 +136,10 @@ export async function cadastro(credentials: CadastroCredentials): Promise<Cadast
   }
 
   try {
-    const response = await api.post('/users/register', credentials);
+    const response = await api.post('/users', credentials);
 
     const body = response.data as CadastroResponse;
-
+    
     // Se o backend já retornar um token no cadastro, salva automaticamente
     if (body.success && body.data?.token) {
       setToken(body.data.token);
