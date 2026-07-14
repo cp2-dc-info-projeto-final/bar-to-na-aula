@@ -112,9 +112,9 @@
 
     </div>
     <!-- Tabela de usuários -->
-    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 rounded-lg">
+    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 rounded-full">
       <TableHead>
-        <TableHeadCell class="w-16">ID</TableHeadCell>
+        <TableHeadCell class="w-16 ">ID</TableHeadCell>
         <TableHeadCell class="w-32">Login</TableHeadCell>
         <TableHeadCell class="min-w-0">Email</TableHeadCell>
         <TableHeadCell class="w-20">Role</TableHeadCell>

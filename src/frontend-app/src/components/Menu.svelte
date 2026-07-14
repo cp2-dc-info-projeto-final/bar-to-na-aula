@@ -82,6 +82,7 @@
     <NavUl>
       <NavLi href="/" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Home</NavLi>
       <NavLi href="/about" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Reservas</NavLi>
+      <NavLi href="/shows" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Shows</NavLi>
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
