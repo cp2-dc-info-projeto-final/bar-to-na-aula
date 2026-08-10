@@ -89,6 +89,13 @@
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
             <NavLi href="/users" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Usuários</NavLi>
           {/if}
+
+      {#if hasToken}
+        {#if user} <!-- se existir usuário é porque conseguiu logar-->
+          {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
+            <NavLi href="/produtos" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Produtos</NavLi>
+          {/if}
+
           <NavLi>
             <div class="flex items-center">
               <span class="text-[#ffffff] px-4 py-2">Olá, {user.login}</span>
@@ -110,6 +117,7 @@
         <!-- se não tem token, exibe botão de login-->
         <NavLi href="/login" class="text-gray-700 underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
       {/if}
+          
     </NavUl>
   </Navbar>
 </div>

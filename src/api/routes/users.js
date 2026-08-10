@@ -83,7 +83,7 @@ router.post('/', async function(req, res) {
 
       return sendError(res, 400, 'Login, email e senha são obrigatórios', errors);
     }
-   
+    
     // Verificar se o login já existe
     const existingUser = await pool.query('SELECT id FROM usuario WHERE login = $1', [login]);
     if (existingUser.rows.length > 0) {
