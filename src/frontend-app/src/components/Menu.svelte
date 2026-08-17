@@ -87,7 +87,7 @@
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
-            <NavLi href="/users" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Usuários</NavLi>
+            <NavLi href="/cadastroGeral" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Cadastros</NavLi>
           {/if}
 
 

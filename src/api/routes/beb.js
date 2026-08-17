@@ -65,7 +65,6 @@ router.post('/', async function(req, res) {
       return sendError(res, 400, 'Login, email e senha são obrigatórios', errors); 
     }
     
-    // Verificar se o login já existe
     const existingUser = await pool.query('SELECT id FROM bebida WHERE nome = $1', [nome]);
     if (existingUser.rows.length > 0) {
       return sendError(res, 409, 'nome já está em uso', [
@@ -73,7 +72,7 @@ router.post('/', async function(req, res) {
       ]);
     }
 
-    // Verificar se o email já existe
+
     const existingEmail = await pool.query('SELECT id FROM bebida WHERE marca = $1', [email]);
     if (existingMarca.rows.length > 0) {
       return sendError(res, 409, 'Email já está em uso', [
@@ -88,7 +87,6 @@ router.post('/', async function(req, res) {
       'INSERT INTO usuario (login, email,     senha, role) VALUES ($1, $2, $3, $4) RETURNING id, login, email, role',
       [login, email, hashedPassword, role]
     );
-    console.log('\n\n' + role +'\n\n');
     console.log("chegou 2");
     return sendSuccess(res, 201, 'Usuário criado com sucesso', result.rows[0]);
   } catch (error) {
