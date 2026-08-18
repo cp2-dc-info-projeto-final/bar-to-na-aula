@@ -14,7 +14,7 @@ CREATE TABLE usuario (
     CONSTRAINT ck_usuario_login_length CHECK (length(login) >= 3 AND length(login) <= 50), -- comprimento
     CONSTRAINT ck_usuario_email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'), -- formato de email com expressão regular
     CONSTRAINT ck_usuario_senha_length CHECK (length(senha) >= 6), -- comprimento mínimo
-    CONSTRAINT ck_usuario_role_valid CHECK (role IN ('admin', 'user', 'cliente')) -- tipos de usuário 
+    CONSTRAINT ck_usuario_role_valid CHECK (role IN ('admin', 'user')) -- tipos de usuário 
 );
 
 DROP TABLE IF EXISTS bebida;
@@ -24,13 +24,14 @@ CREATE TABLE bebida (
     nome text not null,
     preço INTEGER,
     marca text not null,
-    tamanho text not null,
+    tamanho text not null DEFAULT 'pequeno',
     tipo text NOT NULL DEFAULT 'alcolico',
 
     -- Constraints
 
+    CONSTRAINT ck_bebida_tamanho CHECK (tamanho IN ('pequeno', 'medio', 'grande')),
     CONSTRAINT pk_bebida PRIMARY KEY (id),
-    CONSTRAINT ck_bebida_tipo CHECK (tipo IN ('alcolico', 'nao alcolica'))
+    CONSTRAINT ck_bebida_tipo CHECK (tipo IN ('alcolico', 'nao alcolico'))
 );
 
 DROP TABLE IF EXISTS comida;

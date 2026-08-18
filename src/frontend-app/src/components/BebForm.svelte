@@ -6,16 +6,16 @@
     import type { ApiFieldError, ApiResponse } from '$lib/api';
     import { goto } from '$app/navigation'; // navegação
     import { ArrowLeftOutline, FloppyDiskAltOutline } from 'flowbite-svelte-icons'; // ícones
-    import type { User, UserFormData } from '$lib/models/User';
+    import type { Beb, BebFormData } from '$lib/models/Beb';
 
     export let id: number | null = null; // id do usuário
 
-    let user: UserFormData = { id: 0, login: '', email: '', senha: '', role: 'user' }; // dados do form
+    let bebida: BebFormData = { id: 0, nome: '', marca: '',  preço: '', tamanho: '', tipo: 'alcolico' }; // dados do form
     
     // Opções de roles
     const roleOptions = [
-    { value: 'user', name: 'Cliente' },
-    { value: 'admin', name: 'Admin' }
+    { value: 'alcolico', name: 'alcolico' },
+    { value: 'naoAlcolico', name: 'Não alcolico' }
     ];
     let loading = false;
     let error = '';
@@ -34,23 +34,23 @@
     loading = true;
     error = '';
     try {
-        const userData = { ...user };
-        // Remove senha vazia na edição para não sobrescrever indevidamente
-        if (id !== null && !userData.senha) {
-        delete userData.senha;
+        const BebData = { ...bebida };
+           // Remove senha vazia na edição para não sobrescrever indevidamente
+        if (id !== null && !BebData.nome) {
+        delete BebData.nome;
         }
         
         if (id === null) {
-        const res = await api.post('/users', userData);
-        const body = res.data as ApiResponse<User>;
+        const res = await api.post('/bebidas', BebData);
+        const body = res.data as ApiResponse<Beb>;
         if (!body.success) {
             error = body.message;
             fieldErrors = body.errors;
             return;
         }
         } else {
-        const res = await api.put(`/users/${id}`, userData);
-        const body = res.data as ApiResponse<User>;
+        const res = await api.put(`/bebidas/${id}`, BebData);
+        const body = res.data as ApiResponse<Beb>;
         if (!body.success) {
             error = body.message;
             fieldErrors = body.errors;
@@ -59,7 +59,7 @@
         }
         goto('/users');
     } catch (e: any) {
-        const body = e.response?.data as ApiResponse<User> | undefined;
+        const body = e.response?.data as ApiResponse<Beb> | undefined;
         error = body?.message || 'Erro ao salvar usuário.';
         fieldErrors = body?.errors || [];
     } finally {
@@ -68,7 +68,7 @@
     }
 
     function handleCancel() {
-    goto('users');
+    goto('bebida');
     }
 </script>
 
@@ -86,21 +86,21 @@
     <!-- Campo login -->
     <div>
         <Label for="login">Nome</Label>
-        <Input id="login" bind:value={user.login} placeholder="Digite o nome" required class="mt-1" />
-        {#if errorOf('login')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('login')}</div>
+        <Input id="login" bind:value={bebida.nome} placeholder="Digite o nome" required class="mt-1" />
+        {#if errorOf('nome')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('nome')}</div>
         {/if}
     </div>
     <!-- Campo email -->
     <div>
-        <Label for="email">Email</Label>
-        <Input id="email" type="email" bind:value={user.email} placeholder="Digite o e-mail" required class="mt-1" />
-        {#if errorOf('email')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('email')}</div>
+        <Label for="marca">Marca</Label>
+        <Input id="marca" type="marca" bind:value={bebida.marca} placeholder="Digite a marca" required class="mt-1" />
+        {#if errorOf('marca')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('marca')}</div>
         {/if}
     </div>
     <!-- Campo senha -->
-    <div>
+    <!-- <div>
         <Label for="senha">Senha {id !== null ? '(deixe vazio para manter atual)' : ''}</Label>
         <Input 
         id="senha" 
@@ -114,13 +114,13 @@
         {#if errorOf('senha')}
         <div class="mt-1 text-sm text-red-500">{errorOf('senha')}</div>
         {/if}
-    </div>
+    </div> -->
     <!-- Campo role -->
     <div>
-        <Label for="role">Perfil</Label>
-        <Select id="role" bind:value={user.role} items={roleOptions} class="mt-1" />
-        {#if errorOf('role')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('role')}</div>
+        <Label for="tipo">Tipo</Label>
+        <Select id="tipo" bind:value={bebida.tipo} items={roleOptions} class="mt-1" />
+        {#if errorOf('tipo')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('tipo')}</div>
         {/if}
     </div>
     <!-- Botões de ação -->

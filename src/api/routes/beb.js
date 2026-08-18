@@ -28,7 +28,7 @@ router.get('/', verifyToken, isAdmin, async function(req, res) {
     const result = await pool.query('SELECT id, nome, marca, tamanho, preço, tipo FROM usuario WHERE nome like $1 ORDER BY id', [filtro]);
     return sendSuccess(res, 200, null, result.rows);
   } catch (error) {
-    console.error('Erro ao buscar usuários:', error);
+    console.error('Erro ao buscar bebidas:', error);
     return sendError(res, 500, 'Erro interno do servidor');
   }
 });
@@ -55,48 +55,53 @@ router.get('/me', verifyToken, async function(req, res) {
 router.post('/', async function(req, res) {
   try {
     const { nome, marca, tamanho, preço, tipo = 'alcolico' } = req.body;
-    // Validação básica
+      
     if (!nome || !marca || !tamanho || !preço ) {
       const errors = [];
       if (!nome) errors.push({ field: 'nome', message: 'nome é obrigatório', code: 'REQUIRED' });
       if (!marca) errors.push({ field: 'marca', message: 'marca é obrigatório', code: 'REQUIRED' });
+      if (!tamanho) errors.push({ field: 'tamanho', message: 'tamanho é obrigatório', code: 'REQUIRED' });
       if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatória', code: 'REQUIRED' });
 
-      return sendError(res, 400, 'Login, email e senha são obrigatórios', errors); 
+      return sendError(res, 400, 'campos obrigatórios', errors); 
     }
     
-    const existingUser = await pool.query('SELECT id FROM bebida WHERE nome = $1', [nome]);
-    if (existingUser.rows.length > 0) {
+    const existingBeb = await pool.query('SELECT id FROM bebida WHERE nome = $1', [nome]);
+    if (existingBeb.rows.length > 0) {
       return sendError(res, 409, 'nome já está em uso', [
         { field: 'nome', message: 'nome já está em uso', code: 'CONFLICT' }
       ]);
     }
 
-
-    const existingEmail = await pool.query('SELECT id FROM bebida WHERE marca = $1', [email]);
+    const existingMarca = await pool.query('SELECT id FROM bebida WHERE marca = $1', [marca]);
     if (existingMarca.rows.length > 0) {
-      return sendError(res, 409, 'Email já está em uso', [
-        { field: 'marca', message: 'Email já está em uso', code: 'CONFLICT' }
+      return sendError(res, 409, 'Está marca já está em uso', [
+        { field: 'marca', message: 'Está marca já está em uso', code: 'CONFLICT' }
       ]);
     }
-
-    // Hash da senha
-    const hashedPassword = await bcrypt.hash(senha, 12);
-    console.log("chegou 1");
-    const result = await pool.query(
-      'INSERT INTO usuario (login, email,     senha, role) VALUES ($1, $2, $3, $4) RETURNING id, login, email, role',
-      [login, email, hashedPassword, role]
-    );
-    console.log("chegou 2");
-    return sendSuccess(res, 201, 'Usuário criado com sucesso', result.rows[0]);
-  } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    // Verificar se é erro de constraint
-    if (error.code === '23514') {
-      return sendError(res, 400, 'Dados inválidos. Verifique os campos e tente novamente.');
+    const existingTamanho = await pool.query('SELECT id FROM bebida WHERE tamanho = $1', [tamanho]);
+    if (existingTamanho.rows.length > 0) {
+      return sendError(res, 409, 'Este tamanho procede', [
+        { field: 'tamanho', message: 'Este tamanho procede', code: 'CONFLICT' }
+      ]);
     }
-    return sendError(res, 500, 'Erro interno do servidor');
+    
+  }
+  catch (error) {
+    console.error('Erro ao criar bebida:', error);
+    return sendError(res, 500, 'Erro interno do servidor')
   }
 });
+
+// // Tentativa de cadastro de bebida
+// router.post('/cadastro' (req,res)); {
+//   const{ nome , preço} = req.body;
+//   if (!nome || !preço){
+//     return res.status(400).json({ error: " Coloque nome e preço do produto" });
+
+//   }
+// };
+
+
 
 module.exports = router;
