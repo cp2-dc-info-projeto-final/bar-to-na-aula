@@ -12,4 +12,3 @@
 
 </main>
 
-<div class="bg-[url(./images/fundoAzul.png)] bg-cover"></div>

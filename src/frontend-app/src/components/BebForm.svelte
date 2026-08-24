@@ -37,11 +37,10 @@
         const BebData = { ...bebida };
            // Remove senha vazia na edição para não sobrescrever indevidamente
         if (id !== null && !BebData.nome) {
-        delete BebData.nome;
+        BebData.id;
         }
-        
         if (id === null) {
-        const res = await api.post('/bebidas', BebData);
+        const res = await api.post('/beb', BebData);
         const body = res.data as ApiResponse<Beb>;
         if (!body.success) {
             error = body.message;
@@ -49,7 +48,7 @@
             return;
         }
         } else {
-        const res = await api.put(`/bebidas/${id}`, BebData);
+        const res = await api.put(`/beb/${id}`, BebData);
         const body = res.data as ApiResponse<Beb>;
         if (!body.success) {
             error = body.message;
@@ -57,7 +56,7 @@
             return;
         }
         }
-        goto('/users');
+        goto('/bebidas');
     } catch (e: any) {
         const body = e.response?.data as ApiResponse<Beb> | undefined;
         error = body?.message || 'Erro ao salvar usuário.';
@@ -85,13 +84,12 @@
     {/if}
     <!-- Campo login -->
     <div>
-        <Label for="login">Nome</Label>
-        <Input id="login" bind:value={bebida.nome} placeholder="Digite o nome" required class="mt-1" />
+        <Label for="nome">Nome</Label>
+        <Input id="nome" bind:value={bebida.nome} placeholder="Digite o nome" required class="mt-1" />
         {#if errorOf('nome')}
         <div class="mt-1 text-sm text-red-500">{errorOf('nome')}</div>
         {/if}
     </div>
-    <!-- Campo email -->
     <div>
         <Label for="marca">Marca</Label>
         <Input id="marca" type="marca" bind:value={bebida.marca} placeholder="Digite a marca" required class="mt-1" />
@@ -99,23 +97,6 @@
         <div class="mt-1 text-sm text-red-500">{errorOf('marca')}</div>
         {/if}
     </div>
-    <!-- Campo senha -->
-    <!-- <div>
-        <Label for="senha">Senha {id !== null ? '(deixe vazio para manter atual)' : ''}</Label>
-        <Input 
-        id="senha" 
-        type="password" 
-        bind:value={user.senha} 
-        placeholder={id === null ? 'Digite a senha (mínimo 6 caracteres)' : 'Nova senha (opcional)'} 
-        required={id === null}
-        minlength={6}
-        class="mt-1" 
-        />
-        {#if errorOf('senha')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('senha')}</div>
-        {/if}
-    </div> -->
-    <!-- Campo role -->
     <div>
         <Label for="tipo">Tipo</Label>
         <Select id="tipo" bind:value={bebida.tipo} items={roleOptions} class="mt-1" />

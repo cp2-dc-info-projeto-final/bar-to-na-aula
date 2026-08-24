@@ -1,5 +1,5 @@
 <script lang="ts">
-    // Tabela de usuários
+    // Tabela de produtos
     import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge } from 'flowbite-svelte'; // UI
     import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
     import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons'; // ícones
@@ -60,12 +60,12 @@
         deletingId = null;
     }
     }
-    
+   
     onMount(async () => {
+      
     try {
         const res = await api.get('/beb');
         const body = res.data as ApiResponse<Beb[]>;
-
         if (body.success) {
             bebidas = body.data ?? [];
         } else {
@@ -122,11 +122,13 @@
         <TableHeadCell class="min-w-0">Preço</TableHeadCell>
         <TableHeadCell class="w-20">Marca</TableHeadCell>
         <TableHeadCell class="min-w-0">Tamanho</TableHeadCell>
+        
         <TableHeadCell class="w-20">Tipo</TableHeadCell>
         <TableHeadCell class="w-24"></TableHeadCell> <!-- coluna para editar/remover -->
         </TableHead>
         <TableBody>
         {#each bebidas as alcolico}
+
             <TableBodyRow>
             <TableBodyCell>{alcolico.id}</TableBodyCell>
             <TableBodyCell>{alcolico.nome}</TableBodyCell>
@@ -135,7 +137,6 @@
 
             <TableBodyCell>{alcolico.marca}</TableBodyCell>
             <TableBodyCell>{alcolico.tamanho}</TableBodyCell>
-
             <TableBodyCell>
                 <Badge color={alcolico.tipo === 'alcolico' ? 'red' : 'blue'} class="text-xs">
                 {alcolico.tipo}
