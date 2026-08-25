@@ -55,7 +55,7 @@ CREATE TABLE shows(
     horario INTEGER,
     genero text not NULL,
 
-    CONSTRAINT pk_shows PRIMARY KEY (id),
+    CONSTRAINT pk_shows PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS mesa;
@@ -72,6 +72,6 @@ CREATE TABLE mesa(
 
 INSERT INTO usuario (login, email, senha, role) VALUES
 -- senha efelantinho
-('hermenegildo', 'hermenegildo@email.com', '$2a$12$f2c.uHGHS4drfaz6HR870OLamkarD57kI.gkr4//Vbbp0vN9IrFfG', 'admin');
+('Cassio', 'cassio@email.com', '$2a$12$QBOGeYoeI2CBWwozSV45Jud.XvALBSG.rMgNsEtq.jdi1b5Ndsc4e', 'admin');
 
 

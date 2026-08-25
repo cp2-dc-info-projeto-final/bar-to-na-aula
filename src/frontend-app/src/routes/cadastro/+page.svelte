@@ -4,6 +4,12 @@
   import { goto } from "$app/navigation";
   import { cadastro as authCadastro } from "$lib/auth";
   
+
+    let tipoListas = ['alcolicos', 'Não Alcolicos']
+    let saborSelecionada = '';
+    let saborListas = ['salgado', 'doce']
+    let tipoSelecionada = '';
+
     let email = '';
     let login = '';
     let senha = '';

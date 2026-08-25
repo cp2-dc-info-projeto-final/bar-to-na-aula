@@ -98,6 +98,30 @@
         {/if}
     </div>
     <div>
+        <Label for="tamanho">Tamanho</Label>
+        <Input
+            id="tamanho"
+            bind:value={bebida.tamanho}
+            placeholder="Digite o tamanho"
+            required
+            class="mt-1"
+        />
+    
+        {#if errorOf('tamanho')}
+            <div class="mt-1 text-sm text-red-500">
+                {errorOf('tamanho')}
+            </div>
+        {/if}
+    </div>
+    
+    <div>
+        <Label for="preço">Preço</Label>
+        <Input id="preço" type="text" bind:value={bebida.preço} placeholder="Digite o preço" required class="mt-1" />
+        {#if errorOf('preço')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('preço')}</div>
+        {/if}
+    </div>
+    <div>
         <Label for="tipo">Tipo</Label>
         <Select id="tipo" bind:value={bebida.tipo} items={roleOptions} class="mt-1" />
         {#if errorOf('tipo')}

@@ -54,98 +54,104 @@ router.get('/me', verifyToken, async function(req, res) {
 
 router.post('/', async function(req, res) {
   try {
-    const { nome, marca, tamanho, preço, tipo = 'alcolico' } = req.body;
-      
-    if (!nome || !marca || !tamanho || !preço ) {
+    const { nome, marca, tamanho, preço, tipo } = req.body;
+
+    console.log('DADOS RECEBIDOS:', req.body);
+
+    if (!nome || !marca || !tamanho || !preço || !tipo) {
       const errors = [];
-      if (!nome) errors.push({ field: 'nome', message: 'nome é obrigatório', code: 'REQUIRED' });
-      if (!marca) errors.push({ field: 'marca', message: 'marca é obrigatório', code: 'REQUIRED' });
-      if (!tamanho) errors.push({ field: 'tamanho', message: 'tamanho é obrigatório', code: 'REQUIRED' });
-      if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatória', code: 'REQUIRED' });
 
-      return sendError(res, 400, 'campos obrigatórios', errors); 
-    }
-    
-    const existingBeb = await pool.query('SELECT id FROM bebida WHERE nome = $1', [nome]);
-    if (existingBeb.rows.length > 0) {
-      return sendError(res, 409, 'nome já está em uso', [
-        { field: 'nome', message: 'nome já está em uso', code: 'CONFLICT' }
-      ]);
-    }
-
-    const existingMarca = await pool.query('SELECT id FROM bebida WHERE marca = $1', [marca]);
-    if (existingMarca.rows.length > 0) {
-      return sendError(res, 409, 'Está marca já está em uso', [
-        { field: 'marca', message: 'Está marca já está em uso', code: 'CONFLICT' }
-      ]);
-    }
-    const existingTamanho = await pool.query('SELECT id FROM bebida WHERE tamanho = $1', [tamanho]);
-    if (existingTamanho.rows.length > 0) {
-      return sendError(res, 409, 'Este tamanho procede', [
-        { field: 'tamanho', message: 'Este tamanho procede', code: 'CONFLICT' }
-      ]);
-    }
-
-    const existingPreço = await pool.query('SELECT id FROM preço WHERE tamanho = $1', [preço]);
-    if (existingTamanho.rows.length > 0) {
-      return sendError(res, 409, 'Este tamanho procede', [
-        { field: 'tamanho', message: 'Este tamanho procede', code: 'CONFLICT' }
-      ]);
-    }
-    
-  }
-  catch (error) {
-    console.error('Erro ao criar bebida:', error);
-    return sendError(res, 500, 'Erro interno do servidor')
-  }
-  //Delete
-  router.delete('/:id', verifyToken, isAdmin, async function(req, res) {
-    try {
-      const { id } = req.params;
-      
-      // Verificar se o usuário existe
-      const userExists = await pool.query('SELECT id FROM bebida WHERE id = $1', [id]);
-      if (userExists.rows.length === 0) {
-        return sendError(res, 404, 'bebida não encontrado');
+      if (!nome) {
+        errors.push({
+          field: 'nome',
+          message: 'nome é obrigatório',
+          code: 'REQUIRED'
+        });
       }
-      
-      await pool.query('DELETE FROM bebida WHERE id = $1', [id]);
-      
-      return sendSuccess(res, 200, 'bebida deletado com sucesso');
-    } catch (error) {
-      console.error('Erro ao deletar bebida:', error);
-      return sendError(res, 500, 'Erro interno do servidor');
+
+      if (!marca) {
+        errors.push({
+          field: 'marca',
+          message: 'marca é obrigatória',
+          code: 'REQUIRED'
+        });
+      }
+
+      if (!tamanho) {
+        errors.push({
+          field: 'tamanho',
+          message: 'tamanho é obrigatório',
+          code: 'REQUIRED'
+        });
+      }
+
+      if (!preço) {
+        errors.push({
+          field: 'preço',
+          message: 'preço é obrigatório',
+          code: 'REQUIRED'
+        });
+      }
+
+      if (!tipo) {
+        errors.push({
+          field: 'tipo',
+          message: 'tipo é obrigatório',
+          code: 'REQUIRED'
+        });
+      }
+
+      return sendError(res, 400, 'Campos obrigatórios', errors);
     }
-  });
+
+    const result = await pool.query(
+      `INSERT INTO bebida (nome, marca, tamanho, preço, tipo)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, nome, marca, tamanho, preço, tipo`,
+      [nome, marca, tamanho, preço, tipo]
+    );
+
+    return sendSuccess(
+      res,
+      201,
+      'Bebida criada com sucesso',
+      result.rows[0]
+    );
+
+  } catch (error) {
+    console.error('Erro ao criar bebida:', error);
+
+    return sendError(
+      res,
+      500,
+      'Erro interno do servidor'
+    );
+  }
+});
+
+
   
   /* PUT - Atualizar bebida*/
 router.put('/:id', verifyToken, isAdmin, async function(req, res) {
   try {
     const { id } = req.params;
-    const { nome, preço, marca, tamanho, tipo } = req.body;
+    const { nome, marca, preço, tamanho, tipo } = req.body;
     
     // Validação básica
-    if (!nome || !preço || !marca || !tamanho || !tipo) {
+    if (!nome || !marca || !preço || !tamanho || !tipo) {
       const errors = [];
       if (!nome) errors.push({ field: 'nome', message: 'nome é obrigatório', code: 'REQUIRED' });
-      if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatório', code: 'REQUIRED' });
       if (!marca) errors.push({ field: 'marca', message: 'marca é obrigatório', code: 'REQUIRED' });
+      if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatório', code: 'REQUIRED' });
       if (!tamanho) errors.push({ field: 'tamanho', message: 'tamanho é obrigatório', code: 'REQUIRED' });
-      if (!tipo) errors.push({ field: 'tipo', code: 'REQUIRED' });
 
       return sendError(res, 400, 'Campos obrigatórios', errors);
     }
     
-    // Verificar se o usuário existe
-    const userExists = await pool.query('SELECT id FROM bebida WHERE id = $1', [id]);
-    if (userExists.rows.length === 0) {
-      return sendError(res, 404, 'bebida não encontrado');
-    }
-    
     // Verificar se já existe nomes de bebidas repetidos
-    const existingUser = await pool.query('SELECT id FROM bebida WHERE login = $1 AND id != $2', [nome, id]);
-    if (existingUser.rows.length > 0) {
-      return sendError(res, 409, 'Este nome  já está em uso por outro usuário', [
+    const existingNome = await pool.query('SELECT id FROM bebida WHERE nome = $1 AND id != $2', [nome, id]);
+    if (existingNome.rows.length > 0) {
+      return sendError(res, 409, 'Este nome já está em uso por outro usuário', [
         { field: 'nome', message: 'Este nome já está em uso por outro usuário', code: 'CONFLICT' }
       ]);
     }
@@ -172,16 +178,6 @@ router.put('/:id', verifyToken, isAdmin, async function(req, res) {
   }
 });
 
-});
-
-// // Tentativa de cadastro de bebida
-// router.post('/cadastro' (req,res)); {
-//   const{ nome , preço} = req.body;
-//   if (!nome || !preço){
-//     return res.status(400).json({ error: " Coloque nome e preço do bebida" });
-
-//   }
-// };
 
 
 
