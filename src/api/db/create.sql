@@ -72,6 +72,7 @@ CREATE TABLE mesa(
 
 INSERT INTO usuario (login, email, senha, role) VALUES
 -- senha efelantinho
-('Cassio', 'cassio@email.com', '$2a$12$QBOGeYoeI2CBWwozSV45Jud.XvALBSG.rMgNsEtq.jdi1b5Ndsc4e', 'admin');
+('Cassio', 'cassio@email.com', '$2a$12$QBOGeYoeI2CBWwozSV45Jud.XvALBSG.rMgNsEtq.jdi1b5Ndsc4e', 'admin'),
+('Dylan', 'dylan1210@gmail.com', '$2a$12$JVQIrqbuY4tcyJ9lhturHuXpnyFeInOylKTUel9HHUmFA.l4U.gRy', 'admin');
 
 
