@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Heading } from 'flowbite-svelte';
-    import UsersTable from '../../components/UsersTable.svelte';
+    import ComTable from '../../components/UsersTable.svelte';
     import { UserAddOutline  } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
@@ -42,7 +42,7 @@
           Adicionar
         </button>
       </div>
-      <UsersTable />
+      <ComTable />
     </div>
   {/if}
   +

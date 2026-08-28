@@ -22,14 +22,13 @@ DROP TABLE IF EXISTS bebida;
 CREATE TABLE bebida (
     id bigint GENERATED ALWAYS AS IDENTITY,
     nome text not null,
-    preço INTEGER,
+    preço text no null,  -- troquei temporariamente por string, mas é number(integer)
     marca text not null,
-    tamanho text not null DEFAULT 'pequeno',
+    tamanho text not null ,
     tipo text NOT NULL DEFAULT 'alcolico',
 
     -- Constraints
 
-    CONSTRAINT ck_bebida_tamanho CHECK (tamanho IN ('pequeno', 'medio', 'grande')),
     CONSTRAINT pk_bebida PRIMARY KEY (id),
     CONSTRAINT ck_bebida_tipo CHECK (tipo IN ('alcolico', 'nao alcolico'))
 );

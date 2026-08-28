@@ -56,7 +56,7 @@
             return;
         }
         }
-        goto('/bebidas');
+        goto('/bebidas'); 
     } catch (e: any) {
         const body = e.response?.data as ApiResponse<Beb> | undefined;
         error = body?.message || 'Erro ao salvar usuário.';
@@ -67,7 +67,7 @@
     }
 
     function handleCancel() {
-    goto('bebida');
+    goto('/bebida');
     }
 </script>
 
@@ -90,6 +90,15 @@
         <div class="mt-1 text-sm text-red-500">{errorOf('nome')}</div>
         {/if}
     </div>
+
+    <div>
+        <Label for="preço">Preço</Label>
+        <Input id="preço" type="text" bind:value={bebida.preço} placeholder="Digite o preço" required class="mt-1" />
+        {#if errorOf('preço')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('preço')}</div>
+        {/if}
+    </div>
+
     <div>
         <Label for="marca">Marca</Label>
         <Input id="marca" type="marca" bind:value={bebida.marca} placeholder="Digite a marca" required class="mt-1" />
@@ -97,6 +106,7 @@
         <div class="mt-1 text-sm text-red-500">{errorOf('marca')}</div>
         {/if}
     </div>
+
     <div>
         <Label for="tamanho">Tamanho</Label>
         <Input
@@ -113,14 +123,7 @@
             </div>
         {/if}
     </div>
-    
-    <div>
-        <Label for="preço">Preço</Label>
-        <Input id="preço" type="text" bind:value={bebida.preço} placeholder="Digite o preço" required class="mt-1" />
-        {#if errorOf('preço')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('preço')}</div>
-        {/if}
-    </div>
+
     <div>
         <Label for="tipo">Tipo</Label>
         <Select id="tipo" bind:value={bebida.tipo} items={roleOptions} class="mt-1" />

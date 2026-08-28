@@ -100,7 +100,7 @@
   }
 
   function handleCancel() {
-    goto('users');
+    goto('/users');
   }
 </script>
 

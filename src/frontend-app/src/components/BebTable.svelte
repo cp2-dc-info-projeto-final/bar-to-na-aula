@@ -60,7 +60,7 @@
         deletingId = null;
     }
     }
-   
+  
     onMount(async () => {
       
     try {
@@ -85,7 +85,7 @@
     async function carregarBebidas() {
     try {
         console.log("filtro: ", filtro);
-        const res = await api.get(`/bebidas?nome=${encodeURIComponent(filtro)}`);
+        const res = await api.get(`/beb?nome=${encodeURIComponent(filtro)}`);
         const body = res.data as ApiResponse<Beb[]>;
         if (body.success) {
             bebidas = body.data ?? [];
@@ -111,20 +111,20 @@
     <!-- Tabela para telas médias/grandes -->
     <div class="hidden xl:block">
     <div class="filtro">
-        <input type="text" id="pesquisa" placeholder="Digite o nome do Usuário..." bind:value={filtro}  on:input={carregarBebidas} />
+        <input type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarBebidas} />
 
     </div>
     <!-- Tabela de usuários -->
     <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 rounded-full">
         <TableHead>
-        <TableHeadCell class="w-16 ">ID</TableHeadCell>
-        <TableHeadCell class="w-32">Nome</TableHeadCell>
-        <TableHeadCell class="min-w-0">Preço</TableHeadCell>
-        <TableHeadCell class="w-20">Marca</TableHeadCell>
-        <TableHeadCell class="min-w-0">Tamanho</TableHeadCell>
-        
-        <TableHeadCell class="w-20">Tipo</TableHeadCell>
-        <TableHeadCell class="w-24"></TableHeadCell> <!-- coluna para editar/remover -->
+          <TableHeadCell class="w-16 ">ID</TableHeadCell>
+          <TableHeadCell class="w-32">Nome</TableHeadCell>
+          <TableHeadCell class="min-w-0">Preço</TableHeadCell>
+          <TableHeadCell class="w-20">Marca</TableHeadCell>
+          <TableHeadCell class="min-w-0">Tamanho</TableHeadCell>
+          
+          <TableHeadCell class="w-20">Tipo</TableHeadCell>
+          <TableHeadCell class="w-24"></TableHeadCell> <!-- coluna para editar/remover -->
         </TableHead>
         <TableBody>
         {#each bebidas as alcolico}
@@ -132,9 +132,7 @@
             <TableBodyRow>
             <TableBodyCell>{alcolico.id}</TableBodyCell>
             <TableBodyCell>{alcolico.nome}</TableBodyCell>
-
-            <!-- <TableBodyCell class="truncate max-w-0">{alcolico.email}</TableBodyCell> -->
-
+            <TableBodyCell>{alcolico.preço}</TableBodyCell>
             <TableBodyCell>{alcolico.marca}</TableBodyCell>
             <TableBodyCell>{alcolico.tamanho}</TableBodyCell>
             <TableBodyCell>
@@ -177,7 +175,7 @@
               <div>
                 <div class="text-lg font-semibold text-gray-800 text-left">{alcolico.nome}</div>
                 <div class="text-xs text-gray-400 text-left">ID: {alcolico.id}</div>
-                <Badge color={alcolico.tipo === 'admin' ? 'red' : 'blue'} class="text-xs mt-1">
+                <Badge color={alcolico.tipo === 'alcolico' ? 'red' : 'blue'} class="text-xs mt-1">
                   {alcolico.tipo}
                 </Badge>
               </div>
@@ -186,7 +184,7 @@
                 <button
                   class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
                   title="Editar"
-                  on:click={() => goto(`/users/edit/${alcolico.id}`)}
+                  on:click={() => goto(`/bebida/edit/${alcolico.id}`)}
                 >
                   <UserEditOutline class="w-5 h-5 text-primary-500" />
                 </button>
@@ -217,7 +215,7 @@
   <!-- Modal de confirmação -->
   <ConfirmModal
     open={confirmOpen}
-    message="Tem certeza que deseja remover este usuário?"
+    message="Tem certeza que deseja remover esta bebida?"
     confirmText="Remover"
     cancelText="Cancelar"
     onConfirm={handleConfirm}
