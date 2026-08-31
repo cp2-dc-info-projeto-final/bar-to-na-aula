@@ -74,4 +74,13 @@ INSERT INTO usuario (login, email, senha, role) VALUES
 ('Cassio', 'cassio@email.com', '$2a$12$QBOGeYoeI2CBWwozSV45Jud.XvALBSG.rMgNsEtq.jdi1b5Ndsc4e', 'admin'),
 ('Dylan', 'dylan1210@gmail.com', '$2a$12$JVQIrqbuY4tcyJ9lhturHuXpnyFeInOylKTUel9HHUmFA.l4U.gRy', 'admin');
 
+INSERT INTO bebida (nome, preço, marca, tamanho, tipo) VALUES
+('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico')
+
+INSERT INTO comida (nome, preço, sabor) VALUES
+('batata', '12.00', 'salgado')
+
+
+
+
 

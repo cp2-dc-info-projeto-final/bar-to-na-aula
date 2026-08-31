@@ -2,18 +2,14 @@ export interface Com {
     id: number;
     nome: string;
     preço: number;
-    marca: string;
-    tamanho: string;
-    tipo: string;
+    sabor: string;
 }
 
 export interface ComFormData {
     id: number;
     nome: string;
     preço: string;
-    marca: string;
-    tamanho: string;
-    tipo: string;
+    sabor: string;
 }
 
 // alterar as informaçoes usando as infos do create

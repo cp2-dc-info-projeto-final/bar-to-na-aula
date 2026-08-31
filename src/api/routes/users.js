@@ -134,6 +134,7 @@ router.post('/login', async function(req, res) {
      se existe uma conta com aquele login 
     */
     if (result.rows.length === 0) {
+      console.log("14")
       return sendError(res, 401, 'Credenciais inválidas');
     }
 
