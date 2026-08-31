@@ -10,7 +10,7 @@
 
     export let id: number | null = null; // id do usuário
 
-    let comida: ComFormData = { id: 0, nome: '', preço: '', sabor: 'salgado' }; // dados do form
+    let comida: ComFormData = { id: 0, nome: '', preco: '', sabor: 'salgado' }; // dados do form
     
     // Opções de roles
     const roleOptions = [
@@ -92,10 +92,10 @@
     </div>
 
     <div>
-        <Label for="preço">Preço</Label>
-        <Input id="preço" type="text" bind:value={comida.preço} placeholder="Digite o preço" required class="mt-1" />
-        {#if errorOf('preço')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('preço')}</div>
+        <Label for="preco">Preço</Label>
+        <Input id="preco" type="text" bind:value={comida.preco} placeholder="Digite o preço" required class="mt-1" />
+        {#if errorOf('preco')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('preco')}</div>
         {/if}
     </div>
 

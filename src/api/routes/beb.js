@@ -25,7 +25,7 @@ router.get('/', verifyToken, isAdmin, async function(req, res) {
   try {
     const filtro = req.query.nome ? `%${req.query.nome}%` : "%";
     console.log("filtro: ", filtro);
-    const result = await pool.query('SELECT id, nome, preço, marca, tamanho,  tipo FROM bebida WHERE nome like $1 ORDER BY id', [filtro]);
+    const result = await pool.query('SELECT id, nome, preco, marca, tamanho,  tipo FROM bebida WHERE nome like $1 ORDER BY id', [filtro]);
     return sendSuccess(res, 200, null, result.rows);
   } catch (error) {
     console.error('Erro ao buscar bebidas:', error);
@@ -54,11 +54,11 @@ router.get('/me', verifyToken, isAdmin, async function(req, res) {
 
 router.post('/', verifyToken, isAdmin, async function(req, res) { 
   try {
-    const { nome, marca, tamanho, preço, tipo } = req.body;
+    const { nome, marca, tamanho, preco, tipo } = req.body;
 
     console.log('DADOS RECEBIDOS:', req.body);
 
-    if (!nome || !marca || !tamanho || !preço || !tipo) {
+    if (!nome || !marca || !tamanho || !preco || !tipo) {
       const errors = [];
 
       if (!nome) {
@@ -85,10 +85,10 @@ router.post('/', verifyToken, isAdmin, async function(req, res) {
         });
       }
 
-      if (!preço) {
+      if (!preco) {
         errors.push({
-          field: 'preço',
-          message: 'preço é obrigatório',
+          field: 'preco',
+          message: 'preco é obrigatório',
           code: 'REQUIRED'
         });
       }
@@ -105,10 +105,10 @@ router.post('/', verifyToken, isAdmin, async function(req, res) {
     }
 
     const result = await pool.query(
-      `INSERT INTO bebida (nome, marca, tamanho, preço, tipo)
+      `INSERT INTO bebida (nome, marca, tamanho, preco, tipo)
       VALUES ($1, $2, $3, $4, $5)
-      RETURNING id, nome, marca, tamanho, preço, tipo`,
-      [nome, marca, tamanho, preço, tipo]
+      RETURNING id, nome, marca, tamanho, preco, tipo`,
+      [nome, marca, tamanho, preco, tipo]
     );
 
     return sendSuccess(
@@ -135,14 +135,14 @@ router.post('/', verifyToken, isAdmin, async function(req, res) {
 router.put('/:id', verifyToken, isAdmin, async function(req, res) {
   try {
     const { id } = req.params;
-    const { nome, marca, preço, tamanho, tipo } = req.body;
+    const { nome, marca, preco, tamanho, tipo } = req.body;
     
     // Validação básica
-    if (!nome || !marca || !preço || !tamanho || !tipo) {
+    if (!nome || !marca || !preco || !tamanho || !tipo) {
       const errors = [];
       if (!nome) errors.push({ field: 'nome', message: 'nome é obrigatório', code: 'REQUIRED' });
       if (!marca) errors.push({ field: 'marca', message: 'marca é obrigatório', code: 'REQUIRED' });
-      if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatório', code: 'REQUIRED' });
+      if (!preco) errors.push({ field: 'preco', message: 'preco é obrigatório', code: 'REQUIRED' });
       if (!tamanho) errors.push({ field: 'tamanho', message: 'tamanho é obrigatório', code: 'REQUIRED' });
 
       return sendError(res, 400, 'Campos obrigatórios', errors);

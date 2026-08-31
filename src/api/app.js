@@ -28,6 +28,7 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/beb', bebRouter);
+app.use('/com', comRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

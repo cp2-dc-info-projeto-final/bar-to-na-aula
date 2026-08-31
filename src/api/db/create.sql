@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS bebida;
 CREATE TABLE bebida (
     id bigint GENERATED ALWAYS AS IDENTITY,
     nome text not null,
-    preço text not null,  -- troquei temporariamente por string, mas é number(integer)
+    preco text not null,  -- troquei temporariamente por string, mas é number(integer)
     marca text not null,
     tamanho text not null ,
     tipo text NOT NULL DEFAULT 'alcolico',
@@ -38,12 +38,12 @@ DROP TABLE IF EXISTS comida;
 CREATE TABLE comida (
     id bigint GENERATED ALWAYS AS IDENTITY,
     nome text not null,
-    preço INTEGER,
+    preco INTEGER,
     sabor text NOT NULL DEFAULT 'salgado',
 
-
     CONSTRAINT pk_comida PRIMARY KEY (id),
-    CONSTRAINT ck_comida_tipo CHECK (sabor IN ('salgado', 'doce'))
+    CONSTRAINT ck_comida_sabor
+        CHECK (sabor IN ('salgado', 'doce'))
 );
 
 DROP TABLE IF EXISTS shows;
@@ -74,11 +74,11 @@ INSERT INTO usuario (login, email, senha, role) VALUES
 ('Cassio', 'cassio@email.com', '$2a$12$QBOGeYoeI2CBWwozSV45Jud.XvALBSG.rMgNsEtq.jdi1b5Ndsc4e', 'admin'),
 ('Dylan', 'dylan1210@gmail.com', '$2a$12$JVQIrqbuY4tcyJ9lhturHuXpnyFeInOylKTUel9HHUmFA.l4U.gRy', 'admin');
 
-INSERT INTO bebida (nome, preço, marca, tamanho, tipo) VALUES
+INSERT INTO bebida (nome, preco, marca, tamanho, tipo) VALUES
 ('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico');
 
--- INSERT INTO comida (nome, preço, sabor) VALUES
--- ('batata', '12.00', 'salgado');
+INSERT INTO comida (nome, preco, sabor) VALUES
+('batata', '12.00', 'salgado');
 
 
 

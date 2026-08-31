@@ -130,7 +130,7 @@
             <TableBodyRow>
             <TableBodyCell>{salgado.id}</TableBodyCell>
             <TableBodyCell>{salgado.nome}</TableBodyCell>
-            <TableBodyCell>{salgado.preço}</TableBodyCell>
+            <TableBodyCell>{salgado.preco}</TableBodyCell>
 
             <TableBodyCell>
                 <Badge color={salgado.sabor === 'salgado' ? 'red' : 'blue'} class="text-xs">
@@ -200,7 +200,7 @@
             <div class="flex items-center gap-2 text-left">
                 <!-- Ícone de email -->
                 <svg class="w-4 h-4 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 12A4 4 0 1 0 8 12a4 4 0 0 0 8 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7m-7-7v7m14-7v7"/></svg>
-                <span class="text-gray-700 text-sm">{salgado.preço}</span>
+                <span class="text-gray-700 text-sm">{salgado.preco}</span>
             </div>
             </div>
         </Card>

@@ -1,7 +1,7 @@
 export interface Beb {
     id: number;
     nome: string;
-    preço: number;
+    preco: number;
     marca: string;
     tamanho: string;
     tipo: string;
@@ -10,7 +10,7 @@ export interface Beb {
 export interface BebFormData {
     id: number;
     nome: string;
-    preço: string;
+    preco: string;
     marca: string;
     tamanho: string;
     tipo: string;

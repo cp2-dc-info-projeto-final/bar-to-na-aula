@@ -24,12 +24,12 @@ return res.status(status).json({
 
 router.post('/', async function(req, res) {
     try {
-    const { nome, preço, sabor = 'salgado' } = req.body;
+    const { nome, preco, sabor = 'salgado' } = req.body;
         
-    if (!nome || !sabor || !preço ) {
+    if (!nome || !sabor || !preco ) {
         const errors = [];
         if (!nome) errors.push({ field: 'nome', message: 'nome é obrigatório', code: 'REQUIRED' });
-        if (!preço) errors.push({ field: 'preço', message: 'preço é obrigatória', code: 'REQUIRED' });
+        if (!preco) errors.push({ field: 'preco', message: 'preco é obrigatória', code: 'REQUIRED' });
 
         return sendError(res, 400, 'campos obrigatórios', errors); 
     }
@@ -55,7 +55,7 @@ router.post('/', async function(req, res) {
         ]);
     }
     
-    const existingPreço = await pool.query('SELECT id FROM preço WHERE tamanho = $1', [preço]);
+    const existingpreco = await pool.query('SELECT id FROM preco WHERE tamanho = $1', [preco]);
     if (existingTamanho.rows.length > 0) {
         return sendError(res, 409, 'Este tamanho procede', [
         { field: 'tamanho', message: 'Este tamanho procede', code: 'CONFLICT' }

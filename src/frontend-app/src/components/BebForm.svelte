@@ -10,7 +10,7 @@
 
     export let id: number | null = null; // id do usuário
 
-    let bebida: BebFormData = { id: 0, nome: '', marca: '',  preço: '', tamanho: '', tipo: 'alcolico' }; // dados do form
+    let bebida: BebFormData = { id: 0, nome: '', marca: '',  preco: '', tamanho: '', tipo: 'alcolico' }; // dados do form
     
     // Opções de roles
     const roleOptions = [
@@ -92,10 +92,10 @@
     </div>
 
     <div>
-        <Label for="preço">Preço</Label>
-        <Input id="preço" type="text" bind:value={bebida.preço} placeholder="Digite o preço" required class="mt-1" />
-        {#if errorOf('preço')}
-        <div class="mt-1 text-sm text-red-500">{errorOf('preço')}</div>
+        <Label for="preco">Preço</Label>
+        <Input id="preco" type="text" bind:value={bebida.preco} placeholder="Digite o preço" required class="mt-1" />
+        {#if errorOf('preco')}
+        <div class="mt-1 text-sm text-red-500">{errorOf('preco')}</div>
         {/if}
     </div>
 

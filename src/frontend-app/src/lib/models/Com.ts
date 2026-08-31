@@ -1,14 +1,14 @@
 export interface Com {
     id: number;
     nome: string;
-    preço: number;
+    preco: number;
     sabor: string;
 }
 
 export interface ComFormData {
     id: number;
     nome: string;
-    preço: string;
+    preco: string;
     sabor: string;
 }
 
