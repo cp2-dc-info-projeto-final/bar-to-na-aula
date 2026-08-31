@@ -33,7 +33,7 @@ router.get('/', verifyToken, isAdmin, async function(req, res) {
   }
 });
 
-router.get('/me', verifyToken, async function(req, res) {
+router.get('/me', verifyToken, isAdmin, async function(req, res) {
   try {
     // parâmetro obtido do token pelo middleware
     const id = req.user.id;
@@ -52,7 +52,7 @@ router.get('/me', verifyToken, async function(req, res) {
 
 //Criar bebida
 
-router.post('/', async function(req, res) {
+router.post('/', verifyToken, isAdmin, async function(req, res) { 
   try {
     const { nome, marca, tamanho, preço, tipo } = req.body;
 
@@ -106,8 +106,8 @@ router.post('/', async function(req, res) {
 
     const result = await pool.query(
       `INSERT INTO bebida (nome, marca, tamanho, preço, tipo)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, nome, marca, tamanho, preço, tipo`,
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, nome, marca, tamanho, preço, tipo`,
       [nome, marca, tamanho, preço, tipo]
     );
 
@@ -163,9 +163,24 @@ router.put('/:id', verifyToken, isAdmin, async function(req, res) {
         { field: 'marca', message: 'A marca já está em uso por outro usuário', code: 'CONFLICT' }
       ]);
     }
-    
-    let query, params;
-    const result = await pool.query(query, params);
+
+    const result = await pool.query(
+      `UPDATE bebida
+      SET nome = $1,
+          marca = $2,
+          tamanho = $3,
+          preco = $4,
+          tipo = $5
+      WHERE id = $6
+      RETURNING id, nome, marca, tamanho, preco, tipo`,
+      [nome, marca, tamanho, preco, tipo, id]
+  );
+
+  if (result.rows.length === 0) {
+    return sendError(res, 404, 'Bebida não encontrada');
+  }
+
+  
     
     return sendSuccess(res, 200, 'bebida atualizado com sucesso', result.rows[0]);
   } catch (error) {
@@ -175,6 +190,36 @@ router.put('/:id', verifyToken, isAdmin, async function(req, res) {
       return sendError(res, 400, 'Dados inválidos. Verifique os campos e tente novamente.');
     }
     return sendError(res, 500, 'Erro interno do servidor');
+  }
+});
+
+router.delete('/:id', verifyToken, isAdmin, async function(req, res) {
+  try {
+      const { id } = req.params;
+
+      const result = await pool.query(
+          'DELETE FROM bebida WHERE id = $1 RETURNING id',
+          [id]
+      );
+
+      if (result.rows.length === 0) {
+          return sendError(res, 404, 'Bebida não encontrada');
+      }
+
+      return sendSuccess(
+          res,
+          200,
+          'Bebida excluída com sucesso'
+      );
+
+  } catch (error) {
+      console.error(error);
+
+      return sendError(
+          res,
+          500,
+          'Erro interno do servidor'
+      );
   }
 });
 

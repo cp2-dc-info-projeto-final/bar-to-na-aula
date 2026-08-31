@@ -33,7 +33,7 @@ services:
       - DB_NAME=elefantinho
       - DB_USER=elefantinho
       - DB_PASSWORD=elefantinho
-      - JWT_SECRET=K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=
+      # - JWT_SECRET=K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=
     ports:
       - "3000:3000"
     volumes:

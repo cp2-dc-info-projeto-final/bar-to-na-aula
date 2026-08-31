@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS bebida;
 CREATE TABLE bebida (
     id bigint GENERATED ALWAYS AS IDENTITY,
     nome text not null,
-    preço text no null,  -- troquei temporariamente por string, mas é number(integer)
+    preço text not null,  -- troquei temporariamente por string, mas é number(integer)
     marca text not null,
     tamanho text not null ,
     tipo text NOT NULL DEFAULT 'alcolico',
@@ -75,10 +75,10 @@ INSERT INTO usuario (login, email, senha, role) VALUES
 ('Dylan', 'dylan1210@gmail.com', '$2a$12$JVQIrqbuY4tcyJ9lhturHuXpnyFeInOylKTUel9HHUmFA.l4U.gRy', 'admin');
 
 INSERT INTO bebida (nome, preço, marca, tamanho, tipo) VALUES
-('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico')
+('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico');
 
-INSERT INTO comida (nome, preço, sabor) VALUES
-('batata', '12.00', 'salgado')
+-- INSERT INTO comida (nome, preço, sabor) VALUES
+-- ('batata', '12.00', 'salgado');
 
 
 
