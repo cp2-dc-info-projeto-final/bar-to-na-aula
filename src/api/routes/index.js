@@ -8,5 +8,4 @@ router.get('/', function(req, res, next) {
         message: 'Olá, mundo! Panetone <3'
       });
 });
-
 module.exports = router;

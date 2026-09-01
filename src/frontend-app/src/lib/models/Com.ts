@@ -1,7 +1,7 @@
 export interface Com {
     id: number;
     nome: string;
-    preco: number;
+    preco: string;
     sabor: string;
 }
 

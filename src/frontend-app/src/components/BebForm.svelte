@@ -15,7 +15,7 @@
     // Opções de roles
     const roleOptions = [
     { value: 'alcolico', name: 'alcolico' },
-    { value: 'naoAlcolico', name: 'Não alcolico' }
+    { value: 'nao alcolico', name: 'Não alcolico' }
     ];
     let loading = false;
     let error = '';

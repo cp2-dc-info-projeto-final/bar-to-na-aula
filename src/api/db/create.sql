@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS comida;
 CREATE TABLE comida (
     id bigint GENERATED ALWAYS AS IDENTITY,
     nome text not null,
-    preco INTEGER,
+    preco TEXT not NULL,
     sabor text NOT NULL DEFAULT 'salgado',
 
     CONSTRAINT pk_comida PRIMARY KEY (id),
@@ -75,10 +75,11 @@ INSERT INTO usuario (login, email, senha, role) VALUES
 ('Dylan', 'dylan1210@gmail.com', '$2a$12$JVQIrqbuY4tcyJ9lhturHuXpnyFeInOylKTUel9HHUmFA.l4U.gRy', 'admin');
 
 INSERT INTO bebida (nome, preco, marca, tamanho, tipo) VALUES
-('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico');
+('Cerveja', '12,00', 'heineken', 'pequeno', 'alcolico'),
+('Agua', '15,00', 'Gatorade', 'pequeno', 'nao alcolico');
 
 INSERT INTO comida (nome, preco, sabor) VALUES
-('batata', '12.00', 'salgado');
+('batata', '12,00', 'salgado');
 
 
 

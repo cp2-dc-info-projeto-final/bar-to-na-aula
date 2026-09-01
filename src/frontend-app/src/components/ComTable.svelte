@@ -131,7 +131,6 @@
             <TableBodyCell>{salgado.id}</TableBodyCell>
             <TableBodyCell>{salgado.nome}</TableBodyCell>
             <TableBodyCell>{salgado.preco}</TableBodyCell>
-
             <TableBodyCell>
                 <Badge color={salgado.sabor === 'salgado' ? 'red' : 'blue'} class="text-xs">
                 {salgado.sabor}

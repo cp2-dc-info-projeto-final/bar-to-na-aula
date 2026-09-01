@@ -62,7 +62,7 @@
     }
   
     onMount(async () => {
-      
+
     try {
         const res = await api.get('/beb');
         const body = res.data as ApiResponse<Beb[]>;
@@ -72,8 +72,9 @@
             error = body.message;
         }
     } catch (e: any) {
+      
         console.error('Erro ao carregar produtos:', e);
-
+    
         const body = e.response?.data as ApiResponse<Beb[]> | undefined;
 
         error = body?.message || 'Erro ao carregar produtos';

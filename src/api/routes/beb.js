@@ -25,11 +25,12 @@ router.get('/', verifyToken, isAdmin, async function(req, res) {
   try {
     const filtro = req.query.nome ? `%${req.query.nome}%` : "%";
     console.log("filtro: ", filtro);
-    const result = await pool.query('SELECT id, nome, preco, marca, tamanho,  tipo FROM bebida WHERE nome like $1 ORDER BY id', [filtro]);
+    const result = await pool.query('SELECT id, nome, preco, marca, tamanho, tipo FROM bebida WHERE nome like $1 ORDER BY id', [filtro]);
     return sendSuccess(res, 200, null, result.rows);
   } catch (error) {
     console.error('Erro ao buscar bebidas:', error);
     return sendError(res, 500, 'Erro interno do servidor');
+
   }
 });
 
@@ -45,7 +46,7 @@ router.get('/me', verifyToken, isAdmin, async function(req, res) {
 
     return sendSuccess(res, 200, null, result.rows[0]);
   } catch (error) {
-    console.error('Erro ao buscar preoduto:', error);
+    console.error('Erro ao buscar produto:', error);
     return sendError(res, 500, 'Erro interno do servidor');
   }
 });
@@ -54,11 +55,11 @@ router.get('/me', verifyToken, isAdmin, async function(req, res) {
 
 router.post('/', verifyToken, isAdmin, async function(req, res) { 
   try {
-    const { nome, marca, tamanho, preco, tipo } = req.body;
+    const { nome, preco, marca, tamanho, tipo } = req.body;
 
     console.log('DADOS RECEBIDOS:', req.body);
 
-    if (!nome || !marca || !tamanho || !preco || !tipo) {
+    if (!nome || !preco || !marca || !tamanho || !tipo) {
       const errors = [];
 
       if (!nome) {
