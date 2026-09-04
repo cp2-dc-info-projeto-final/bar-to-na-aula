@@ -90,8 +90,8 @@ try {
     }
 
     const result = await pool.query(
-    `INSERT INTO bebida (nome, preco, sabor)
-    VALUES ($1, $2, $3,)
+    `INSERT INTO comida (nome, preco, sabor)
+    VALUES ($1, $2, $3)
     RETURNING id, nome, preco, sabor`,
     [nome, preco, sabor]
     );
@@ -194,6 +194,8 @@ try {
     );
 }
 });
+
+
 
 
 

@@ -42,8 +42,7 @@ CREATE TABLE comida (
     sabor text NOT NULL DEFAULT 'salgado',
 
     CONSTRAINT pk_comida PRIMARY KEY (id),
-    CONSTRAINT ck_comida_sabor
-        CHECK (sabor IN ('salgado', 'doce'))
+    CONSTRAINT ck_comida_sabor CHECK (sabor IN ('salgado', 'doce'))
 );
 
 DROP TABLE IF EXISTS shows;

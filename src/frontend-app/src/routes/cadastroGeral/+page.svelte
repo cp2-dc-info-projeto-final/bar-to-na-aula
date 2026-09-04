@@ -1,11 +1,16 @@
 <script lang="ts">
-    import { Button } from 'flowbite-svelte'; // UI
 	import Menu from "../../components/Menu.svelte";
 </script>
 
 <Menu />
-<div class="flex items-stretch justify-center">
-    <Button class=""><a href="/users"> User </a></Button>
-    <Button class=""><a href="/bebida"> Bebidas </a></Button>
-    <Button class=""><a href="/comida"> Comida </a></Button>
+<div class="bg-(url[./images/fundobaratie.png]) bg-cover">
+    <div>
+        <h1 class="text-color-[#ffffff]">Opções de cadastros:</h1>
+    </div>
+
+    <div class="flex items-stretch justify-between m-130">
+        <button class="w-40 h-15 bg-[#ffffff] rounded-xl hover:bg-[#000000] hover:text-white transition"><a href="/users"> User </a></button>
+        <button class="w-40 h-15 bg-[#ffffff] rounded-xl hover:bg-[#000000] hover:text-white transition"><a href="/bebida"> Bebidas </a></button>
+        <button class="w-40 h-15 bg-[#ffffff] rounded-xl hover:bg-[#000000] hover:text-white transition"><a href="/comida"> Comida </a></button>
+    </div>
 </div>

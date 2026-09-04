@@ -66,6 +66,7 @@
     }
     }
 
+
     function handleCancel() {
     goto('/comida');
     }
