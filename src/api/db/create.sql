@@ -66,6 +66,56 @@ CREATE TABLE mesa(
     CONSTRAINT pk_mesa PRIMARY KEY (id),
     CONSTRAINT ck_mesa_tipo CHECK (tipo IN ('s/show', 'c/show'))
 );
+-- DROP TABLE IF EXISTS produto;
+
+-- CREATE TABLE produto(
+--     id bigint GENERATED ALWAYS AS IDENTITY,
+--     id_bebida BIGINT,
+--     preco_bebida INTEGER,
+--     id_comida BIGINT,
+--     preco_comida INTEGER;
+-- );
+    
+
+DROP TABLE IF EXISTS item_carrinho;
+
+CREATE TABLE item_carrinho(
+    id bigint GENERATED ALWAYS AS IDENTITY,
+    quantidade INTEGER,
+    id_usuario bigint,
+    id_bebida BIGINT,
+    id_comida BIGINT,
+    id_compra BIGINT,
+
+    CONSTRAINT fk_id_bebida FOREIGN KEY (id_bebida) REFERENCES bebida(id),
+    CONSTRAINT fk_id_comida FOREIGN KEY (id_comida) REFERENCES comida(id),
+    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    CONSTRAINT fk_id_compra FOREIGN KEY (id_compra) REFERENCES compra(id),
+
+    -- Garante que apenas uma das duas colunas seja preenchida
+    CONSTRAINT verificao
+        CHECK (
+            (id_bebida IS NOT NULL AND id_comida IS NULL) OR 
+            (id_bebida IS NULL AND id_comida IS NOT NULL)
+        )
+);
+
+DROP TABLE IF EXISTS compra;
+
+CREATE TABLE compra(
+    id bigint GENERATED ALWAYS AS IDENTITY,
+    id_usuario bigint,
+    preco_total INTEGER,
+    data_hora INTEGER,
+
+    CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+)
+
+DROP TABLE IF EXISTS historico;
+
+CREATE TABLE historico(
+    id BIGINT GENERATED ALWAYS AS IDENTITY
+);
 
 
 INSERT INTO usuario (login, email, senha, role) VALUES

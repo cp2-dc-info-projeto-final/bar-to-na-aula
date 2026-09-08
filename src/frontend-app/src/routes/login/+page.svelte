@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, Button, Input, Label, Alert } from "flowbite-svelte";
+  import { Button, Input, Label, Alert } from "flowbite-svelte";
   import { goto } from "$app/navigation";
   import { login as authLogin } from "$lib/auth";
 
@@ -58,7 +58,7 @@
     <div class="w-full max-w-sm ">
 
       
-      <Card class="p-6 w-full bg-[] b">
+      <div class="p-6 w-full bg-[] m-100">
         <form on:submit|preventDefault={handleLogin} class="space-y-6">
             <div>
               <Label for="login" class="mb-2 text-[#ffffff] text-center">Login</Label>
@@ -92,15 +92,15 @@
 
             <Button 
               type="submit"
-              class="w-full bg-[#000000]" 
+              class="w-full bg-[#224b5d] hover:bg-[#385f71]" 
               disabled={loading}
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </Button>  
 
-            <a href="/cadastro"><Button type="submit" class=" bg-[#000000] w-full ">Cadastro</Button></a>
+            <a href="/cadastro"><Button type="submit" class=" bg-[#224b5d] w-full hover:bg-[#385f71]">Cadastro</Button></a>
         </form>
-      </Card>
+      </div>
     </div>
   </div>
 </div>

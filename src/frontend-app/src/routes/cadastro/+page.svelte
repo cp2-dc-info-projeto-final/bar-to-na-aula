@@ -1,6 +1,6 @@
 <script lang="ts">
   import Menu from '../../components/Menu.svelte';
-  import { Card, Button, Input, Label, Alert } from "flowbite-svelte";
+  import { Button, Input, Label, Alert } from "flowbite-svelte";
   import { goto } from "$app/navigation";
   import { cadastro as authCadastro } from "$lib/auth";
   
@@ -56,7 +56,7 @@
     <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
       <div class="w-full max-w-sm">
   
-        <Card class="p-6 w-full bg-[]">
+        <div class="p-6 w-full bg-[] m-100">
           <form on:submit|preventDefault={handleCadastro} class="space-y-6">
   
               <div>
@@ -122,7 +122,7 @@
               </Button>
   
           </form>
-        </Card>
+        </div>
       </div>
     </div>
   </div> 
