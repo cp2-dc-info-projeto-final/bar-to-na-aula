@@ -30,7 +30,7 @@
 
   });
 </script>
-
+<div class="bg-[url(/images/vinil.png)] bg-cover h-screen">
 {#if checkingAccess}
   <div class="text-center p-8 pt-32 text-gray-500">Verificando acesso...</div>
 {:else if canView}
@@ -46,4 +46,4 @@
     <UsersTable />
   </div>
 {/if}
-+
+</div>

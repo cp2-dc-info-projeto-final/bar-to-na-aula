@@ -91,8 +91,6 @@ CREATE TABLE item_carrinho(
     CONSTRAINT fk_id_comida FOREIGN KEY (id_comida) REFERENCES comida(id),
     CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id),
     CONSTRAINT fk_id_compra FOREIGN KEY (id_compra) REFERENCES compra(id),
-
-    -- Garante que apenas uma das duas colunas seja preenchida
     CONSTRAINT verificao
         CHECK (
             (id_bebida IS NOT NULL AND id_comida IS NULL) OR 
