@@ -80,22 +80,22 @@
     </NavBrand>
     <NavHamburger />
     <NavUl>
-      <NavLi href="/" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Home</NavLi>
-      <NavLi href="/about" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Reservas</NavLi>
-      <NavLi href="/shows" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Shows</NavLi>
+      <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Home</NavLi>
+      <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Reservas</NavLi>
+      <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Shows</NavLi>
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
-            <NavLi href="/cadastroGeral" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Cadastros</NavLi>
+            <NavLi href="/cadastroGeral" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Cadastros</NavLi>
           {/if}
 
 
           <NavLi>
             <div class="flex items-center">
-              <span class="text-[#ffffff] px-4 py-2">Olá, {user.login}</span>
+              <span class="text-[#000000] font-text2">Olá, {user.login}</span>
               <button 
-                class="ml-2 px-3 py-1 bg-[#ffffff] hover:bg-[#ffffff] text-white rounded text-sm flex items-center gap-1"
+                class="ml-2 bg-[#000000] hover:bg-[#ffffff] text-white rounded text-sm flex items-center gap-1"
                 on:click={handleLogout}
               >
                 <ArrowRightToBracketOutline class="w-4 h-4" />
@@ -106,11 +106,11 @@
         {:else if loadingUser}
           <NavLi class="text-lg font-bold px-4 py-2 text-[#ffffff] dark:text-primary-400">Carregando...</NavLi>
         {:else}
-          <NavLi href="/login" class="text-gray-700 underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
+          <NavLi href="/login" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
         {/if}
       {:else}
         <!-- se não tem token, exibe botão de login-->
-        <NavLi href="/login" class="text-gray-700 underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
+        <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
       {/if}
           
     </NavUl>

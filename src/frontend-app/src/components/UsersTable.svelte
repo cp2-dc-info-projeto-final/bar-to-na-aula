@@ -101,7 +101,7 @@
 </script>
 
 {#if loading}
-  <div class="my-8 text-center text-gray-500">Carregando usuários...</div>
+  <div class="my-8 text-center text-gray-500 ">Carregando usuários...</div>
 {:else if error}
   <div class="my-8 text-center text-red-500">{error}</div>
 {:else}
@@ -112,7 +112,7 @@
 
     </div>
     <!-- Tabela de usuários -->
-    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 rounded-full">
+    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 ">
       <TableHead>
         <TableHeadCell class="w-16 ">ID</TableHeadCell>
         <TableHeadCell class="w-32">Login</TableHeadCell>
