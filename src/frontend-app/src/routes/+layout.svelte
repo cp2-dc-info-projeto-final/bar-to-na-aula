@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script> 
   <Menu />
-  <div class="w-full">
+  <div class="w-full bg-[#]">
     {@render children()}
   </div>
 

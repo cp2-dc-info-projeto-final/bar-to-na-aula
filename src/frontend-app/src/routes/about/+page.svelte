@@ -3,12 +3,6 @@
   import Menu from '../../components/Menu.svelte';
 </script>
 
-
 <Menu />
-<main class="">
-  <div>
-    <img src="./images/show.png" alt="" class="h-full w-screen">
-  </div>
 
-</main>
 
