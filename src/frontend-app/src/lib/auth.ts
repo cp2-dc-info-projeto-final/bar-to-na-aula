@@ -1,6 +1,10 @@
 import api from './api';
 import type { ApiResponse } from './api';
 import type { User } from './models/User';
+import { writable, derived } from 'svelte/store';
+
+export const currentUser = writable<User | null>(null);
+
 
 export interface LoginCredentials {
   login: string;

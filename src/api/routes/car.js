@@ -50,15 +50,15 @@ router.get('/', verifyToken, async function(res) {
         INNER JOIN comida ON item_carrinho.id_comida = comida.id
         
     CASE 
-        WHEM id_bebida IS NOT NULL 
+        WHEN id_bebida IS NOT NULL 
         THEN id_bebida ELSE id_comida 
     END AS id_produto,
     CASE 
-        WHEM nome_bebida IS NOT NULL 
+        WHEN nome_bebida IS NOT NULL 
         THEN nome_bebida ELSE nome_comida 
     END AS nome_produto,
     CASE 
-        WHEM preco_bebida IS NOT NULL 
+        WHEN preco_bebida IS NOT NULL 
         THEN preco_bebida ELSE preco_comida 
     END AS preco_produto, ;` );
     } catch (error) {
@@ -66,6 +66,8 @@ router.get('/', verifyToken, async function(res) {
     return sendError(res, 500, 'Erro ao carregar carrinho:');
     }
 });
+
+let x = 3;
 
 // SELECT c.nome, p.id_pedido, i.quantidade
 // FROM clientes AS c
