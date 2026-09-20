@@ -56,7 +56,7 @@
     <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
       <div class="w-full max-w-sm">
   
-        <div class="p-6 w-full bg-[] m-100">
+        <div class="p-6 w-full bg-[] ml-100">
           <form on:submit|preventDefault={handleCadastro} class="space-y-6">
   
               <div>
@@ -68,7 +68,7 @@
                   bind:value={login}
                   placeholder="Digite seu login"
                   required
-                />
+                  />
               </div>
   
               <div>

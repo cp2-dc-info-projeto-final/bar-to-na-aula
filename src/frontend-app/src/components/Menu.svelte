@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
+
   
   let user: User | null = null;
   let hasToken = false;
@@ -73,21 +74,22 @@
 </script>
 
 <div class="relative px-8">
-  <Navbar class=" fixed start-0 top-0 z-20 w-full py-2.5 sm:px-4">
+  <Navbar class="start-0 top-0 z-20 fixed w-full py-2.5 sm:px-4">
     <NavBrand href="/">
       
-      <Heading class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]">&#33294;</Heading>
+     <Heading class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]"><img src="./images/logo.png" alt="" class="h-8 w-18 rounded-4xl"></Heading>  <!-- icone de casinha -->
     </NavBrand>
     <NavHamburger />
     <NavUl>
-      <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Home</NavLi>
-      <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Reservas</NavLi>
-      <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Shows</NavLi>
+      <!-- <NavLi class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]">&#33294;</NavLi> -->
+      <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Home</NavLi>
+      <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
+      <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:text-[#166a8e] transition">Shows</NavLi>
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
-            <NavLi href="/cadastroGeral" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#ffffff] transition">Cadastros</NavLi>
+            <NavLi href="/cadastroGeral" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2 hover:text-[#166a8e] transition">Cadastros</NavLi>
           {/if}
 
 
@@ -106,11 +108,11 @@
         {:else if loadingUser}
           <NavLi class="text-lg font-bold px-4 py-2 text-[#ffffff] dark:text-primary-400">Carregando...</NavLi>
         {:else}
-          <NavLi href="/login" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
+          <NavLi href="/login" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:decoration-2  hover:text-[#166a8e] transition">Login</NavLi>
         {/if}
       {:else}
         <!-- se não tem token, exibe botão de login-->
-        <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#ffffff] transition">Login</NavLi>
+        <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#166a8e] transition">Login</NavLi>
       {/if}
           
     </NavUl>

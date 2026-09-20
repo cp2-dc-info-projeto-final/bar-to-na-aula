@@ -54,7 +54,7 @@
   <title>Login</title>
 </svelte:head>
 <div class="">
-  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
+  <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/baratielogin.png)] bg-cover">
     <div class="w-full max-w-sm ">
 
       
