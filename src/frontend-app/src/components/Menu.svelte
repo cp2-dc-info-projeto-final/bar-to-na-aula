@@ -84,7 +84,8 @@
       <!-- <NavLi class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]">&#33294;</NavLi> -->
       <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Home</NavLi>
       <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
-      <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:text-[#166a8e] transition">Shows</NavLi>
+      <NavLi href="/cardapio" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Cardapio</NavLi>
+      <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:text-[#166a8e] transition">Shows</NavLi>     
       
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
