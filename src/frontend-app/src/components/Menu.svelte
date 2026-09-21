@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
+  import { CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
 
   
   let user: User | null = null;
@@ -77,7 +78,7 @@
   <Navbar class="start-0 top-0 z-20 fixed w-full py-2.5 sm:px-4">
     <NavBrand href="/">
       
-     <Heading class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]"><img src="./images/logo.png" alt="" class="h-8 w-18 rounded-4xl"></Heading>  <!-- icone de casinha -->
+    <Heading class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]"><img src="./images/logo.png" alt="" class="h-8 w-18 rounded-4xl"></Heading>  <!-- icone de casinha -->
     </NavBrand>
     <NavHamburger />
     <NavUl>
@@ -86,7 +87,6 @@
       <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
       <NavLi href="/cardapio" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Cardapio</NavLi>
       <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:text-[#166a8e] transition">Shows</NavLi>     
-      
       {#if hasToken}
         {#if user} <!-- se existir usuário é porque conseguiu logar-->
           {#if user.role === 'admin'} <!-- só exibe menu usuários para admin-->
@@ -116,6 +116,9 @@
         <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#166a8e] transition">Login</NavLi>
       {/if}
           
+      
+      <NavLi href="/carrinho"><CartPlusAltOutline class="shrink-0 h-9 w-9 border-2 rounded-xl border-[#ffffff] hover:border-[#000000] transition" /></NavLi>
+      
     </NavUl>
   </Navbar>
 </div>

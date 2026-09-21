@@ -1,3 +1,3 @@
 <script lang="ts">
-	import models from "../../components/carrinho.ts";
+	import models from "../models/carrinho.ts";
 </script>
