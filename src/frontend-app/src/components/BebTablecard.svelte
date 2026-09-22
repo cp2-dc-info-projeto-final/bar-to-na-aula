@@ -2,13 +2,16 @@
     // Tabela de produtos
     import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge } from 'flowbite-svelte'; // UI
     import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
-    import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons'; // ícones
+    import { ArrowLeftOutline, CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
     import { goto } from '$app/navigation'; // navegação
     import api from '$lib/api'; // API backend
     import type { ApiResponse } from '$lib/api';
     import { onMount } from 'svelte'; // ciclo de vida
     import type { Beb } from '$lib/models/Beb';
-
+    import type { ItemCarrinho } from '$lib/models/ItemCarrinho';
+	  
+    
+    let item_carrinho: ItemCarrinho[] = []
     let bebidas: Beb[] = []
     let loading = true;
     let error = '';
@@ -40,7 +43,33 @@
     function handleCancel() {
       closeConfirm();
     }
-  
+    
+   
+    function ehMesmoProduto(item: ItemCarrinho, produto: Omit<ItemCarrinho, 'quantidade'>) {
+    return (
+      (produto.id_bebida !== undefined && item.id_bebida === produto.id_bebida) ||
+      (produto.id_comida !== undefined && item.id_comida === produto.id_comida)
+    );
+  }
+
+  export function adicionarAoCarrinho(produto: Omit<ItemCarrinho, 'quantidade'>) {
+    const itemExistente = item_carrinho.find(item => ehMesmoProduto(item, produto));
+
+    if (itemExistente) {
+      item_carrinho = item_carrinho.map(item =>
+        ehMesmoProduto(item, produto)
+          ? { ...item, quantidade: item.quantidade + 1 }
+          : item
+      );
+    } else {
+      item_carrinho = [...item_carrinho, { ...produto, quantidade: 1 }];
+    }
+  }
+
+  export function getCarrinho() {
+    return item_carrinho;
+  }
+
     async function handleDelete(id: number) {
       deletingId = id;
       error = '';
@@ -133,23 +162,19 @@
                 </Badge>
               </div>
               <div class="flex gap-2">
-                <!-- Botão editar -->
+                <!-- Botão carrinho -->
                 <button
+                  title=""
                   class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
-                  title="Editar"
-                  on:click={() => goto(`/bebida/edit/${alcolico.id}`)}
-                >
-                  <UserEditOutline class="w-5 h-5 text-primary-500" />
-                </button>
-                <!-- Botão remover -->
-                <button
-                  title="Remover"
-                  class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                  on:click={() => openConfirm(alcolico.id)}
-                  disabled={deletingId === alcolico.id || loading}
-                >
-                  <TrashBinOutline class="w-5 h-5 text-red-400" />
-                </button>
+                  on:click={() => adicionarAoCarrinho({
+                      id_bebida: alcolico.id,
+                      nome: alcolico.nome,
+                      preco: alcolico.preco
+                    })}>
+                <CartPlusAltOutline class="shrink-0 h-6 w-6 " /> 
+              </button>
+                   
+                
               </div>
             </div>
             <div class="px-4 pb-4 pt-2 flex flex-col gap-2 text-left">
@@ -173,5 +198,8 @@
     cancelText="Cancelar"
     onConfirm={handleConfirm}
     onCancel={handleCancel}
+
+
   />
+  
   

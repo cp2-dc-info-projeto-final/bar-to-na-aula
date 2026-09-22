@@ -1,17 +1,22 @@
 <script lang="ts">
-  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Heading} from "flowbite-svelte";
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Heading, button} from "flowbite-svelte";
   import { onMount } from "svelte";
   import { logout, getCurrentUser, getToken, type User } from "$lib/auth";
   import { goto } from "$app/navigation";
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
   import { CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
-
+  import '../app.css';
   
   let user: User | null = null;
   let hasToken = false;
   let loadingUser = false;
   let authRequestId = 0;
+  let aberto = false;
+
+  function toggleCard() {
+  aberto = !aberto;
+}   
 
   // Verifica token sincronamente (instantâneo)
   async function updateAuthStatus() {
@@ -72,9 +77,11 @@
       console.error('Erro no logout:', error);
     }
   }
+
+  let mostrar = false;
 </script>
 
-<div class="relative px-8">
+<div class="relative px-8 h-full">
   <Navbar class="start-0 top-0 z-20 fixed w-full py-2.5 sm:px-4">
     <NavBrand href="/">
       
@@ -115,11 +122,30 @@
         <!-- se não tem token, exibe botão de login-->
         <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#166a8e] transition">Login</NavLi>
       {/if}
-          
+
+         <!-- botão de carrinho -->
+      <button class="icon-btn " on:click={toggleCard} aria-expanded={aberto}>
+        <CartPlusAltOutline class="w-6 h-6" />
+      </button>
       
-      <NavLi href="/carrinho"><CartPlusAltOutline class="shrink-0 h-9 w-9 border-2 rounded-xl border-[#ffffff] hover:border-[#000000] transition" /></NavLi>
+      {#if aberto}
+        <div class="card h-200   w-100">
+          <div>
+
+          </div>
+          <div class="grid grid-cols-2 justify-between mt-175 ml-10">
+            <a href=""><button class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]">Cancelar</button></a>
+            <button class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]">Comprar</button>
+          </div>
+        </div>
+      {/if}
+      
+      <!-- <NavLi>
+        <button>
+          <CartPlusAltOutline class="shrink-0 h-9 w-9 border-2 rounded-xl border-[#ffffff] hover:border-[#000000] transition" />
+        </button>
+      </NavLi> -->
       
     </NavUl>
   </Navbar>
 </div>
-

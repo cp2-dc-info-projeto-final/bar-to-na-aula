@@ -62,3 +62,21 @@
  .sobre {
     margin-top: -30px;
   } 
+  
+  .icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  margin-top: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: white;
+}

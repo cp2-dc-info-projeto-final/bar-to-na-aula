@@ -100,6 +100,8 @@
         loading = false;
     }
     }
+
+    
     
 </script>
 
@@ -133,11 +135,11 @@
                 </Badge>
             </div>
             <div class="flex gap-2">
-                <!-- Botão editar -->
+                <!-- Botão comprar -->
                 <button
                 class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
                 title="Adicionar carrinho"
-                on:click={() => goto(`/comida/edit/${salgado.id}`)}
+              
                 >
                 <CartPlusAltOutline class="shrink-0 h-6 w-6" />
                 </button>
