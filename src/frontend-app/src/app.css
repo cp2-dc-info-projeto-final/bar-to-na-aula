@@ -61,21 +61,20 @@
  
  .sobre {
     position: absolute; /* Sai do fluxo normal do documento */
-    top: 100%;
+    top: 85%;
     border: 1px solid #ccc;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-radius: 10%;
+    border-radius: 3%;
     box-shadow: #3554ee;
     width: 75%;
     height: 700px;
     right: 13%;
-
+    background-color: ;
   }
   
   
   .icon-btn {
-  background: none;
-  border: none;
+
   cursor: pointer;
   padding: 8px;
   display: flex;
@@ -89,4 +88,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   background: white;
+}
+
+.fundo {
+  position: relative;
 }

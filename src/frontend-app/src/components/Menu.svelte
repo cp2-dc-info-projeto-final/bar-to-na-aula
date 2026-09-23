@@ -6,6 +6,7 @@
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
   import { CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
+  import { carrinho, removerDoCarrinho, atualizarQuantidade, totalItems, totalPrice } from '$lib/cart';
   import '../app.css';
   
   let user: User | null = null;
@@ -78,7 +79,19 @@
     }
   }
 
-  let mostrar = false;
+  function formatarPreco(valor: number) {
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function cancelar() {
+    aberto = false;
+  }
+
+  function comprar() {
+    // Troque pela sua lógica real de checkout (ex: goto('/checkout'))
+    aberto = false;
+    goto('/checkout');
+  }
 </script>
 
 <div class="relative px-8 h-full">
@@ -124,28 +137,81 @@
       {/if}
 
          <!-- botão de carrinho -->
-      <button class="icon-btn " on:click={toggleCard} aria-expanded={aberto}>
+      <button class="icon-btn relative" on:click={toggleCard} aria-expanded={aberto}>
         <CartPlusAltOutline class="w-6 h-6" />
+        {#if $totalItems > 0}
+          <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {$totalItems}
+          </span>
+        {/if}
       </button>
       
       {#if aberto}
-        <div class="card h-200   w-100">
-          <div>
 
+        <div class="card h-200 w-100 flex flex-col p-4">
+          <!-- lista de itens adicionados ao carrinho -->
+          <div class="flex-1 overflow-y-auto">
+            {#if $carrinho.length === 0}
+              <p class="text-sm text-gray-500 text-center mt-4">Seu carrinho está vazio.</p>
+            {:else}
+              <ul class="divide-y">
+                {#each $carrinho as item (item.id)}
+                  <li class="flex items-center justify-between gap-2 py-2">
+                    <div>
+                      <p class="text-sm text-[#000000]">{item.nome}</p>
+                      <p class="text-xs text-gray-500">{formatarPreco(item.preco)} un.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <button
+                        class="w-6 h-6 border rounded flex items-center justify-center"
+                        on:click={() => atualizarQuantidade(item.id, item.quantidade - 1)}
+                      >
+                        -
+                      </button>
+                      <span class="text-sm w-4 text-center">{item.quantidade}</span>
+                      <button
+                        class="w-6 h-6 border rounded flex items-center justify-center"
+                        on:click={() => atualizarQuantidade(item.id, item.quantidade + 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        class="text-xs text-red-600 ml-2"
+                        on:click={() => removerDoCarrinho(item.id)}
+                      >
+                        remover
+                      </button>
+                    </div>
+                  </li>
+                {/each}
+              </ul>
+
+              <div class="flex items-center justify-between border-t pt-2 mt-2">
+                <span class="text-sm font-semibold text-[#000000]">Total</span>
+                <span class="text-sm font-semibold text-[#000000]">{formatarPreco($totalPrice)}</span>
+              </div>
+            {/if}
           </div>
-          <div class="grid grid-cols-2 justify-between mt-175 ml-10">
-            <a href=""><button class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]">Cancelar</button></a>
-            <button class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]">Comprar</button>
+
+          <div class="grid grid-cols-2 justify-between mt-4 ml-10">
+            <button
+              class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]"
+              on:click={cancelar}
+            >
+              Cancelar
+            </button>
+            <button
+              class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000] disabled:opacity-40"
+              on:click={comprar}
+              disabled={$carrinho.length === 0}
+            >
+              Comprar
+            </button>
           </div>
         </div>
+
       {/if}
-      
-      <!-- <NavLi>
-        <button>
-          <CartPlusAltOutline class="shrink-0 h-9 w-9 border-2 rounded-xl border-[#ffffff] hover:border-[#000000] transition" />
-        </button>
-      </NavLi> -->
-      
     </NavUl>
   </Navbar>
 </div>

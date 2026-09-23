@@ -8,6 +8,8 @@
     import type { ApiResponse } from '$lib/api';
     import { onMount } from 'svelte'; // ciclo de vida
     import type { Com } from '$lib/models/Com';
+    import { adicionarAoCarrinho } from '$lib/cart';
+    import { currentUser } from '$lib/auth';
 
     let comidas: Com[] = []
     let loading = true;
@@ -16,6 +18,7 @@
     let confirmOpen = false; // modal aberto?
     let confirmTargetId: number | null = null; // id alvo do modal
     let filtro = '';
+    let adicionadoId: number | null = null; // feedback visual ao adicionar
 
     // Abre modal de confirmação
     function openConfirm(id: number) {
@@ -59,6 +62,35 @@
     } finally {
         deletingId = null;
     }
+    }
+
+    // Converte preço vindo da API (pode chegar como number ou string, ex: "12,50" ou "12.50")
+    function parsePreco(valor: number | string): number {
+    if (typeof valor === 'number') return valor;
+    const normalizado = valor.replace(/\./g, '').replace(',', '.').replace(/[^\d.-]/g, '');
+    const num = parseFloat(normalizado);
+    return isNaN(num) ? 0 : num;
+    }
+
+    // Adiciona o alimento ao carrinho
+    function handleAddCarrinho(salgado: Com) {
+    const preco = parsePreco(salgado.preco);
+
+    if (preco <= 0) {
+        error = `Não foi possível adicionar "${salgado.nome}": preço inválido.`;
+        return;
+    }
+
+    adicionarAoCarrinho(
+        { tipo: 'comida', id_comida: salgado.id, nome: salgado.nome, preco },
+        $currentUser?.id ?? null
+    );
+
+    // feedback visual rápido no botão clicado
+    adicionadoId = salgado.id;
+    setTimeout(() => {
+        if (adicionadoId === salgado.id) adicionadoId = null;
+    }, 1000);
     }
 
     onMount(async () => {
@@ -111,15 +143,13 @@
     <div class="my-8 text-center text-red-500">{error}</div>
 {:else}
     <!-- Tabela para telas médias/grandes -->
-    <div class="hidden xl:block">
-    <div class="filtro">
-        <input type="text" id="pesquisa" placeholder="Digite o nome do alimento..." bind:value={filtro}  on:input={carregarComidas} />
+    <div class="hidden xl:block ml-95">
+        <div class="filtro ">
+            <input class="rounded-xl"  type="text" id="pesquisa" placeholder="Digite o nome do alimento..." bind:value={filtro}  on:input={carregarComidas} />
 
+        </div>
     </div>
-    <!-- Tabela de usuários -->
 
-    </div>
-    <br><br><br><br><br>
     <!-- Cards para telas pequenas -->
     <div class="block">
     <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
@@ -137,9 +167,9 @@
             <div class="flex gap-2">
                 <!-- Botão comprar -->
                 <button
-                class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
+                class="p-2 rounded border transition bg-transparent {adicionadoId === salgado.id ? 'border-green-400 text-green-600' : 'border-primary-200 hover:border-primary-400'}"
                 title="Adicionar carrinho"
-              
+                on:click={() => handleAddCarrinho(salgado)}
                 >
                 <CartPlusAltOutline class="shrink-0 h-6 w-6" />
                 </button>

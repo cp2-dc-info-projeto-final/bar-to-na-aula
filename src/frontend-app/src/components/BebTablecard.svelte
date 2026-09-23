@@ -10,8 +10,6 @@
     import type { Beb } from '$lib/models/Beb';
     import type { ItemCarrinho } from '$lib/models/ItemCarrinho';
 	  
-    
-    let item_carrinho: ItemCarrinho[] = []
     let bebidas: Beb[] = []
     let loading = true;
     let error = '';
@@ -140,12 +138,9 @@
 {:else}
     <!-- Tabela para telas médias/grandes -->
     <div class="hidden xl:block">
-    <div class="filtro">
-        <input type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarBebidas} />
-
-    </div>
-    <!-- Tabela de usuários -->
-   
+      <div class="filtro ml-95 ">
+          <input class="rounded-xl" type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarBebidas} />
+      </div>
     </div>
     <!-- Cards para telas pequenas -->
     <div class="block ">

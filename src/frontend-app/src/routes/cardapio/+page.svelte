@@ -4,11 +4,14 @@
 
 </script>
 
-<div class="bg-[url(./images/vinil.png)] bg-cover h-full ">
-    <div class=""> 
-        <ComTablecard />
-    </div>
-    <div class="">
-        <BebTablecard />
+<div class=" bg-[url(./images/vinil.png)] bg-cover h-screen ">
+    <br><br><br><br><br><br>
+    <div class="grid grid-cols-2">
+        <div class="cols-1"> 
+            <ComTablecard />
+        </div>
+        <div class="cols-1">
+            <BebTablecard />
+        </div>
     </div>
 </div>
