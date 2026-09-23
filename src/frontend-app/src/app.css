@@ -60,8 +60,18 @@
   }
  
  .sobre {
-    margin-top: -30px;
-  } 
+    position: absolute; /* Sai do fluxo normal do documento */
+    top: 100%;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 10%;
+    box-shadow: #3554ee;
+    width: 75%;
+    height: 700px;
+    right: 13%;
+
+  }
+  
   
   .icon-btn {
   background: none;
