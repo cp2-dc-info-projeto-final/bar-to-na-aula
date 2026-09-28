@@ -1,8 +1,8 @@
 export interface Com {
     id: number;
-    nome: string;
+    horario: number;
     preco: string;
-    sabor: string;
+    tipo: string;
 }
 
 export interface ComFormData {

@@ -60,7 +60,8 @@ DROP TABLE IF EXISTS mesa;
 
 CREATE TABLE mesa(
     id bigint GENERATED ALWAYS AS IDENTITY,
-    horario INTEGER,
+    identificacao TEXT not NULL,
+    identificacao INTEGER,
     tipo text NOT NULL DEFAULT 's/show',
 
     CONSTRAINT pk_mesa PRIMARY KEY (id),

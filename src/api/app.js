@@ -31,6 +31,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/beb', bebRouter);
 app.use('/com', comRouter);
+app.use('/mesa', mesaRouter);
+app.use('/show', showRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
