@@ -4,7 +4,6 @@
 
 </script>
 
-<Menu />
 
 <div class="bg-[#deb266]"> 
   <div class="fundo">

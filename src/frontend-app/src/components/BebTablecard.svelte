@@ -1,200 +1,199 @@
 <script lang="ts">
-    // Tabela de produtos
-    import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge } from 'flowbite-svelte'; // UI
-    import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
-    import { ArrowLeftOutline, CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
-    import { goto } from '$app/navigation'; // navegação
-    import api from '$lib/api'; // API backend
-    import type { ApiResponse } from '$lib/api';
-    import { onMount } from 'svelte'; // ciclo de vida
-    import type { Beb } from '$lib/models/Beb';
-    import type { ItemCarrinho } from '$lib/models/ItemCarrinho';
-	  
-    let bebidas: Beb[] = []
-    let loading = true;
-    let error = '';
-    let deletingId: number | null = null; // id em deleção
-    let confirmOpen = false; // modal aberto?
-    let confirmTargetId: number | null = null; // id alvo do modal
-    let filtro = '';
+  // Tabela de produtos
+  import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge } from 'flowbite-svelte'; // UI
+  import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
+  import { ArrowLeftOutline, CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
+  import { goto } from '$app/navigation'; // navegação
+  import api from '$lib/api'; // API backend
+  import type { ApiResponse } from '$lib/api';
+  import { onMount } from 'svelte'; // ciclo de vida
+  import type { Beb } from '$lib/models/Beb';
+  import { adicionarAoCarrinho } from '$lib/cart';
+  import { currentUser } from '$lib/auth';
   
-    // Abre modal de confirmação
-    function openConfirm(id: number) {
-      confirmTargetId = id;
-      confirmOpen = true;
+  let bebidas: Beb[] = []
+  let loading = true;
+  let error = '';
+  let deletingId: number | null = null; // id em deleção
+  let confirmOpen = false; // modal aberto?
+  let confirmTargetId: number | null = null; // id alvo do modal
+  let filtro = '';
+  let adicionadoId: number | null = null; // feedback visual ao adicionar
+
+  // Abre modal de confirmação
+  function openConfirm(id: number) {
+    confirmTargetId = id;
+    confirmOpen = true;
+  }
+  // Fecha modal
+  function closeConfirm() {
+    confirmOpen = false;
+    confirmTargetId = null;
+  }
+
+  // Confirma remoção
+  function handleConfirm() {
+    if (confirmTargetId !== null) {
+      handleDelete(confirmTargetId);
     }
-    // Fecha modal
-    function closeConfirm() {
-      confirmOpen = false;
-      confirmTargetId = null;
+    closeConfirm();
+  }
+
+  // Cancela remoção
+  function handleCancel() {
+    closeConfirm();
+  }
+
+  // Converte preço vindo da API (pode chegar como number ou string, ex: "12,50" ou "12.50")
+  function parsePreco(valor: number | string): number {
+    if (typeof valor === 'number') return valor;
+    const normalizado = valor.replace(/\./g, '').replace(',', '.').replace(/[^\d.-]/g, '');
+    const num = parseFloat(normalizado);
+    return isNaN(num) ? 0 : num;
+  }
+
+  // Adiciona a bebida ao carrinho (usa o store compartilhado em $lib/cart)
+  function handleAddCarrinho(alcolico: Beb) {
+    const preco = parsePreco(alcolico.preco);
+
+    if (preco <= 0) {
+      error = `Não foi possível adicionar "${alcolico.nome}": preço inválido.`;
+      return;
     }
-  
-    // Confirma remoção
-    function handleConfirm() {
-      if (confirmTargetId !== null) {
-        handleDelete(confirmTargetId);
-      }
-      closeConfirm();
-    }
-  
-    // Cancela remoção
-    function handleCancel() {
-      closeConfirm();
-    }
-    
-   
-    function ehMesmoProduto(item: ItemCarrinho, produto: Omit<ItemCarrinho, 'quantidade'>) {
-    return (
-      (produto.id_bebida !== undefined && item.id_bebida === produto.id_bebida) ||
-      (produto.id_comida !== undefined && item.id_comida === produto.id_comida)
+
+    adicionarAoCarrinho(
+      { tipo: 'bebida', id_bebida: alcolico.id, nome: alcolico.nome, preco },
+      $currentUser?.id ?? null
     );
+
+    // feedback visual rápido no botão clicado
+    adicionadoId = alcolico.id;
+    setTimeout(() => {
+      if (adicionadoId === alcolico.id) adicionadoId = null;
+    }, 1000);
   }
 
-  export function adicionarAoCarrinho(produto: Omit<ItemCarrinho, 'quantidade'>) {
-    const itemExistente = item_carrinho.find(item => ehMesmoProduto(item, produto));
-
-    if (itemExistente) {
-      item_carrinho = item_carrinho.map(item =>
-        ehMesmoProduto(item, produto)
-          ? { ...item, quantidade: item.quantidade + 1 }
-          : item
-      );
-    } else {
-      item_carrinho = [...item_carrinho, { ...produto, quantidade: 1 }];
-    }
-  }
-
-  export function getCarrinho() {
-    return item_carrinho;
-  }
-
-    async function handleDelete(id: number) {
-      deletingId = id;
-      error = '';
-      try {
-        const res = await api.delete(`/bebida/${id}`);
-        const body = res.data as ApiResponse<null>;
-        if (!body.success) {
-          error = body.message;
-          return;
-        }
-        bebidas = bebidas.filter(bebida => bebida.id !== id);
-    } catch (e: any) {
-        console.error('Erro ao deletar produto:', e);
-        const body = e.response?.data as ApiResponse<null> | undefined;
-        error = body?.message || 'Erro ao remover produto.';
-    } finally {
-        deletingId = null;
-    }
-    }
-  
-    onMount(async () => {
-
+  async function handleDelete(id: number) {
+    deletingId = id;
+    error = '';
     try {
-        const res = await api.get('/beb');
-        const body = res.data as ApiResponse<Beb[]>;
-        if (body.success) {
-            bebidas = body.data ?? [];
-        } else {
-            error = body.message;
-        }
-    } catch (e: any) {
-      
-        console.error('Erro ao carregar produtos:', e);
-    
-        const body = e.response?.data as ApiResponse<Beb[]> | undefined;
+      const res = await api.delete(`/bebida/${id}`);
+      const body = res.data as ApiResponse<null>;
+      if (!body.success) {
+        error = body.message;
+        return;
+      }
+      bebidas = bebidas.filter(bebida => bebida.id !== id);
+  } catch (e: any) {
+      console.error('Erro ao deletar produto:', e);
+      const body = e.response?.data as ApiResponse<null> | undefined;
+      error = body?.message || 'Erro ao remover produto.';
+  } finally {
+      deletingId = null;
+  }
+  }
 
-        error = body?.message || 'Erro ao carregar produtos';
-    } finally {
-        loading = false;
-    }
+  onMount(async () => {
+
+  try {
+      const res = await api.get('/beb');
+      const body = res.data as ApiResponse<Beb[]>;
+      if (body.success) {
+          bebidas = body.data ?? [];
+      } else {
+          error = body.message;
+      }
+  } catch (e: any) {
+    
+      console.error('Erro ao carregar produtos:', e);
+  
+      const body = e.response?.data as ApiResponse<Beb[]> | undefined;
+
+      error = body?.message || 'Erro ao carregar produtos';
+  } finally {
+      loading = false;
+  }
 });
 
-    async function carregarBebidas() {
-    try {
-        console.log("filtro: ", filtro);
-        const res = await api.get(`/beb?nome=${encodeURIComponent(filtro)}`);
-        const body = res.data as ApiResponse<Beb[]>;
-        if (body.success) {
-            bebidas = body.data ?? [];
-        } else {
-        error = body.message;
-        }
-    } catch (e: any) {
-        console.error('Erro ao carregar produtos:', e);
-        const body = e.response?.data as ApiResponse<Beb[]> | undefined;
-        error = body?.message || 'Erro ao carregar produtos';
-      } finally {
-        loading = false;
+  async function carregarBebidas() {
+  try {
+      console.log("filtro: ", filtro);
+      const res = await api.get(`/beb?nome=${encodeURIComponent(filtro)}`);
+      const body = res.data as ApiResponse<Beb[]>;
+      if (body.success) {
+          bebidas = body.data ?? [];
+      } else {
+      error = body.message;
       }
+  } catch (e: any) {
+      console.error('Erro ao carregar produtos:', e);
+      const body = e.response?.data as ApiResponse<Beb[]> | undefined;
+      error = body?.message || 'Erro ao carregar produtos';
+    } finally {
+      loading = false;
     }
-    
+  }
+  
 </script>
 
 {#if loading}
-    <div class="my-8 text-center text-gray-500">Carregando produtos...</div>
+  <div class="my-8 text-center text-gray-500">Carregando produtos...</div>
 {:else if error}
-    <div class="my-8 text-center text-red-500">{error}</div>
+  <div class="my-8 text-center text-red-500">{error}</div>
 {:else}
-    <!-- Tabela para telas médias/grandes -->
-    <div class="hidden xl:block">
-      <div class="filtro ml-95 ">
-          <input class="rounded-xl" type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarBebidas} />
-      </div>
+  <!-- Tabela para telas médias/grandes -->
+  <div class="hidden xl:block">
+    <div class="filtro ml-95 ">
+        <input class="rounded-xl" type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarBebidas} />
     </div>
-    <!-- Cards para telas pequenas -->
-    <div class="block ">
-      <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
-        {#each bebidas as alcolico}
-          <!-- Card de usuário -->
-          <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
-            <div class="px-4 pt-4 pb-2 bg-gray-100 text-left flex items-center justify-between">
-              <div>
-                <div class="text-lg font-semibold text-gray-800 text-left">{alcolico.nome}</div>
-                <div class="text-xs text-gray-400 text-left">ID: {alcolico.id}</div>
-                <Badge color={alcolico.tipo === 'alcolico' ? 'red' : 'blue'} class="text-xs mt-1">
-                  {alcolico.tipo}
-                </Badge>
-              </div>
-              <div class="flex gap-2">
-                <!-- Botão carrinho -->
-                <button
-                  title=""
-                  class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
-                  on:click={() => adicionarAoCarrinho({
-                      id_bebida: alcolico.id,
-                      nome: alcolico.nome,
-                      preco: alcolico.preco
-                    })}>
-                <CartPlusAltOutline class="shrink-0 h-6 w-6 " /> 
-              </button>
-                   
-                
-              </div>
+  </div>
+  <!-- Cards para telas pequenas -->
+  <div class="block ">
+    <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
+      {#each bebidas as alcolico}
+        <!-- Card de usuário -->
+        <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
+          <div class="px-4 pt-4 pb-2 bg-gray-100 text-left flex items-center justify-between">
+            <div>
+              <div class="text-lg font-semibold text-gray-800 text-left">{alcolico.nome}</div>
+              <div class="text-xs text-gray-400 text-left">ID: {alcolico.id}</div>
+              <Badge color={alcolico.tipo === 'alcolico' ? 'red' : 'blue'} class="text-xs mt-1">
+                {alcolico.tipo}
+              </Badge>
             </div>
-            <div class="px-4 pb-4 pt-2 flex flex-col gap-2 text-left">
-              <div class="flex items-center gap-2 text-left">
-                <!-- Ícone de email -->
-                <svg class="w-4 h-4 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 12A4 4 0 1 0 8 12a4 4 0 0 0 8 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7m-7-7v7m14-7v7"/></svg>
-                <span class="text-gray-700 text-sm">{alcolico.preco}</span>
-              </div>
+            <div class="flex gap-2">
+              <!-- Botão carrinho -->
+              <button
+                title="Adicionar carrinho"
+                class="p-2 rounded border transition bg-transparent {adicionadoId === alcolico.id ? 'border-green-400 text-green-600' : 'border-primary-200 hover:border-primary-400'}"
+                on:click={() => handleAddCarrinho(alcolico)}>
+              <CartPlusAltOutline class="shrink-0 h-6 w-6 " /> 
+            </button>
+                 
+              
             </div>
-          </Card>
-        {/each}
-      </div>
+          </div>
+          <div class="px-4 pb-4 pt-2 flex flex-col gap-2 text-left">
+            <div class="flex items-center gap-2 text-left">
+              <!-- Ícone de email -->
+              <svg class="w-4 h-4 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 12A4 4 0 1 0 8 12a4 4 0 0 0 8 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7m-7-7v7m14-7v7"/></svg>
+              <span class="text-gray-700 text-sm">{alcolico.preco}</span>
+            </div>
+          </div>
+        </Card>
+      {/each}
     </div>
-  {/if}
-  
-  <!-- Modal de confirmação -->
-  <ConfirmModal
-    open={confirmOpen}
-    message="Tem certeza que deseja remover esta bebida?"
-    confirmText="Remover"
-    cancelText="Cancelar"
-    onConfirm={handleConfirm}
-    onCancel={handleCancel}
+  </div>
+{/if}
+
+<!-- Modal de confirmação -->
+<ConfirmModal
+  open={confirmOpen}
+  message="Tem certeza que deseja remover esta bebida?"
+  confirmText="Remover"
+  cancelText="Cancelar"
+  onConfirm={handleConfirm}
+  onCancel={handleCancel}
 
 
-  />
-  
-  
+/>

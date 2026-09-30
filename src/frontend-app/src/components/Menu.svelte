@@ -90,7 +90,7 @@
   function comprar() {
     // Troque pela sua lógica real de checkout (ex: goto('/checkout'))
     aberto = false;
-    goto('/checkout');
+    goto('/compraB');
   }
 </script>
 
@@ -137,7 +137,7 @@
       {/if}
 
          <!-- botão de carrinho -->
-      <button class="icon-btn relative" on:click={toggleCard} aria-expanded={aberto}>
+      <button class="icon-btn relative" on:click={toggleCard} aria-expanded={aberto}   >
         <CartPlusAltOutline class="w-6 h-6" />
         {#if $totalItems > 0}
           <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
