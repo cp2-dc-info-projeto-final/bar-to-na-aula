@@ -5,7 +5,7 @@
   import { goto } from "$app/navigation";
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
-  import { CartPlusAltOutline } from 'flowbite-svelte-icons'; // ícones
+  import { CartPlusAltOutline, ClockSolid } from 'flowbite-svelte-icons'; // ícones
   import { carrinho, removerDoCarrinho, atualizarQuantidade, totalItems, totalPrice } from '$lib/cart';
   import '../app.css';
   
@@ -15,9 +15,9 @@
   let authRequestId = 0;
   let aberto = false;
 
-  function toggleCard() {
+  function carrin() {
   aberto = !aberto;
-}   
+}     
 
   // Verifica token sincronamente (instantâneo)
   async function updateAuthStatus() {
@@ -90,7 +90,8 @@
   function comprar() {
     // Troque pela sua lógica real de checkout (ex: goto('/checkout'))
     aberto = false;
-    goto('/compraB');
+    goto('/compraB'); // compra Bem-sucedida
+    
   }
 </script>
 
@@ -104,7 +105,15 @@
     <NavUl>
       <!-- <NavLi class="self-center text-4xl font-text2 whitespace-nowrap text-[#000308]">&#33294;</NavLi> -->
       <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Home</NavLi>
-      <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
+
+      {#if user} <!-- se existir usuário é porque conseguiu logar-->
+        <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
+        {/if}
+
+      {#if user} <!-- se existir usuário é porque conseguiu logar-->
+        <NavLi href="/historico" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">historico</NavLi>
+        {/if}
+
       <NavLi href="/cardapio" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Cardapio</NavLi>
       <NavLi href="/shows" class="text-[#000000] underline-offset-4 font-text2 hover:underline hover:text-[#166a8e] transition">Shows</NavLi>     
       {#if hasToken}
@@ -136,15 +145,18 @@
         <NavLi href="/login" class="text-[#000000] underline-offset-4 hover:underline font-text2 hover:decoration-2  hover:text-[#166a8e] transition">Login</NavLi>
       {/if}
 
-         <!-- botão de carrinho -->
-      <button class="icon-btn relative" on:click={toggleCard} aria-expanded={aberto}   >
-        <CartPlusAltOutline class="w-6 h-6" />
-        {#if $totalItems > 0}
-          <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {$totalItems}
-          </span>
-        {/if}
-      </button>
+       
+      {#if user} <!-- se existir usuário é porque conseguiu logar-->
+        <!-- botão de carrinho -->
+          <button class="icon-btn relative" on:click={carrin} aria-expanded={aberto}   >
+            <CartPlusAltOutline class="w-6 h-6" />
+            {#if $totalItems > 0}
+              <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {$totalItems}
+              </span>
+            {/if}
+          </button>
+          {/if}
       
       {#if aberto}
 
@@ -212,6 +224,26 @@
         </div>
 
       {/if}
+
+
+  <!-- prototipo de historico na barra de trabalho -->
+
+      <!-- {#if user} 
+        <button class="icon-btn relative" on:click={hist} aria-expanded={aberto}   >
+          <ClockSolid class="w-6 h-6" />
+          {#if $totalItems > 0}
+            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {$totalItems}
+            </span>
+          {/if}
+        </button>
+        {/if}
+    
+    {#if aberto}
+
+      
+
+    {/if} -->
     </NavUl>
   </Navbar>
 </div>
