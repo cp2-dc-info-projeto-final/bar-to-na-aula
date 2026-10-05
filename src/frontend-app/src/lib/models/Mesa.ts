@@ -1,13 +1,13 @@
 export interface Mesa {
     id: number;
     tipo: string;
-    horario: number;
+    indentificação: string;
     
 }
 
 export interface MesaFormData {
     id: number;
     tipo: string;
-    horario: number;
+    indentificação: string;
    
 }

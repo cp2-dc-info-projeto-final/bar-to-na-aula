@@ -60,12 +60,11 @@ DROP TABLE IF EXISTS mesa;
 
 CREATE TABLE mesa(
     id bigint GENERATED ALWAYS AS IDENTITY,
-    identificacao TEXT not NULL,
     identificacao INTEGER,
-    tipo text NOT NULL DEFAULT 's/show',
+    tipo text NOT NULL DEFAULT 'sem_show',
 
     CONSTRAINT pk_mesa PRIMARY KEY (id),
-    CONSTRAINT ck_mesa_tipo CHECK (tipo IN ('s/show', 'c/show'))
+    CONSTRAINT ck_mesa_tipo CHECK (tipo IN ('sem_show', 'com_show'))
 );
 -- DROP TABLE IF EXISTS produto;
 

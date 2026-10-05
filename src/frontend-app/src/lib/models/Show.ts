@@ -1,7 +1,7 @@
 export interface Show {
     id: number;
     artista: string;
-    horario: number;
+    horario: string;
     genero: string;
     
 }
@@ -9,7 +9,7 @@ export interface Show {
 export interface ShowFormData {
     id: number;
     artista: string;
-    horario: number;
+    horario: string;
     genero: string;
 }
 
