@@ -14,7 +14,8 @@
         <div class="col-span-1  text-center"><br>
           <div class="">
             <h1 class="mt-50 ">Seja bem-vindo ao ...!</h1>
-            <h2 class="mt-20 ">ier7gteuytrueyb6 <br>ietrythfeiu <br>gteryfhwiet69
+            <h2 class="mt-20 ">ier7gteuytrueyb6 <br>ietrythfeiu <br>gteryfhwiet69</h2>
+              
           </div>
         </div>
         <div class="col-span-1  overflow-hidden">
@@ -23,7 +24,7 @@
       </div>
     </div>
 
-  <div class="fundo h-screen"></div>
+  <div class=" h-screen"></div>
 </div>
 
 
