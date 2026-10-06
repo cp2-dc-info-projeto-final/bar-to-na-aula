@@ -36,45 +36,24 @@ function gerarIdLocal() {
 const internal: Writable<hist[]> = writable<hist[]>([]);
 let currentKey = storageKeyFor(null);
 
-if (browser) {
-  // Inicializa a partir do sessionStorage (sem qualquer migração de localStorage)
-  try {
-    const initialJson = sessionStorage.getItem(currentKey);
-    const initial: hist[] = initialJson ? JSON.parse(initialJson) : [];
-    internal.set(initial);
+/** Carrega o histórico do usuário informado (ou do convidado, se for null). */
+export function trocarUsuarioHistorico(user: { id?: number | string; email?: string; login?: string } | null) {
+  if (!browser) return;
 
-    // ajusta o contador de ids locais pra não colidir com o que já estava salvo
-    proximoIdLocal = initial.reduce((max, item) => Math.max(max, item.id + 1), 1);
+  const id = user ? (user.id ?? user.email ?? user.login) : null;
+  const newKey = id != null ? `Historico_${id}` : 'Historico_guest';
+  if (newKey === currentKey) return;
+
+  currentKey = newKey;
+  try {
+    const dataJson = sessionStorage.getItem(currentKey);
+    const data: hist[] = dataJson ? JSON.parse(dataJson) : [];
+    internal.set(data); // o subscribe de salvamento grava na chave nova
+    proximoIdLocal = data.reduce((max, item) => Math.max(max, item.id + 1), 1);
   } catch (e) {
-    console.error('Erro ao ler sessionStorage do Historico:', e);
+    console.error('Erro ao carregar Historico da sessionStorage:', e);
     internal.set([]);
   }
-
-  // Sempre salva no sessionStorage atual quando o store mudar
-  internal.subscribe(items => {
-    try {
-      sessionStorage.setItem(currentKey, JSON.stringify(items));
-    } catch (e) {
-      console.error('Erro ao salvar Historico em sessionStorage:', e);
-    }
-  });
-
-  // Quando o usuário loga/desloga, trocamos a chave e carregamos apenas o que existir
-  currentUser.subscribe(user => {
-    const newKey = storageKeyFor(user);
-    if (newKey === currentKey) return;
-
-    currentKey = newKey;
-    try {
-      const dataJson = sessionStorage.getItem(currentKey);
-      const data: hist[] = dataJson ? JSON.parse(dataJson) : [];
-      internal.set(data);
-      proximoIdLocal = data.reduce((max, item) => Math.max(max, item.id + 1), 1);
-    } catch (e) {
-      console.error('Erro ao carregar Historico da sessionStorage:', e);
-      internal.set([]);
-    }
-  });
 }
 
 // API do store (compatível com writable)
@@ -147,4 +126,26 @@ export function getTotalItens() {
   const unsub = totalItems.subscribe(v => (val = v));
   unsub();
   return val;
+}
+
+/** Move os itens do carrinho para o Historico como uma compra efetivada. */
+export function registrarCompra(
+  itensCarrinho: { id_comida?: number | null; id_bebida?: number | null; nome: string; preco: number; quantidade: number }[],
+  id_usuario: number | null = null
+) {
+  const id_compra = Date.now(); // provisório, até o backend devolver o id real
+
+  internal.update(items => [
+    ...items,
+    ...itensCarrinho.map(c => ({
+      id: gerarIdLocal(),
+      id_usuario,
+      id_comida: c.id_comida ?? null,
+      id_bebida: c.id_bebida ?? null,
+      id_compra,
+      nome: c.nome,
+      preco: c.preco,
+      quantidade: c.quantidade
+    }))
+  ]);
 }

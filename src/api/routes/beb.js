@@ -21,7 +21,7 @@ return res.status(status).json({
 }
 
  //Busca
-router.get('/', verifyToken,   async function(req, res) {
+router.get('/', async function(req, res) {
   try {
     const filtro = req.query.nome ? `%${req.query.nome}%` : "%";
     console.log("filtro: ", filtro);

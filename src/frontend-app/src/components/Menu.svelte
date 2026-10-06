@@ -6,7 +6,8 @@
   import { ArrowRightToBracketOutline } from "flowbite-svelte-icons";
   import { page } from "$app/stores";
   import { CartPlusAltOutline, ClockSolid } from 'flowbite-svelte-icons'; // ícones
-  import { carrinho, removerDoCarrinho, atualizarQuantidade, totalItems, totalPrice } from '$lib/cart';
+  import { carrinho, removerDoCarrinho, atualizarQuantidade, totalItems, totalPrice, limparCarrinho } from '$lib/cart';
+  import { registrarCompra, trocarUsuarioHistorico  } from '$lib/historico';
   import '../app.css';
   
   let user: User | null = null;
@@ -88,11 +89,17 @@
   }
 
   function comprar() {
-    // Troque pela sua lógica real de checkout (ex: goto('/checkout'))
-    aberto = false;
-    goto('/compraB'); // compra Bem-sucedida
-    
-  }
+  if ($carrinho.length === 0) return;
+
+  registrarCompra($carrinho, user?.id ?? null);
+  limparCarrinho();
+
+  aberto = false;
+  goto('/compraB'); // compra bem-sucedida
+}
+
+// Sempre que o usuário muda (login, logout, carregamento), troca o histórico
+$: trocarUsuarioHistorico(user);
 </script>
 
 <div class="relative px-8 h-full">
@@ -127,7 +134,7 @@
             <div class="flex items-center">
               <span class="text-[#000000] font-text2">Olá, {user.login}</span>
               <button 
-                class="ml-2 bg-[#000000] hover:bg-[#ffffff] text-white rounded text-sm flex items-center gap-1"
+                class="ml-2 bg-[#000000] hover:bg-[#ffffff] hover:text-[#000000] text-white rounded text-sm flex items-center gap-1"
                 on:click={handleLogout}
               >
                 <ArrowRightToBracketOutline class="w-4 h-4" />
@@ -159,11 +166,10 @@
           {/if}
       
       {#if aberto}
-
-        <div class="card h-200 w-100 flex flex-col p-4">
-          <!-- lista de itens adicionados ao carrinho -->
-          <div class="flex-1 overflow-y-auto">
-            {#if $carrinho.length === 0}
+      <div class="fixed top-16 right-4 z-30 w-80 max-h-[80vh] bg-white text-black border-2 rounded-xl shadow-xl flex flex-col p-4">
+        <!-- lista de itens adicionados ao carrinho -->
+        <div class="flex-1 overflow-y-auto">
+          {#if $carrinho.length === 0}
               <p class="text-sm text-gray-500 text-center mt-4">Seu carrinho está vazio.</p>
             {:else}
               <ul class="divide-y">
@@ -204,24 +210,18 @@
                 <span class="text-sm font-semibold text-[#000000]">{formatarPreco($totalPrice)}</span>
               </div>
             {/if}
-          </div>
 
-          <div class="grid grid-cols-2 justify-between mt-4 ml-10">
-            <button
-              class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]"
-              on:click={cancelar}
-            >
-              Cancelar
-            </button>
-            <button
-              class="cols-1 bg-[#000000] border-2 w-25 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000] disabled:opacity-40"
-              on:click={comprar}
-              disabled={$carrinho.length === 0}
-            >
-              Comprar
-            </button>
-          </div>
         </div>
+    
+        <div class="grid grid-cols-2 gap-2 mt-4">
+          <button class="bg-[#000000] border-2 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000]" on:click={cancelar}>
+            Cancelar
+          </button>
+          <button class="bg-[#000000] border-2 h-8 rounded-4xl text-[#ffffff] hover:bg-[#ffffff] hover:text-[#000000] disabled:opacity-40" on:click={comprar} disabled={$carrinho.length === 0}>
+            Comprar
+          </button>
+        </div>
+      </div>
 
       {/if}
 
