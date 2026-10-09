@@ -1,218 +1,213 @@
 <script lang="ts">
-    // Tabela de produtos
-    import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge } from 'flowbite-svelte'; // UI
-    import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
-    import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons'; // ícones
-    import { goto } from '$app/navigation'; // navegação
-    import api from '$lib/api'; // API backend
-    import type { ApiResponse } from '$lib/api';
-    import { onMount } from 'svelte'; // ciclo de vida
-    import type { Mesa } from '$lib/models/Mesa';
+  import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Badge, Button } from 'flowbite-svelte';
+  import ConfirmModal from './ConfirmModal.svelte';
+  import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+  import { goto } from '$app/navigation';
+  import api from '$lib/api';
+  import type { ApiResponse } from '$lib/api';
+  import { onMount } from 'svelte';
+  import type { Mesa } from '$lib/models/Mesa';
 
-    let mesa: Mesa[] = []
-    let loading = true;
-    let error = '';
-    let deletingId: number | null = null; // id em deleção
-    let confirmOpen = false; // modal aberto?
-    let confirmTargetId: number | null = null; // id alvo do modal
-    let filtro = '';
-  
-    // Abre modal de confirmação
-    function openConfirm(id: number) {
-      confirmTargetId = id;
-      confirmOpen = true;
-    }
-    // Fecha modal
-    function closeConfirm() {
-      confirmOpen = false;
-      confirmTargetId = null;
-    }
-  
-    // Confirma remoção
-    function handleConfirm() {
-      if (confirmTargetId !== null) {
-        handleDelete(confirmTargetId);
-      }
-      closeConfirm();
-    }
-  
-    // Cancela remoção
-    function handleCancel() {
-      closeConfirm();
-    }
-  
-    async function handleDelete(id: number) {
-      deletingId = id;
-      error = '';
-      try {
-        const res = await api.delete(`/mesa/${id}`);
-        const body = res.data as ApiResponse<null>;
-        if (!body.success) {
-          error = body.message;
-          return;
-        }
-        mesa = mesa.filter(mesa => mesa.id !== id);
-    } catch (e: any) {
-        console.error('Erro ao deletar mesa:', e);
-        const body = e.response?.data as ApiResponse<null> | undefined;
-        error = body?.message || 'Erro ao remover mesa.';
-    } finally {
-        deletingId = null;
-    }
-    }
-  
-    onMount(async () => {
+  let mesas: Mesa[] = [];
+  let loading = true;
+  let error = '';
+  let deletingId: number | null = null;
+  let confirmOpen = false;
+  let confirmTargetId: number | null = null;
+  let filtro = '';
+  let tipo = '';
+  let timer: ReturnType<typeof setTimeout>;
 
+  const hora = (h: string | null) => h?.slice(0, 5) ?? '';
+
+  function openConfirm(id: number) {
+    confirmTargetId = id;
+    confirmOpen = true;
+  }
+  function closeConfirm() {
+    confirmOpen = false;
+    confirmTargetId = null;
+  }
+  function handleConfirm() {
+    if (confirmTargetId !== null) handleDelete(confirmTargetId);
+    closeConfirm();
+  }
+
+  async function handleDelete(id: number) {
+    deletingId = id;
+    error = '';
     try {
-        const res = await api.get('/beb');
-        const body = res.data as ApiResponse<Mesa[]>;
-        if (body.success) {
-            mesa = body.data ?? [];
-        } else {
-            error = body.message;
-        }
-    } catch (e: any) {
-      
-        console.error('Erro ao carregar produtos:', e);
-    
-        const body = e.response?.data as ApiResponse<Mesa[]> | undefined;
-
-        error = body?.message || 'Erro ao carregar mesas';
-    } finally {
-        loading = false;
-    }
-});
-
-    async function carregarMesas() {
-    try {
-        console.log("filtro: ", filtro);
-        const res = await api.get(`/beb?nome=${encodeURIComponent(filtro)}`);
-        const body = res.data as ApiResponse<Mesa[]>;
-        if (body.success) {
-            mesa = body.data ?? [];
-        } else {
+      const res = await api.delete(`/mesa/${id}`);
+      const body = res.data as ApiResponse<null>;
+      if (!body.success) {
         error = body.message;
-        }
-    } catch (e: any) {
-        console.error('Erro ao carregar mesas:', e);
-        const body = e.response?.data as ApiResponse<Mesa[]> | undefined;
-        error = body?.message || 'Erro ao carregar produtos';
-      } finally {
-        loading = false;
+        return;
       }
+      mesas = mesas.filter((m) => m.id !== id);
+    } catch (e: any) {
+      console.error('Erro ao deletar mesa:', e);
+      const body = e.response?.data as ApiResponse<null> | undefined;
+      error = body?.message || 'Erro ao remover mesa.';
+    } finally {
+      deletingId = null;
     }
-    
+  }
+
+  async function carregarMesas() {
+    try {
+      const params = new URLSearchParams();
+      if (filtro) params.set('nome', filtro);
+      if (tipo) params.set('tipo', tipo);
+      const res = await api.get(`/mesa?${params.toString()}`);
+      const body = res.data as ApiResponse<Mesa[]>;
+      if (body.success) {
+        mesas = body.data ?? [];
+        error = '';
+      } else {
+        error = body.message;
+      }
+    } catch (e: any) {
+      console.error('Erro ao carregar mesas:', e);
+      const body = e.response?.data as ApiResponse<Mesa[]> | undefined;
+      error = body?.message || 'Erro ao carregar mesas';
+    } finally {
+      loading = false;
+    }
+  }
+
+  function onFiltroInput() {
+    clearTimeout(timer);
+    timer = setTimeout(carregarMesas, 300);
+  }
+
+  onMount(carregarMesas);
 </script>
 
 {#if loading}
-    <div class="my-8 text-center text-gray-500">Carregando mesas...</div>
-{:else if error}
-    <div class="my-8 text-center text-red-500">{error}</div>
+  <div class="my-8 text-center text-gray-500">Carregando mesas...</div>
 {:else}
-    <!-- Tabela para telas médias/grandes -->
-    <div class="hidden xl:block">
-    <div class="filtro">
-        <input type="text" id="pesquisa" placeholder="Digite o nome da bebida..." bind:value={filtro}  on:input={carregarMesas} />
+  <div class="max-w-5xl mx-auto mt-8 px-2 flex flex-wrap gap-2">
+    <input
+      type="text"
+      id="pesquisa"
+      class="flex-1 min-w-48 rounded border border-gray-300 p-2"
+      placeholder="Número da mesa ou artista..."
+      bind:value={filtro}
+      on:input={onFiltroInput}
+    />
+    <select bind:value={tipo} on:change={carregarMesas} class="rounded border border-gray-300 p-2">
+      <option value="">Todas</option>
+      <option value="com_show">Com show</option>
+      <option value="sem_show">Sem show</option>
+    </select>
+    <Button onclick={() => goto('/mesa/new')}>Nova mesa</Button>
+  </div>
 
-    </div>
-    <!-- Tabela de usuários -->
-    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200 rounded-full">
-        <TableHead>
-          <TableHeadCell class="w-16 ">ID</TableHeadCell>
-          <TableHeadCell class="w-32">indentificação</TableHeadCell>
-          <TableHeadCell class="w-20">Tipo</TableHeadCell>
-          <TableHeadCell class="w-24"></TableHeadCell> <!-- coluna para editar/remover -->
-        </TableHead>
-        <TableBody>
-        {#each mesa as sem_show}
+  {#if error}
+    <div class="my-4 text-center text-red-500">{error}</div>
+  {/if}
 
-            <TableBodyRow>
-            <TableBodyCell>{sem_show.id}</TableBodyCell>
-            <TableBodyCell>{sem_show.indentificação}</TableBodyCell>
+  <!-- Tabela para telas médias/grandes -->
+  <div class="hidden xl:block">
+    <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200">
+      <TableHead>
+        <TableHeadCell class="w-16">ID</TableHeadCell>
+        <TableHeadCell class="w-28">Mesa</TableHeadCell>
+        <TableHeadCell class="w-32">Tipo</TableHeadCell>
+        <TableHeadCell>Show</TableHeadCell>
+        <TableHeadCell class="w-24"></TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each mesas as mesa (mesa.id)}
+          <TableBodyRow>
+            <TableBodyCell>{mesa.id}</TableBodyCell>
+            <TableBodyCell>{mesa.identificacao}</TableBodyCell>
             <TableBodyCell>
-                <Badge color={sem_show.tipo === 'sem_show' ? 'red' : 'blue'} class="text-xs">
-                {sem_show.tipo}
-                </Badge>
+              <Badge color={mesa.tipo === 'com_show' ? 'purple' : 'green'} class="text-xs">
+                {mesa.tipo === 'com_show' ? 'Com show' : 'Sem show'}
+              </Badge>
             </TableBodyCell>
-
             <TableBodyCell>
-                <!-- Botão editar -->
-                <button
-                class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
-                title="Editar"
-                on:click={() => goto(`/bebida/edit/${sem_show.id}`)}
-                >
-                <UserEditOutline class="w-5 h-5 text-primary-500" />
-                </button>
-                <!-- Botão remover -->
-                <button
-                title="Remover"
-                class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                on:click={() => openConfirm(sem_show.id)}
-                disabled={deletingId === sem_show.id || loading}
-                >
-                <TrashBinOutline class="w-5 h-5 text-red-400" />
-                </button>
+              {#if mesa.tipo === 'com_show'}
+                {mesa.artista} · {hora(mesa.horario)} · {mesa.genero}
+              {:else}
+                <span class="text-gray-400">—</span>
+              {/if}
             </TableBodyCell>
-            </TableBodyRow>
-        {/each}
-        </TableBody>
-      </Table>
-    </div>
-    <!-- Cards para telas pequenas -->
-    <div class="block xl:hidden">
-      <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
-        {#each mesa as sem_show}
-          <!-- Card de usuário -->
-          <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
-            <div class="px-4 pt-4 pb-2 bg-gray-100 text-left flex items-center justify-between">
-              <div>
-                <div class="text-lg font-semibold text-gray-800 text-left">{sem_show.indentificação}</div>
-                <div class="text-xs text-gray-400 text-left">ID: {sem_show.id}</div>
-                <Badge color={sem_show.tipo === 'sem_show' ? 'red' : 'blue'} class="text-xs mt-1">
-                  {sem_show.tipo}
-                </Badge>
-              </div>
+            <TableBodyCell>
               <div class="flex gap-2">
-                <!-- Botão editar -->
                 <button
                   class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
                   title="Editar"
-                  on:click={() => goto(`/bebida/edit/${sem_show.id}`)}
+                  on:click={() => goto(`/mesa/edit/${mesa.id}`)}
                 >
                   <UserEditOutline class="w-5 h-5 text-primary-500" />
                 </button>
-                <!-- Botão remover -->
                 <button
                   title="Remover"
                   class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                  on:click={() => openConfirm(sem_show.id)}
-                  disabled={deletingId === sem_show.id || loading}
+                  on:click={() => openConfirm(mesa.id)}
+                  disabled={deletingId === mesa.id}
                 >
                   <TrashBinOutline class="w-5 h-5 text-red-400" />
                 </button>
               </div>
-            </div>
-            <div class="px-4 pb-4 pt-2 flex flex-col gap-2 text-left">
-              <div class="flex items-center gap-2 text-left">
-                <!-- Ícone de email -->
-                <svg class="w-4 h-4 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 12A4 4 0 1 0 8 12a4 4 0 0 0 8 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v7m-7-7v7m14-7v7"/></svg>
-                <span class="text-gray-700 text-sm">{sem_show.indentificação}</span>
-              </div>
-            </div>
-          </Card>
+            </TableBodyCell>
+          </TableBodyRow>
         {/each}
-      </div>
+      </TableBody>
+    </Table>
+  </div>
+
+  <!-- Cards para telas pequenas -->
+  <div class="block xl:hidden">
+    <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
+      {#each mesas as mesa (mesa.id)}
+        <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
+          <div class="px-4 pt-4 pb-2 bg-gray-100 text-left flex items-center justify-between">
+            <div>
+              <div class="text-lg font-semibold text-gray-800">Mesa {mesa.identificacao}</div>
+              <Badge color={mesa.tipo === 'com_show' ? 'purple' : 'green'} class="text-xs mt-1">
+                {mesa.tipo === 'com_show' ? 'Com show' : 'Sem show'}
+              </Badge>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
+                title="Editar"
+                on:click={() => goto(`/mesa/edit/${mesa.id}`)}
+              >
+                <UserEditOutline class="w-5 h-5 text-primary-500" />
+              </button>
+              <button
+                title="Remover"
+                class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
+                on:click={() => openConfirm(mesa.id)}
+                disabled={deletingId === mesa.id}
+              >
+                <TrashBinOutline class="w-5 h-5 text-red-400" />
+              </button>
+            </div>
+          </div>
+          <div class="px-4 pb-4 pt-2 text-left text-sm text-gray-700">
+            {#if mesa.tipo === 'com_show'}
+              <div class="font-medium">{mesa.artista}</div>
+              <div>{hora(mesa.horario)} · {mesa.genero}</div>
+            {:else}
+              <div class="text-gray-400">Sem apresentação.</div>
+            {/if}
+          </div>
+        </Card>
+      {/each}
     </div>
-  {/if}
-  
-  <!-- Modal de confirmação -->
-  <ConfirmModal
-    open={confirmOpen}
-    message="Tem certeza que deseja remover esta bebida?"
-    confirmText="Remover"
-    cancelText="Cancelar"
-    onConfirm={handleConfirm}
-    onCancel={handleCancel}
-  />
-  
+  </div>
+{/if}
+
+<ConfirmModal
+  open={confirmOpen}
+  message="Tem certeza que deseja remover esta mesa?"
+  confirmText="Remover"
+  cancelText="Cancelar"
+  onConfirm={handleConfirm}
+  onCancel={closeConfirm}
+/>

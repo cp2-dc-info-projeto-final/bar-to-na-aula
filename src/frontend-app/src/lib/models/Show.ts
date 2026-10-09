@@ -1,16 +1,13 @@
+// $lib/models/Show.ts
 export interface Show {
-    id: number;
-    artista: string;
-    horario: string;
-    genero: string;
-    
+  id: number;
+  artista: string;
+  horario: string; // "21:00:00" vindo do Postgres
+  genero: string;
 }
 
 export interface ShowFormData {
-    id: number;
-    artista: string;
-    horario: string;
-    genero: string;
+  artista: string;
+  horario: string; // "21:00"
+  genero: string;
 }
-
-// alterar as informaçoes usando as infos do create

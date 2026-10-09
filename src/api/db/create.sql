@@ -4,24 +4,28 @@ DROP TABLE IF EXISTS mesa;
 DROP TABLE IF EXISTS shows;
 -- (usuario, bebida, comida: mantenha como estão)
 
+
+
+DROP TABLE IF EXISTS shows;
 CREATE TABLE shows (
     id bigint GENERATED ALWAYS AS IDENTITY,
     artista text NOT NULL,
     horario TIME NOT NULL,
     genero text NOT NULL,
-    CONSTRAINT pk_shows PRIMARY KEY (id)
+    CONSTRAINT pk_shows PRIMARY KEY (id),
+    CONSTRAINT uk_shows_artista_horario UNIQUE (artista, horario)
 );
 
+DROP TABLE IF EXISTS mesa;
 CREATE TABLE mesa (
     id bigint GENERATED ALWAYS AS IDENTITY,
     identificacao INTEGER NOT NULL,
     tipo text NOT NULL DEFAULT 'sem_show',
-    m.id_show bigint,
+    id_show bigint,
     CONSTRAINT pk_mesa PRIMARY KEY (id),
     CONSTRAINT uk_mesa_identificacao UNIQUE (identificacao),
     CONSTRAINT ck_mesa_tipo CHECK (tipo IN ('sem_show', 'com_show')),
     CONSTRAINT fk_mesa_show FOREIGN KEY (id_show) REFERENCES shows(id) ON DELETE RESTRICT,
-    -- com_show exige show; sem_show não pode ter show
     CONSTRAINT ck_mesa_show CHECK (
         (tipo = 'com_show' AND id_show IS NOT NULL) OR
         (tipo = 'sem_show' AND id_show IS NULL)

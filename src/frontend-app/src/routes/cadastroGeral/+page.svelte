@@ -8,5 +8,7 @@
             <button class="w-40 h-15 bg-[#224b5d] rounded-xl hover:bg-[#385f71] hover:text-white transition"><a href="/users"> User </a></button>
             <button class="w-40 h-15 bg-[#224b5d] rounded-xl hover:bg-[#385f71] hover:text-white transition"><a href="/bebida"> Bebidas </a></button>
             <button class="w-40 h-15 bg-[#224b5d] rounded-xl hover:bg-[#385f71] hover:text-white transition"><a href="/comida"> Comida </a></button>
+            <button class="w-40 h-15 bg-[#224b5d] rounded-xl hover:bg-[#385f71] hover:text-white transition"><a href="/mesa"> Mesa </a></button>
+            <button class="w-40 h-15 bg-[#224b5d] rounded-xl hover:bg-[#385f71] hover:text-white transition"><a href="/shows"> Show </a></button>
         </div>
 </div>

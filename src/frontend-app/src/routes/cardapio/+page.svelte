@@ -4,7 +4,7 @@
 
 </script>
 
-<div class=" bg-[url(./images/vinil.png)] bg-cover h-screen ">
+<div class=" bg-[url(./images/vinil.png)] bg-cover h-screen font-text3">
     <br><br><br><br><br><br>
     <div class="grid grid-cols-2">
         <div class="cols-1"> 

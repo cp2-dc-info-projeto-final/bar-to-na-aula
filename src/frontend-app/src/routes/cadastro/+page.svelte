@@ -53,7 +53,7 @@
   <Menu />
   
   <div class="">
-    <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/fundoLogin.png)] bg-cover">
+    <div class="h-screen flex flex-col items-center justify-center p-4 bg-[url(./images/baratielogin.png)] bg-cover">
       <div class="w-full max-w-sm">
   
         <div class="p-6 w-full bg-[] ml-100">
