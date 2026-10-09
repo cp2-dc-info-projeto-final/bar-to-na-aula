@@ -1,203 +1,114 @@
 var express = require('express');
 var router = express.Router();
 const pool = require('../db/config');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { verifyToken, isAdmin } = require('../middlewares/auth');
 
-function sendSuccess(res, status, message, data) {
-const payload = { success: true };
-if (message) payload.message = message;
-if (typeof data !== 'undefined') payload.data = data;
-return res.status(status).json(payload);
+const sendSuccess = (res, status, message, data) => {
+  const payload = { success: true };
+  if (message) payload.message = message;
+  if (typeof data !== 'undefined') payload.data = data;
+  return res.status(status).json(payload);
+};
+const sendError = (res, status, message, errors = []) =>
+  res.status(status).json({ success: false, message, errors });
+
+const SELECT_MESA = `
+  SELECT m.id, m.identificacao, m.tipo, m.id_show,
+         s.artista, s.horario, s.genero
+  FROM mesa m
+  LEFT JOIN shows s ON s.id = m.id_show`;
+
+function validarMesa({ identificacao, tipo, id_show }) {
+  const errors = [];
+  if (!identificacao) errors.push({ field: 'identificacao', message: 'identificacao é obrigatória', code: 'REQUIRED' });
+  if (!['com_show', 'sem_show'].includes(tipo))
+    errors.push({ field: 'tipo', message: "tipo deve ser 'com_show' ou 'sem_show'", code: 'INVALID' });
+  if (tipo === 'com_show' && !id_show)
+    errors.push({ field: 'id_show', message: 'Escolha um show para mesa com show', code: 'REQUIRED' });
+  return errors;
 }
 
-function sendError(res, status, message, errors = []) {
-return res.status(status).json({
-    success: false,
-    message,
-    errors
-});
-}
 
- //Busca
-router.get('/', verifyToken, isAdmin, async function(req, res) {
-try {
-    const filtro = req.query.identificacao ? `%${req.query.identificacao}%` : "%";
-    console.log("filtro: ", filtro);
-    const result = await pool.query('SELECT id, identificacao, horario, tipo FROM mesa WHERE identificacao like $1 ORDER BY id', [filtro]);
+
+// Listar (opcional: ?tipo=com_show)
+router.get('/',  async (req, res) => {
+  try {
+    console.log("1");
+    const { tipo } = req.query;
+    console.log("2");
+    const result = tipo
+      ? await pool.query(`${SELECT_MESA} WHERE m.tipo = $1 ORDER BY m.identificacao`, [tipo])
+      : await pool.query(`${SELECT_MESA} ORDER BY m.identificacao`);
     return sendSuccess(res, 200, null, result.rows);
-} catch (error) {
-    console.error('Erro ao buscar a mesa :', error);
+  } catch (error) {
+        console.error('Erro ao listar mesas:', error);
     return sendError(res, 500, 'Erro interno do servidor');
-
-}
+  }
 });
 
-router.get('/me', verifyToken, isAdmin, async function(req, res) {
-try {
-    // parâmetro obtido do token pelo middleware
-    const id = req.user.id;
-    const result = await pool.query('SELECT id, identificacao, tipo FROM mesa WHERE id = $1', [id]);
-
-    if (result.rows.length === 0) {
-    return sendError(res, 404, 'mesa não encontrado');
-    }
-
+router.get('/:id', verifyToken, async (req, res) => {
+  try {
+    const result = await pool.query(`${SELECT_MESA} From mesa WHERE m.id = $1`, [req.params.id]);
+    if (result.rows.length === 0) return sendError(res, 404, 'mesa não encontrada');
     return sendSuccess(res, 200, null, result.rows[0]);
-} catch (error) {
+  } catch (error) {
     console.error('Erro ao buscar mesa:', error);
     return sendError(res, 500, 'Erro interno do servidor');
-}
+  }
 });
 
-//Criar mesa
-
-router.post('/', verifyToken, isAdmin, async function(req, res) { 
-try {
-    const { identificacao, horario, tipo } = req.body;
-
-    console.log('DADOS RECEBIDOS:', req.body);
-
-    if (!identificacao || !horario || !tipo) {
-    const errors = [];
-
-    if (!identificacao) {
-        errors.push({
-        field: 'identificacao',
-        message: 'identificacao é obrigatório',
-        code: 'REQUIRED'
-        });
-    }
-
-    if (!horario) {
-        errors.push({
-        field: 'horario',
-        message: 'horario é obrigatório',
-        code: 'REQUIRED'
-        });
-    }
-
-    if (!tipo) {
-        errors.push({
-        field: 'tipo',
-        message: 'tipo é obrigatório',
-        code: 'REQUIRED'
-        });
-    }
-
-    return sendError(res, 400, 'Campos obrigatórios', errors);
-    }
+router.post('/', verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { identificacao, tipo } = req.body;
+    const errors = validarMesa(req.body);
+    if (errors.length) return sendError(res, 400, 'Dados inválidos', errors);
+    const id_show = tipo === 'com_show' ? req.body.id_show : null;
 
     const result = await pool.query(
-    `INSERT INTO mesa (identificacao, horario, tipo)
-    VALUES ($1, $2, $3)
-    RETURNING id, identificacao, horario, tipo`,
-    [identificacao, horario, tipo]
+      `INSERT INTO mesa (identificacao, tipo, id_show)
+       VALUES ($1, $2, $3) RETURNING id, identificacao, tipo, id_show`,
+      [identificacao, tipo, id_show]
     );
-
-    return sendSuccess(
-    res,
-    201,
-    'mesa criada com sucesso',
-    result.rows[0]
-    );
-
-} catch (error) {
-    console.error('Erro ao criar comida:', error);
-
-    return sendError(
-    res,
-    500,
-    'Erro interno do servidor'
-    );
-}
-});
-
-
-
-/* PUT - Atualizar comida*/
-router.put('/:id', verifyToken, isAdmin, async function(req, res) {
-try {
-    const { id } = req.params;
-    const { identificacao, horario, tipo } = req.body;
-    
-    // Validação básica
-    if (!identificacao || !horario || !tipo) {
-    const errors = [];
-    if (!identificacao) errors.push({ field: 'identificacao', message: 'identificacao é obrigatório', code: 'REQUIRED' });
-    if (!horario) errors.push({ field: 'horario', message: 'horario é obrigatório', code: 'REQUIRED' });
-
-    return sendError(res, 400, 'Campos obrigatórios', errors);
-    }
-    
-    // Verificar se já existe nomes de comidas repetidos
-    const existingNome = await pool.query('SELECT id FROM mesa WHERE identificacao = $1 AND id != $2', [identificacao, id]);
-    if (existingNome.rows.length > 0) {
-    return sendError(res, 409, 'Esta identificacao já está em uso por outra mesa', [
-        { field: 'identificacao', message: 'Esta identificacao já está em uso por outra mesa', code: 'CONFLICT' }
-    ]);
-    }
-
-    const result = await pool.query(
-    `UPDATE mesa
-    SET identificacao = $1,
-        horario = $2,
-        tipo = $3
-    WHERE id = $4
-    RETURNING id, identificacao, horario, tipo`,
-    [nome, preco, sabor, id]
-);
-
-if (result.rows.length === 0) {
-    return sendError(res, 404, 'mesa não encontrada');
-}
-
-    
-    return sendSuccess(res, 200, 'mesa atualizado com sucesso', result.rows[0]);
-} catch (error) {
-    console.error('Erro ao atualizar :', error);
-    // Verificar se é erro de constraint
-    if (error.code === '23514') {
-    return sendError(res, 400, 'Dados inválidos. Verifique os campos e tente novamente.');
-    }
+    return sendSuccess(res, 201, 'mesa criada com sucesso', result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao criar mesa:', error);
+    if (error.code === '23505') return sendError(res, 409, 'Já existe uma mesa com essa identificação');
+    if (error.code === '23503') return sendError(res, 400, 'Show informado não existe');
     return sendError(res, 500, 'Erro interno do servidor');
-}
+  }
 });
 
-router.delete('/:id', verifyToken, isAdmin, async function(req, res) {
-try {
-    const { id } = req.params;
+router.put('/:id', verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { identificacao, tipo } = req.body;
+    const errors = validarMesa(req.body);
+    if (errors.length) return sendError(res, 400, 'Dados inválidos', errors);
+    const id_show = tipo === 'com_show' ? req.body.id_show : null;
 
     const result = await pool.query(
-        'DELETE FROM mesa WHERE id = $1 RETURNING id',
-        [id]
+      `UPDATE mesa SET identificacao = $1, tipo = $2, id_show = $3
+       WHERE id = $4 RETURNING id, identificacao, tipo, id_show`,
+      [identificacao, tipo, id_show, req.params.id]
     );
-
-    if (result.rows.length === 0) {
-        return sendError(res, 404, 'mesa não encontrada');
-    }
-
-    return sendSuccess(
-        res,
-        200,
-        'mesa excluída com sucesso'
-    );
-
-} catch (error) {
-    console.error(error);
-
-    return sendError(
-        res,
-        500,
-        'Erro interno do servidor'
-    );
-}
+    if (result.rows.length === 0) return sendError(res, 404, 'mesa não encontrada');
+    return sendSuccess(res, 200, 'mesa atualizada com sucesso', result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao atualizar mesa:', error);
+    if (error.code === '23505') return sendError(res, 409, 'Já existe uma mesa com essa identificação');
+    if (error.code === '23503') return sendError(res, 400, 'Show informado não existe');
+    return sendError(res, 500, 'Erro interno do servidor');
+  }
 });
 
-
-
-
-
+router.delete('/:id', verifyToken, isAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM mesa WHERE id = $1 RETURNING id', [req.params.id]);
+    if (result.rows.length === 0) return sendError(res, 404, 'mesa não encontrada');
+    return sendSuccess(res, 200, 'mesa excluída com sucesso');
+  } catch (error) {
+    console.error('Erro ao excluir mesa:', error);
+    return sendError(res, 500, 'Erro interno do servidor');
+  }
+});
 
 module.exports = router;
