@@ -27,16 +27,16 @@ function irCadastro(){
             <h2 class="mt-10 text-xl font-text1">Mais do que um bar, um lugar para reunir os amigos,<br> celebrar
                a vida e aproveitar cada momento.Com bebidas especiais,<br> petiscos deliciosos e uma atmosfera 
                única, temos tudo para transformar qualquer <br> encontro em uma experiência inesquecível.</h2>
-            <h2 class="mt-10 font-text1">Chegue, escolha seu drink e aproveite. A noite é sua!</h2>
+            <h2 class="mt-10 text-xl font-text1">Chegue, escolha seu drink e aproveite. A noite é sua!</h2>
             <h2 class="mt-10">
               <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] border-6 border-[#deb266] hover:bg-[#deb266] hover:text-[#000000] hover:border-[#166a8e]">CONFERIR O CARDÁPIO</button>
-              <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] border-6 border-[#deb266] hover:bg-[#deb266] hover:text-[#000000] hover:border-[#166a8e]">CADASTRE-SE NO SITE</button>
+              <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CADASTRE-SE NO SITE</button>
 
               
           </div>
         </div>
         <div class="col-span-1  overflow-hidden transition-transform duration-700 ease-in-out hover:scale-105">
-            <img src="./images/taven.png" alt="" class="mt-20 display-block ml-auto mr-auto border-2 rounded-4xl w-130   ">
+            <img src="./images/taven.png" alt="" class="mt-10 display-block ml-auto mr-auto border-2 rounded-4xl w-130   ">
         </div>
       </div>
     </div>

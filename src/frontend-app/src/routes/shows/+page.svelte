@@ -1,9 +1,15 @@
 <script lang="ts">
-  import ShowTable from '../../components/ShowTable.svelte';
-  import MesaTable from '../../components/MesaTable.svelte';
+  import ShowTableCard from '../../components/ShowTableCard.svelte';
 </script>
 
-<div class="mt-50  font-text3">
-    <h1 class=" ml-233">Show</h1>
-    <ShowTable />
+<div class=" bg-[url(./images/vinil.png)] bg-cover h-screen font-text3">
+  <div class=" font-text3">
+    <br><br><br><br><br><br>
+    <div class="">
+      <h1 class="text-auto ">Show</h1>
+    </div>
+    <div class=" ">
+      <ShowTableCard />
+    </div>
+  </div>  
 </div>
