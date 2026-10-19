@@ -29,7 +29,7 @@ function irCadastro(){
                única, temos tudo para transformar qualquer <br> encontro em uma experiência inesquecível.</h2>
             <h2 class="mt-10 text-xl font-text1">Chegue, escolha seu drink e aproveite. A noite é sua!</h2>
             <h2 class="mt-10">
-              <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] border-6 border-[#deb266] hover:bg-[#deb266] hover:text-[#000000] hover:border-[#166a8e]">CONFERIR O CARDÁPIO</button>
+              <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CONFERIR O CARDÁPIO</button>
               <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CADASTRE-SE NO SITE</button>
 
               
