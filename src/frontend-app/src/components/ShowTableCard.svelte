@@ -6,7 +6,7 @@
   import api from '$lib/api';
   import type { ApiResponse } from '$lib/api';
   import { onMount } from 'svelte';
-  import type { Show } from '$lib/models/Show';
+  import type { Show } from '$lib/models/Shows';
 
   let shows: Show[] = [];
   let loading = true;

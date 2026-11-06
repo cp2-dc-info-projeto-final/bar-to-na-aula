@@ -6,7 +6,7 @@
   import { goto } from '$app/navigation';
   import { ArrowLeftOutline, FloppyDiskAltOutline } from 'flowbite-svelte-icons';
   import type { Mesa, MesaFormData } from '$lib/models/Mesa';
-  import type { Show } from '$lib/models/Show';
+  import type { Show } from '$lib/models/Shows';
 
   export let id: number | null = null; // null = cadastro, número = edição
 

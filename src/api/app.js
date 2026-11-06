@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var bebRouter = require('./routes/beb');
 var comRouter = require('./routes/com');
 var mesaRouter = require('./routes/mesa');
-var showRouter = require('./routes/show');
+var showRouter = require('./routes/shows');
 
 var app = express();
 
@@ -27,13 +27,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/beb', bebRouter);
 app.use('/com', comRouter);
 app.use('/mesa', mesaRouter);
-app.use('/show', showRouter);
+app.use('/shows', showRouter);
 
 
 // catch 404 and forward to error handler

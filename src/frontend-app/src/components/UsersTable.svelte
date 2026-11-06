@@ -155,6 +155,7 @@
       </TableBody>
     </Table>
   </div>
+  
   <!-- Cards para telas pequenas -->
   <div class="block xl">
     <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">

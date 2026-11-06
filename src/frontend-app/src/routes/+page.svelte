@@ -13,7 +13,7 @@ function irCadastro(){
 }
 </script>
 
-
+<div class="hidden xl:block">
 <div class="bg-[#deb266]"> 
   <div class="fundo">
     <img src="./images/baratieretro.png" alt="" class="h-full w-screen m-auto shadow-2xl">
@@ -29,10 +29,8 @@ function irCadastro(){
                única, temos tudo para transformar qualquer <br> encontro em uma experiência inesquecível.</h2>
             <h2 class="mt-10 text-xl font-text1">Chegue, escolha seu drink e aproveite. A noite é sua!</h2>
             <h2 class="mt-10">
-              <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CONFERIR O CARDÁPIO</button>
-              <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CADASTRE-SE NO SITE</button>
-
-              
+              <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CONFERIR O CARDÁPIO</button><br><br>
+              <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CADASTRE-SE NO SITE</button>   
           </div>
         </div>
         <div class="col-span-1  overflow-hidden transition-transform duration-700 ease-in-out hover:scale-105">
@@ -42,4 +40,38 @@ function irCadastro(){
     </div>
 
   <div class=" h-screen"></div>
+</div>
+</div>
+
+<div class="block xl">
+  <div class="bg-[#deb266]"> 
+    <div class="fundo">
+
+    </div>
+    <div class="sobre bg-[#ffffff]"><br>
+        <div class="">
+          <div class="col-span-1 text-center">
+            <div class="">
+              <h1 class="mt-25 text-4xl font-text2">Seu próximo brinde começa aqui! 🍻</h1>
+              <h2 class="mt-10 text-xl font-text1">Boa música, drinks incríveis e momentos que merecem ser lembrados.</h2>
+              <h2 class="mt-10 text-xl font-text1">Mais do que um bar, um lugar para reunir os amigos,<br> celebrar
+                 a vida e aproveitar cada momento.Com bebidas especiais,<br> petiscos deliciosos e uma atmosfera 
+                 única, temos tudo para transformar qualquer <br> encontro em uma experiência inesquecível.</h2>
+              <h2 class="mt-10 text-xl font-text1">Chegue, escolha seu drink e aproveite. A noite é sua!</h2>
+              <h2 class="mt-10">
+                <button on:click={irCardapio} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CONFERIR O CARDÁPIO</button><br><br>
+                <button on:click={irCadastro} class="bg-[#166a8e] h-10 w-100 text-xl rounded-2xl text-[#ffffff] hover:bg-[#deb266] hover:text-[#000000] hover:w-150 hover:15">CADASTRE-SE NO SITE</button>
+  
+                
+            </div>
+          </div>
+          <div class="col-span-1  overflow-hidden transition-transform duration-700 ease-in-out hover:scale-105">
+              <img src="./images/taven.png" alt="" class="mt-10 display-block ml-auto mr-auto border-2 rounded-4xl w-130   ">
+          </div>
+        </div>
+      </div>
+  
+    <div class=" h-screen"></div>
+  </div>
+
 </div>
