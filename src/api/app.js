@@ -1,7 +1,6 @@
 require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
@@ -15,18 +14,36 @@ var showRouter = require('./routes/shows');
 
 var app = express();
 
-// CORS para liberar requests do frontend via nginx
-app.use(cors({
-  origin: ['http://localhost', 'http://127.0.0.1', 'http://localhost:80', 'http://127.0.0.1:80', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+// Origens extras via .env: CORS_ORIGINS=http://192.168.0.10,https://meusite.com
+const extraOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
+const corsOptions = {
+  origin(origin, callback) {
+    // sem Origin (curl, Postman, mesma origem) -> libera
+    if (!origin) return callback(null, true);
+    if (localhostRegex.test(origin) || extraOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // garante resposta ao preflight
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/beb', bebRouter);
@@ -34,19 +51,23 @@ app.use('/com', comRouter);
 app.use('/mesa', mesaRouter);
 app.use('/shows', showRouter);
 
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// 404
+app.use(function (req, res, next) {
+  next(createError(404, 'Rota não encontrada'));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
+// handler de erros (sempre no formato { success, message, errors })
+app.use(function (err, req, res, next) {
+  // JSON malformado no body
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ success: false, message: 'JSON inválido', errors: [] });
+  }
   const status = err.status || 500;
+  if (status >= 500) console.error(err);
   return res.status(status).json({
     success: false,
     message: err.message || 'Erro interno do servidor',
-    errors: []
+    errors: [],
   });
 });
 

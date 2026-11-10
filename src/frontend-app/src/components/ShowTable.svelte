@@ -1,37 +1,34 @@
 <script lang="ts">
-  // Tabela/cards de shows
-  import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Button } from 'flowbite-svelte'; // UI
-  import ConfirmModal from './ConfirmModal.svelte'; // modal de confirmação
-  import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons'; // ícones
-  import { goto } from '$app/navigation'; // navegação
-  import api from '$lib/api'; // API backend
+  import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Button } from 'flowbite-svelte';
+  import ConfirmModal from './ConfirmModal.svelte';
+  import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+  import { goto } from '$app/navigation';
+  import api from '$lib/api';
   import type { ApiResponse } from '$lib/api';
-  import { onMount } from 'svelte'; // ciclo de vida
+  import { onMount } from 'svelte';
   import type { Show } from '$lib/models/Shows';
 
-  let shows: Show[] = []; // lista de shows
-  let loading = true;
-  let error = '';
-  let deletingId: number | null = null; // id em deleção
-  let confirmOpen = false; // modal aberto?
-  let confirmTargetId: number | null = null; // id alvo do modal
-  let filtro = '';
-  let timer: ReturnType<typeof setTimeout>;
+  let shows = $state<Show[]>([]);
+  let loading = $state(true);
+  let error = $state('');
+  let deletingId = $state<number | null>(null);
+  let confirmOpen = $state(false);
+  let confirmTargetId = $state<number | null>(null);
+  let filtro = $state('');
 
-  // "21:00:00" -> "21:00"
+  let timer: ReturnType<typeof setTimeout>;
+  let requestSeq = 0; // ignora respostas antigas
+
   const hora = (h: string) => h?.slice(0, 5) ?? '';
 
-  // Abre modal de confirmação
   function openConfirm(id: number) {
     confirmTargetId = id;
     confirmOpen = true;
   }
-  // Fecha modal
   function closeConfirm() {
     confirmOpen = false;
     confirmTargetId = null;
   }
-  // Confirma remoção
   function handleConfirm() {
     if (confirmTargetId !== null) handleDelete(confirmTargetId);
     closeConfirm();
@@ -58,8 +55,10 @@
   }
 
   async function carregarShows() {
+    const seq = ++requestSeq;
     try {
       const res = await api.get(`/shows?nome=${encodeURIComponent(filtro)}`);
+      if (seq !== requestSeq) return; // chegou uma busca mais nova
       const body = res.data as ApiResponse<Show[]>;
       if (body.success) {
         shows = body.data ?? [];
@@ -68,27 +67,30 @@
         error = body.message;
       }
     } catch (e: any) {
+      if (seq !== requestSeq) return;
       console.error('Erro ao carregar shows:', e);
       const body = e.response?.data as ApiResponse<Show[]> | undefined;
       error = body?.message || 'Erro ao carregar shows';
     } finally {
-      loading = false;
+      if (seq === requestSeq) loading = false;
     }
   }
 
-  // espera o usuário parar de digitar antes de buscar
   function onFiltroInput() {
     clearTimeout(timer);
     timer = setTimeout(carregarShows, 300);
   }
 
-  onMount(carregarShows);
+  onMount(() => {
+    carregarShows();
+    return () => clearTimeout(timer);
+  });
 </script>
 
 {#if loading}
   <div class="my-8 text-center text-gray-500">Carregando shows...</div>
 {:else}
-  <!-- Pesquisa + novo show (visível em todas as telas) -->
+  <!-- Pesquisa + novo show -->
   <div class="max-w-5xl mx-auto mt-8 px-2 flex gap-2">
     <input
       type="text"
@@ -96,7 +98,7 @@
       class="flex-1 rounded border border-gray-300 bg-white p-2"
       placeholder="Digite o nome do artista..."
       bind:value={filtro}
-      on:input={onFiltroInput}
+      oninput={onFiltroInput}
     />
     <Button onclick={() => goto('/shows/new')}>Novo show</Button>
   </div>
@@ -105,7 +107,11 @@
     <div class="my-4 text-center text-red-500">{error}</div>
   {/if}
 
-  <!-- Tabela para telas médias/grandes -->
+  {#if shows.length === 0 && !error}
+    <div class="my-8 text-center text-gray-500">Nenhum show encontrado.</div>
+  {/if}
+
+  <!-- Tabela para telas grandes -->
   <div class="hidden xl:block">
     <Table class="w-full max-w-5xl mx-auto my-8 shadow-lg border border-gray-200">
       <TableHead>
@@ -113,7 +119,7 @@
         <TableHeadCell>Artista</TableHeadCell>
         <TableHeadCell class="w-32">Horário</TableHeadCell>
         <TableHeadCell>Gênero</TableHeadCell>
-        <TableHeadCell class="w-24"></TableHeadCell> <!-- coluna para editar/remover -->
+        <TableHeadCell class="w-24"></TableHeadCell>
       </TableHead>
       <TableBody>
         {#each shows as show (show.id)}
@@ -124,19 +130,19 @@
             <TableBodyCell>{show.genero}</TableBodyCell>
             <TableBodyCell>
               <div class="flex gap-2">
-                <!-- Botão editar -->
                 <button
+                  type="button"
                   class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
                   title="Editar"
-                  on:click={() => goto(`/shows/edit/${show.id}`)}
+                  onclick={() => goto(`/shows/edit/${show.id}`)}
                 >
-                  <UserEditOutline class="w-5 h-5 text-primary-500" />
+                  <EditOutline class="w-5 h-5 text-primary-500" />
                 </button>
-                <!-- Botão remover -->
                 <button
+                  type="button"
                   title="Remover"
                   class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                  on:click={() => openConfirm(show.id)}
+                  onclick={() => openConfirm(show.id)}
                   disabled={deletingId === show.id}
                 >
                   <TrashBinOutline class="w-5 h-5 text-red-400" />
@@ -153,7 +159,6 @@
   <div class="block xl:hidden">
     <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
       {#each shows as show (show.id)}
-        <!-- Card de show -->
         <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
           <div class="px-4 pt-4 pb-2 bg-gray-100 text-left flex items-center justify-between">
             <div>
@@ -161,19 +166,19 @@
               <div class="text-xs text-gray-400">ID: {show.id}</div>
             </div>
             <div class="flex gap-2">
-              <!-- Botão editar -->
               <button
+                type="button"
                 class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
                 title="Editar"
-                on:click={() => goto(`/shows/edit/${show.id}`)}
+                onclick={() => goto(`/shows/edit/${show.id}`)}
               >
-                <UserEditOutline class="w-5 h-5 text-primary-500" />
+                <EditOutline class="w-5 h-5 text-primary-500" />
               </button>
-              <!-- Botão remover -->
               <button
+                type="button"
                 title="Remover"
                 class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                on:click={() => openConfirm(show.id)}
+                onclick={() => openConfirm(show.id)}
                 disabled={deletingId === show.id}
               >
                 <TrashBinOutline class="w-5 h-5 text-red-400" />
@@ -188,20 +193,8 @@
       {/each}
     </div>
   </div>
-  <!-- Pesquisa (visível em todas as telas) -->
-<div class="max-w-5xl mx-auto mt-8 px-2">
-  <input
-    type="text"
-    id="pesquisa"
-    class="w-full rounded border border-gray-300 bg-white p-2"
-    placeholder="Digite o nome do artista..."
-    bind:value={filtro}
-    on:input={onFiltroInput}
-  />
-</div>
 {/if}
 
-<!-- Modal de confirmação -->
 <ConfirmModal
   open={confirmOpen}
   message="Tem certeza que deseja remover este show?"
