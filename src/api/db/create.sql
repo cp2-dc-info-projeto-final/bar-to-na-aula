@@ -50,8 +50,6 @@ CREATE TABLE comida (
     CONSTRAINT ck_comida_sabor CHECK (sabor IN ('salgado', 'doce'))
 );
 
-
-
 DROP TABLE IF EXISTS shows;
 CREATE TABLE shows (
     id bigint GENERATED ALWAYS AS IDENTITY,

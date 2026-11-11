@@ -22,22 +22,20 @@ const extraOrigins = (process.env.CORS_ORIGINS || '')
 
 const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
-const corsOptions = {
+app.use(cors({
   origin(origin, callback) {
     // sem Origin (curl, Postman, mesma origem) -> libera
     if (!origin) return callback(null, true);
     if (localhostRegex.test(origin) || extraOrigins.includes(origin)) {
       return callback(null, true);
     }
-    return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
+    console.warn('CORS bloqueado para a origem:', origin);
+    return callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // garante resposta ao preflight
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -56,9 +54,8 @@ app.use(function (req, res, next) {
   next(createError(404, 'Rota não encontrada'));
 });
 
-// handler de erros (sempre no formato { success, message, errors })
+// Handler de erros (sempre { success, message, errors })
 app.use(function (err, req, res, next) {
-  // JSON malformado no body
   if (err.type === 'entity.parse.failed') {
     return res.status(400).json({ success: false, message: 'JSON inválido', errors: [] });
   }

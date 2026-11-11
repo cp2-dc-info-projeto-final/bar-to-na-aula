@@ -19,9 +19,19 @@
     return fieldErrors.find((item) => item.field === field)?.message ?? null;
   }
 
-  // "21:00" -> "21:00:00" (formato que o banco/validação costuma esperar)
-  const toDbTime = (h: string) => (h.length === 5 ? `${h}:00` : h);
+  // "21:00" -> "21:00:00"
+  const toDbTime = (h: string) => (h && h.length === 5 ? `${h}:00` : h);
 
+  // Mensagem de erro conforme o status da resposta
+  function mensagemDeErro(e: any, padrao: string): string {
+    const body = e.response?.data as (ApiResponse<unknown> & { error?: string }) | undefined;
+    if (!e.response) return 'Sem resposta do servidor (rede ou CORS). Verifique se o backend está rodando.';
+    if (e.response.status === 401) return 'Sessão expirada. Faça login novamente.';
+    if (e.response.status === 403) return 'Você não tem permissão de administrador para esta ação.';
+    return body?.message || body?.error || `${padrao} (${e.response.status}).`;
+  }
+
+  // Carrega o show se for edição
   onMount(async () => {
     if (id === null) return;
     loading = true;
@@ -39,47 +49,54 @@
       }
     } catch (e: any) {
       console.error('Erro ao carregar show:', e);
-      const body = e.response?.data as ApiResponse<Show> | undefined;
-      error = body?.message || 'Erro ao carregar show.';
+      error = mensagemDeErro(e, 'Erro ao carregar show');
     } finally {
       loading = false;
     }
   });
 
   async function handleSubmit(event: SubmitEvent) {
-    event.preventDefault(); // Svelte 5: não existe mais |preventDefault
+    event.preventDefault();
     if (loading) return;
 
     fieldErrors = [];
     error = '';
     loading = true;
 
-    const payload = {
-      artista: show.artista.trim(),
-      horario: toDbTime(show.horario),
-      genero: show.genero.trim()
-    };
-
+    let salvou = false;
     try {
+      const payload = {
+        artista: show.artista.trim(),
+        horario: toDbTime(show.horario),
+        genero: show.genero.trim()
+      };
+
       const res =
         id === null
           ? await api.post('/shows', payload)
           : await api.put(`/shows/${id}`, payload);
       const body = res.data as ApiResponse<Show | null>;
+
       if (!body.success) {
         error = body.message;
         fieldErrors = body.errors ?? [];
         return;
       }
-      await goto('/shows');
+      salvou = true;
     } catch (e: any) {
-      console.error('Erro ao salvar show:', e);
-      const body = e.response?.data as ApiResponse<Show | null> | undefined;
-      error = body?.message || 'Erro ao salvar show (verifique a conexão/CORS).';
-      fieldErrors = body?.errors ?? [];
+      console.error('Erro ao salvar show:', {
+        status: e.response?.status,
+        data: e.response?.data,
+        code: e.code,
+        message: e.message
+      });
+      error = mensagemDeErro(e, 'Erro ao salvar show');
+      fieldErrors = (e.response?.data as ApiResponse<Show | null> | undefined)?.errors ?? [];
     } finally {
       loading = false;
     }
+
+    if (salvou) await goto('/shows');
   }
 
   function handleCancel() {

@@ -17,9 +17,17 @@
   let filtro = $state('');
 
   let timer: ReturnType<typeof setTimeout>;
-  let requestSeq = 0; // ignora respostas antigas
+  let requestSeq = 0; // ignora respostas antigas da busca
 
   const hora = (h: string) => h?.slice(0, 5) ?? '';
+
+  function mensagemDeErro(e: any, padrao: string): string {
+    const body = e.response?.data as (ApiResponse<unknown> & { error?: string }) | undefined;
+    if (!e.response) return 'Sem resposta do servidor (rede ou CORS).';
+    if (e.response.status === 401) return 'Sessão expirada. Faça login novamente.';
+    if (e.response.status === 403) return 'Você não tem permissão de administrador para esta ação.';
+    return body?.message || body?.error || padrao;
+  }
 
   function openConfirm(id: number) {
     confirmTargetId = id;
@@ -47,8 +55,7 @@
       shows = shows.filter((s) => s.id !== id);
     } catch (e: any) {
       console.error('Erro ao deletar show:', e);
-      const body = e.response?.data as ApiResponse<null> | undefined;
-      error = body?.message || 'Erro ao remover show.';
+      error = mensagemDeErro(e, 'Erro ao remover show.');
     } finally {
       deletingId = null;
     }
@@ -58,7 +65,7 @@
     const seq = ++requestSeq;
     try {
       const res = await api.get(`/shows?nome=${encodeURIComponent(filtro)}`);
-      if (seq !== requestSeq) return; // chegou uma busca mais nova
+      if (seq !== requestSeq) return;
       const body = res.data as ApiResponse<Show[]>;
       if (body.success) {
         shows = body.data ?? [];
@@ -69,8 +76,7 @@
     } catch (e: any) {
       if (seq !== requestSeq) return;
       console.error('Erro ao carregar shows:', e);
-      const body = e.response?.data as ApiResponse<Show[]> | undefined;
-      error = body?.message || 'Erro ao carregar shows';
+      error = mensagemDeErro(e, 'Erro ao carregar shows');
     } finally {
       if (seq === requestSeq) loading = false;
     }

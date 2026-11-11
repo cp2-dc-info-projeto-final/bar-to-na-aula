@@ -12,13 +12,6 @@
     <!-- Título -->
     <h1 class="text-4xl font-bold text-center text-white drop-shadow">Shows</h1>
 
-    <!-- Botão de acesso ao cadastro -->
-    <div class="flex justify-center mt-6">
-      <Button color="primary" size="lg" onclick={() => goto('/shows/new')}>
-        <PlusOutline class="inline w-5 h-5 mr-2 align-text-bottom" />
-        Cadastrar novo show
-      </Button>
-    </div>
 
     <!-- Lista (pesquisa, tabela/cards) -->
     <ShowTableCard />

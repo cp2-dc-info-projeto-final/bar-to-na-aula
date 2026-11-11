@@ -1,23 +1,33 @@
 <script lang="ts">
   import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Card, Button } from 'flowbite-svelte';
   import ConfirmModal from './ConfirmModal.svelte';
-  import { UserEditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
-//   import { goto } from '$app/navigation';
+  import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+  import { goto } from '$app/navigation';
   import api from '$lib/api';
   import type { ApiResponse } from '$lib/api';
   import { onMount } from 'svelte';
   import type { Show } from '$lib/models/Shows';
 
-  let shows: Show[] = [];
-  let loading = true;
-  let error = '';
-  let deletingId: number | null = null;
-  let confirmOpen = false;
-  let confirmTargetId: number | null = null;
-  let filtro = '';
+  let shows = $state<Show[]>([]);
+  let loading = $state(true);
+  let error = $state('');
+  let deletingId = $state<number | null>(null);
+  let confirmOpen = $state(false);
+  let confirmTargetId = $state<number | null>(null);
+  let filtro = $state('');
+
   let timer: ReturnType<typeof setTimeout>;
+  let requestSeq = 0; // ignora respostas antigas da busca
 
   const hora = (h: string) => h?.slice(0, 5) ?? '';
+
+  function mensagemDeErro(e: any, padrao: string): string {
+    const body = e.response?.data as (ApiResponse<unknown> & { error?: string }) | undefined;
+    if (!e.response) return 'Sem resposta do servidor (rede ou CORS).';
+    if (e.response.status === 401) return 'Sessão expirada. Faça login novamente.';
+    if (e.response.status === 403) return 'Você não tem permissão de administrador para esta ação.';
+    return body?.message || body?.error || padrao;
+  }
 
   function openConfirm(id: number) {
     confirmTargetId = id;
@@ -45,16 +55,17 @@
       shows = shows.filter((s) => s.id !== id);
     } catch (e: any) {
       console.error('Erro ao deletar show:', e);
-      const body = e.response?.data as ApiResponse<null> | undefined;
-      error = body?.message || 'Erro ao remover show.';
+      error = mensagemDeErro(e, 'Erro ao remover show.');
     } finally {
       deletingId = null;
     }
   }
 
   async function carregarShows() {
+    const seq = ++requestSeq;
     try {
       const res = await api.get(`/shows?nome=${encodeURIComponent(filtro)}`);
+      if (seq !== requestSeq) return;
       const body = res.data as ApiResponse<Show[]>;
       if (body.success) {
         shows = body.data ?? [];
@@ -63,44 +74,52 @@
         error = body.message;
       }
     } catch (e: any) {
+      if (seq !== requestSeq) return;
       console.error('Erro ao carregar shows:', e);
-      const body = e.response?.data as ApiResponse<Show[]> | undefined;
-      error = body?.message || 'Erro ao carregar shows';
+      error = mensagemDeErro(e, 'Erro ao carregar shows');
     } finally {
-      loading = false;
+      if (seq === requestSeq) loading = false;
     }
   }
 
-  // espera o usuário parar de digitar antes de buscar
   function onFiltroInput() {
     clearTimeout(timer);
     timer = setTimeout(carregarShows, 300);
   }
 
-  onMount(carregarShows);
+  onMount(() => {
+    carregarShows();
+    return () => clearTimeout(timer);
+  });
 </script>
 
 {#if loading}
   <div class="my-8 text-center text-gray-500">Carregando shows...</div>
 {:else}
+  <!-- Pesquisa + novo show -->
   <div class="max-w-5xl mx-auto mt-8 px-2 flex gap-2">
     <input
       type="text"
       id="pesquisa"
-      class="flex-1 rounded-xl border border-[#ffffff] hover:border-[#000000] p-2"
+      class="rounded"
       placeholder="Digite o nome do artista..."
       bind:value={filtro}
-      on:input={onFiltroInput}
+      oninput={onFiltroInput}
     />
-    <!-- <Button onclick={() => goto('/shows/new')}>Novo show</Button> -->
+    <Button class ="ml-auto"
+    onclick={() => goto('/shows/new')}>Novo show</Button>
   </div>
 
   {#if error}
     <div class="my-4 text-center text-red-500">{error}</div>
   {/if}
 
+  {#if shows.length === 0 && !error}
+    <div class="my-8 text-center text-gray-500">Nenhum show encontrado.</div>
+  {/if}
+
   <!-- Cards para telas pequenas -->
-  <div class="block">
+  <div class="block xl">
     <div class="flex flex-col items-center gap-4 my-8 max-w-3xl mx-auto md:grid md:grid-cols-2">
       {#each shows as show (show.id)}
         <Card class="max-w-sm w-full p-0 overflow-hidden shadow-lg border border-gray-200">
@@ -110,21 +129,7 @@
               <div class="text-xs text-gray-400">ID: {show.id}</div>
             </div>
             <div class="flex gap-2">
-              <!-- <button
-                class="p-2 rounded border border-primary-200 hover:border-primary-400 transition bg-transparent"
-                title="Editar"
-                on:click={() => goto(`/shows/edit/${show.id}`)}
-              >
-                <UserEditOutline class="w-5 h-5 text-primary-500" />
-              </button>
-              <button
-                title="Remover"
-                class="p-2 rounded border border-red-100 hover:border-red-300 transition bg-transparent"
-                on:click={() => openConfirm(show.id)}
-                disabled={deletingId === show.id}
-              >
-                <TrashBinOutline class="w-5 h-5 text-red-400" />
-              </button> -->
+
             </div>
           </div>
           <div class="px-4 pb-4 pt-2 flex flex-col gap-1 text-left text-sm text-gray-700">
