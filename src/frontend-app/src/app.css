@@ -74,6 +74,17 @@
     right: 13%;
     background-color: ;
   }
+
+  .sobreTelapqn {
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 3%;
+    box-shadow: #3554ee;
+    width: 75%;
+    height: 1000px;
+    right: 13%;
+    background-color: #deb266;
+  }
   
   
   .icon-btn {

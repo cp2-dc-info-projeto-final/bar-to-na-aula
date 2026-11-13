@@ -14,7 +14,7 @@ function voltar(){
 <div>
     <div class="text-center mt-100">
         <h1 class="text-4">COMPRA BEM-SUCEDIDA!!!</h1>
-        <p>Volte sempre. Sgay pennis buceta vaginamuito especial para nós do <b>Baratiê</b>!</p>
+        <p>Volte sempre. Sua presença é muito especial para nós do <b>Baratiê</b>!</p>
     </div><br>
     <div>
         <button 

@@ -97,7 +97,7 @@
   <div class="my-8 text-center text-gray-500">Carregando shows...</div>
 {:else}
   <!-- Pesquisa + novo show -->
-  <div class="max-w-5xl mx-auto mt-8 px-2 flex gap-2">
+  <div class="max-w-5xl m-auto mt-8 px-2 flex gap-2">
     <input
       type="text"
       id="pesquisa"
@@ -106,8 +106,7 @@
       bind:value={filtro}
       oninput={onFiltroInput}
     />
-    <Button class ="ml-auto"
-    onclick={() => goto('/shows/new')}>Novo show</Button>
+
   </div>
 
   {#if error}

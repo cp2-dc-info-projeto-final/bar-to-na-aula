@@ -11,6 +11,7 @@ var bebRouter = require('./routes/beb');
 var comRouter = require('./routes/com');
 var mesaRouter = require('./routes/mesa');
 var showRouter = require('./routes/shows');
+var reservaRouter = require('./routes/reser');
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use('/beb', bebRouter);
 app.use('/com', comRouter);
 app.use('/mesa', mesaRouter);
 app.use('/shows', showRouter);
+app.use('/reser', reservaRouter); 
 
 // 404
 app.use(function (req, res, next) {

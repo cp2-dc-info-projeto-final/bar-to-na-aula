@@ -178,6 +178,9 @@ router.delete('/:id', verifyToken, isAdmin, async function(req, res) {
     return sendSuccess(res, 200, 'Mesa deletada com sucesso');
   } catch (error) {
     console.error('Erro ao deletar mesa:', error);
+    if (error.code === '23503') {
+      return sendError(res, 409, 'Esta mesa possui reservas. Cancele ou remova as reservas antes de excluir.');
+    }
     return sendError(res, 500, 'Erro interno do servidor');
   }
 });

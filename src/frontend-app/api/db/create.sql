@@ -63,11 +63,11 @@ CREATE TABLE shows (
 DROP TABLE IF EXISTS mesa;
 CREATE TABLE mesa (
     id bigint GENERATED ALWAYS AS IDENTITY,
-    identificacao INTEGER NOT NULL,
+    numeracao INTEGER NOT NULL,
     tipo text NOT NULL DEFAULT 'sem_show',
     id_show bigint,
     CONSTRAINT pk_mesa PRIMARY KEY (id),
-    CONSTRAINT uk_mesa_identificacao UNIQUE (identificacao),
+    CONSTRAINT uk_mesa_numeracao UNIQUE (numeracao),
     CONSTRAINT ck_mesa_tipo CHECK (tipo IN ('sem_show', 'com_show')),
     CONSTRAINT fk_mesa_show FOREIGN KEY (id_show) REFERENCES shows(id) ON DELETE RESTRICT,
     CONSTRAINT ck_mesa_show CHECK (
@@ -102,8 +102,31 @@ CREATE TABLE item_carrinho (
     )
 );
 
+DROP TABLE IF EXISTS reserva;
+CREATE TABLE IF NOT EXISTS reserva (
+    id bigint GENERATED ALWAYS AS IDENTITY,
+    id_usuario bigint NOT NULL,
+    id_mesa bigint NOT NULL,
+    datá date NOT NULL,
+    horario time NOT NULL,
+    quantidade_pessoas integer NOT NULL,
+    status text NOT NULL DEFAULT 'ativa',
+    criado_em timestamp NOT NULL DEFAULT now(),
+    CONSTRAINT pk_reserva PRIMARY KEY (id),
+    CONSTRAINT fk_reserva_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    CONSTRAINT fk_reserva_mesa FOREIGN KEY (id_mesa) REFERENCES mesa(id) ON DELETE RESTRICT,
+    CONSTRAINT ck_reserva_status CHECK (status IN ('ativa', 'cancelada')),
+    CONSTRAINT ck_reserva_pessoas CHECK (quantidade_pessoas BETWEEN 1 AND 12)
+    CONSTRAINT chk_horario CHECK (horario BETWEEN '00:00:00' AND '23:59:59')
+);
+    
+-- 1 reserva ativa por mesa/dia/horário (reservas canceladas não contam)
+CREATE UNIQUE INDEX IF NOT EXISTS uk_reserva_mesa_datá_horario_ativa
+    ON reserva (id_mesa, datá, horario) WHERE status = 'ativa';
+
 INSERT INTO shows (artista, horario, genero) 
 VALUES ('Banda Teste', '21:00', 'Rock');
 
-INSERT INTO mesa (identificacao, tipo, id_show) 
+INSERT INTO mesa (numeracao, tipo, id_show) 
 VALUES (1, 'com_show', 1), (2, 'sem_show', NULL);
+

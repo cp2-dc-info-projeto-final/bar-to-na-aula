@@ -91,7 +91,7 @@ router.get('/', verifyToken, async function (req, res) {
 });
 
 /* GET - Buscar show por ID */
-router.get('/:id', verifyToken, async function (req, res) {
+router.get( async function (req, res) {
   try {
     const id = parseId(req.params.id);
     if (id === null) return sendError(res, 400, 'ID inválido');

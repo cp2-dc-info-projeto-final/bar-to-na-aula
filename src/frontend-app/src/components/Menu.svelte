@@ -114,7 +114,7 @@ $: trocarUsuarioHistorico(user);
       <NavLi href="/" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Home</NavLi>
 
       {#if user} <!-- se existir usuário é porque conseguiu logar-->
-        <NavLi href="/about" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
+        <NavLi href="/reservas" class="text-[#000000] underline-offset-4 font-text2 hover:underline  hover:text-[#166a8e] transition">Reservas</NavLi>
         {/if}
 
       {#if user} <!-- se existir usuário é porque conseguiu logar-->
