@@ -31,6 +31,7 @@ CREATE TABLE bebida (
     marca text not null,
     tamanho text not null ,
     tipo text NOT NULL DEFAULT 'alcolico',
+    foto text, 
 
     -- Constraints
 
